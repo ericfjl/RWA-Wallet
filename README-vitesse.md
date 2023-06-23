@@ -1,20 +1,17 @@
-# NFT-Fi Twitter
+# WebExtension Vite Starter
 
-A NFT powered WebExtension ([Chrome](https://developer.chrome.com/docs/extensions/reference/), [FireFox](https://addons.mozilla.org/en-US/developers/), etc.) that provide the Finance solution for Twitter Web.
+A [Vite](https://vitejs.dev/) powered WebExtension ([Chrome](https://developer.chrome.com/docs/extensions/reference/), [FireFox](https://addons.mozilla.org/en-US/developers/), etc.) starter template.
 
 <p align="center">
-<img width="655" src="./cz-twitter.png"><br/>
+<sub>Popup</sub><br/>
+<img width="655" src="https://user-images.githubusercontent.com/11247099/126741643-813b3773-17ff-4281-9737-f319e00feddc.png"><br/>
+<sub>Options Page</sub><br/>
+<img width="655" src="https://user-images.githubusercontent.com/11247099/126741653-43125b62-6578-4452-83a7-bee19be2eaa2.png"><br/>
+<sub>Inject Vue App into the Content Script</sub><br/>
+<img src="https://user-images.githubusercontent.com/11247099/130695439-52418cf0-e186-4085-8e19-23fe808a274e.png">
 </p>
 
 ## Features
-
-- [ ] User can post new twitter with encrypted content
-- [ ] User can comment on other user's twitter with encrypted content
-- [ ] User can pay with ERC20 Token to mint NFT that attach to any twitter content
-- [ ] User can unlock encrypted content while they have the relative NFT
-- [ ] Add Web3MQ SDK to support user to chat on any website
-
-## Tech Features
 
 - ⚡️ **Instant HMR** - use **Vite** on dev (no more refresh!)
 - 🥝 Vue 3 - Composition API, [`<script setup>` syntax](https://github.com/vuejs/rfcs/blob/master/active-rfcs/0040-script-setup.md) and more!
@@ -126,5 +123,10 @@ And then pack files under `extension`, you can upload `extension.crx` or `extens
 
 ## Credits
 
-We build the ext base on the open-source [vitesse-webext](https://github.com/antfu/vitesse-webext).
+[![Volta](https://user-images.githubusercontent.com/904724/195351818-9e826ea9-12a0-4b06-8274-352743cd2047.png)](https://volta.net)
 
+This template is originally made for the [volta.net](https://volta.net) browser extension.
+
+## Variations
+
+This is a variant of [Vitesse](https://github.com/antfu/vitesse), check out the [full variations list](https://github.com/antfu/vitesse#variations).
