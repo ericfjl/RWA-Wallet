@@ -33,7 +33,7 @@ const doSubmit = async () => {
 <template>
   <div class="space-y-6 text-white">
     <div text-lg>
-      This password will unlock your Buidlers.Space wallet only on this device. Buidlers.Space can not recover this password.
+      This password will unlock your Buidlers.Space RWA wallet only on this device. Buidlers.Space can not recover this password.
     </div>
     <div>
       <div class="flex items-center justify-between">

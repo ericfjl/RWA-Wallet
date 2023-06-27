@@ -3,7 +3,7 @@ import * as passworder from '@metamask/browser-passworder'
 import { sendMessage } from 'webext-bridge/options'
 import { encryptedMnemonic } from '~/logic/storage'
 
-const password = ref('')
+const password = ref('eF*;CTYW8d9(43U')
 const hasError = ref(false)
 const router = useRouter()
 const doSubmit = async () => {

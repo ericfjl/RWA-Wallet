@@ -7,7 +7,7 @@ const bstBalance = $ref('1000')
 const payTokenAddress = $ref('')
 const payTokenList = $ref([])
 
-const error = $ref('')
+let error = $ref('')
 const name = $ref('')
 let description = $ref('')
 description = ''
@@ -35,7 +35,7 @@ const inviteCommission = $ref(1)
 
 const distributor = $ref('')
 
-const isLoading = $ref(false)
+let isLoading = $ref(false)
 
 const canSubmit = $computed(() => {
   if (
@@ -55,6 +55,7 @@ const canSubmit = $computed(() => {
 const internalCall = async (action: string, params = {}, opts = {}, dest = 'background') => {
   let left = 0
   let top = 0
+
   const width = 400
   const height = 620
   const { screenX, screenY, outerWidth } = window
@@ -73,66 +74,64 @@ const internalCall = async (action: string, params = {}, opts = {}, dest = 'back
 }
 
 const doSubmit = async () => {
+  if (isLoading)
+    return
+  isLoading = true
+
   try {
     const params = {}
     const opts = {}
     await internalCall('createRwaNft', params, opts)
+    // opt1: JSON-RPC window.ethereum
+    // const [address] = await window.ethereum.request({
+    //   method: 'eth_requestAccounts',
+    // })
+    // const account = address
+    // opt2: private key account
+    // import { privateKeyToAccount } from 'viem/accounts'
+    // const account = privateKeyToAccount(
+    //   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+    // )
+    // opt3: Mnemonic Account
+    // import { mnemonicToAccount } from 'viem/accounts'
+    // const account = mnemonicToAccount(
+    //   'legal winner thank year wave sausage worth useful legal winner thank yellow'
+    // )
+    // const account = ''
+
+    // await createRwaNft({
+    //   image,
+    //   name,
+    //   description,
+    //   category,
+    //   tags,
+    //   tokenType,
+    //   distributor,
+    //   basicPrice,
+    //   maxSupply,
+    //   inviteCommission,
+    //   payTokenAddress,
+    // }, {
+    //   nftStorageToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzM4MTgzMDU2MywibmFtZSI6Ik5UQiJ9.Yj9ie65LXh6t6QECtGzKViX-AeTiAHnVoYybY3qfqNk',
+    //   walletClient,
+    //   publicClient,
+    // })
   }
-  catch (e) {
-    console.log('====> e :', e)
+  catch (err) {
+    error = err
   }
-
-  // console.log('====> browser.action :', browser.action)
-  // if (isLoading)
-  //   return
-  // isLoading = true
-
-  // try {
-  //   // opt1: JSON-RPC window.ethereum
-  //   // const [address] = await window.ethereum.request({
-  //   //   method: 'eth_requestAccounts',
-  //   // })
-  //   // const account = address
-  //   // opt2: private key account
-  //   // import { privateKeyToAccount } from 'viem/accounts'
-  //   // const account = privateKeyToAccount(
-  //   //   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
-  //   // )
-  //   // opt3: Mnemonic Account
-  //   // import { mnemonicToAccount } from 'viem/accounts'
-  //   // const account = mnemonicToAccount(
-  //   //   'legal winner thank year wave sausage worth useful legal winner thank yellow'
-  //   // )
-  //   const account = ''
-
-  //   await createRwaNft({
-  //     image,
-  //     name,
-  //     description,
-  //     category,
-  //     tags,
-  //     tokenType,
-  //     distributor,
-  //     basicPrice,
-  //     maxSupply,
-  //     inviteCommission,
-  //     payTokenAddress,
-  //   }, {
-  //     nftStorageToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzM4MTgzMDU2MywibmFtZSI6Ik5UQiJ9.Yj9ie65LXh6t6QECtGzKViX-AeTiAHnVoYybY3qfqNk',
-  //     walletClient,
-  //     publicClient,
-  //   })
-  // }
-  // catch (err) {
-  //   error = err
-  // }
-  // isLoading = false
+  isLoading = false
 }
 </script>
 
 <template>
   <div class="flex flex-col mx-auto flex-1 py-8 pb-20">
     <div class="flex-1 text-base text-gray-700 leading-7">
+      <div class="flex pt-8 gap-x-3 justify-end" mt-5 border-t border-gray-200>
+        <BsBtnBlack :is-loading="isLoading" @click="doSubmit">
+          Save
+        </BsBtnBlack>
+      </div>
       <input v-model="name" class="border-b font-bold border-gray-200 mt-6 tracking-tight w-full p-4 pl-0 text-3xl text-gray-900 sm:text-4xl focus:outline-none" placeholder="Your NFT name">
       <div mt-5>
         <div class="rounded-md border-gray-300 border-1  p-4 pb-2 block">

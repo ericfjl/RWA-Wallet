@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -18,11 +18,11 @@ dependencies:
     specifier: ^4.1.0
     version: 4.1.0
   '@rwa/core':
-    specifier: link:../../../../RWA-JS-SDK/packages/core
-    version: link:../../../../RWA-JS-SDK/packages/core
+    specifier: link:../RWA-JS-SDK/packages/core
+    version: link:../RWA-JS-SDK/packages/core
   '@rwa/web3-storage':
-    specifier: link:../../../../RWA-JS-SDK/packages/web3-storage
-    version: link:../../../../RWA-JS-SDK/packages/web3-storage
+    specifier: link:../RWA-JS-SDK/packages/web3-storage
+    version: link:../RWA-JS-SDK/packages/web3-storage
   '@wagmi/core':
     specifier: ^1.0.6
     version: 1.0.6(react@18.2.0)(typescript@4.9.5)(viem@0.3.36)
