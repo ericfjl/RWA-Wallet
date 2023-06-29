@@ -127,11 +127,6 @@ const doSubmit = async () => {
 <template>
   <div class="flex flex-col mx-auto flex-1 py-8 pb-20">
     <div class="flex-1 text-base text-gray-700 leading-7">
-      <div class="flex pt-8 gap-x-3 justify-end" mt-5 border-t border-gray-200>
-        <BsBtnBlack :is-loading="isLoading" @click="doSubmit">
-          Save
-        </BsBtnBlack>
-      </div>
       <input v-model="name" class="border-b font-bold border-gray-200 mt-6 tracking-tight w-full p-4 pl-0 text-3xl text-gray-900 sm:text-4xl focus:outline-none" placeholder="Your NFT name">
       <div mt-5>
         <div class="rounded-md border-gray-300 border-1  p-4 pb-2 block">

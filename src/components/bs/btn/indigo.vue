@@ -6,8 +6,9 @@ const {
   isLoading,
 } = defineProps<Props>()
 </script>
+
 <template>
-  <BsBtnDefault :is-loading="isLoading" b-bind="$attrs" class="bg-indigo-600 text-base text-white  hover:bg-indigo-700" :disabled="isLoading">
+  <BsBtnDefault :is-loading="isLoading" b-bind="$attrs" class="bg-indigo-600 text-base text-white hover:bg-indigo-700  focus-visible:outline-indigo-500" :disabled="isLoading">
     <slot />
   </BsBtnDefault>
 </template>

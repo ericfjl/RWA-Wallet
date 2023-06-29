@@ -27,6 +27,6 @@
       </div>
     </header>
 
-    <BookList />
+    <BookNew />
   </main>
 </template>

@@ -97,7 +97,7 @@ const doSubmit = async () => {
 
     <div>
       <button class="rounded-md  flex  font-semibold bg-indigo-500  shadow-sm text-sm w-full py-1.5 px-3  leading-6 justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-40 " :disabled="!isValid" @click="doSubmit">
-        Create a new wallet
+        {{ isImportWallet ? 'Import your wallet' : 'Create a new wallet' }}
       </button>
     </div>
   </div>

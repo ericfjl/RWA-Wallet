@@ -6,11 +6,13 @@ interface Props {
   modelValue: string
   list: Array<string>
   hasAddNew?: boolean
+  isDark?: boolean
 }
 const {
   modelValue,
   list,
   hasAddNew = false,
+  isDark = false,
 } = defineProps<Props>()
 const emit = defineEmits(['update:modelValue'])
 
@@ -37,18 +39,18 @@ const addNewOption = () => {
   <Listbox v-model="value" as="div">
     <div class="relative">
       <div flex items-center>
-        <ListboxButton class="bg-white rounded-md cursor-default shadow-sm ring-inset text-left   py-1.5 pr-10 pl-3 ring-1 ring-gray-300 text-gray-900 relative sm:text-sm sm:leading-6 focus:outline-none focus:ring-2 focus:ring-gray-700">
+        <ListboxButton class="rounded-md cursor-default shadow-sm ring-inset text-left   py-1.5 pr-10 pl-3 ring-1 ring-gray-300 relative sm:text-sm sm:leading-6 focus:outline-none focus:ring-2 focus:ring-gray-700" :class="isDark ? 'text-white' : 'text-gray-900'">
           <span class="block truncate">{{ modelValue }}</span>
           <span class="flex pr-2 inset-y-0 right-0 pointer-events-none absolute items-center">
             <ChevronUpDownIcon class="h-5 text-gray-400 w-5" aria-hidden="true" />
           </span>
         </ListboxButton>
         <button v-if="hasAddNew" py-1 @click="showAddModal = true">
-          <span i-heroicons-outline-plus-circle w-5 h-5>Add new</span>
+          <span i-heroicons-outline-plus-circle w-5 h-5 :class="isDark ? 'text-white' : ''">Add new</span>
         </button>
       </div>
       <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-        <ListboxOptions class="bg-white rounded-md shadow-lg ring-black mt-1 text-base max-h-60  py-1 right-0 ring-1 ring-opacity-5 z-10 absolute overflow-auto sm:text-sm focus:outline-none">
+        <ListboxOptions class="bg-white rounded-md shadow-lg ring-black mt-1 text-base max-h-60  py-1  ring-1 ring-opacity-5 z-10 absolute overflow-auto sm:text-sm focus:outline-none" :class="hasAddNew ? '' : 'right-0'">
           <ListboxOption v-for="item in list" :key="item" v-slot="{ active, selected }" as="template" :value="item">
             <li class="cursor-pointer w-full py-2 pr-9 pl-3 relative select-none" :class="[active ? 'bg-gray-700 text-white' : 'text-gray-900']">
               <span class="block truncate" :class="[selected ? 'font-semibold' : 'font-normal']">{{ item }}</span>

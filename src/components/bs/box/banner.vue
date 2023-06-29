@@ -61,9 +61,9 @@ const resetStatus = () => {
         <BsBoxImg class="rounded-lg h-full object-cover w-full" v-bind="$attrs" :src="modelValue" :alt="title" />
       </div>
       <div v-else class="border-dashed rounded-lg flex h-full  border-2 border-gray-300 px-6  justify-center relative overflow-hidden">
-        <div class="flex flex-col space-y-1 text-center justify-center items-center">
+        <div class="flex flex-col space-y-1 text-center py-10 justify-center items-center">
           <div i-heroicons-outline-photo class="mx-auto h-6 text-gray-400 w-6 sm:(w-12 h-12) " />
-          <div class="h-10">
+          <div class="h-10 ">
             <div v-if="dropZoneActive" class="text-gray-600">
               Drop to upload
             </div>
