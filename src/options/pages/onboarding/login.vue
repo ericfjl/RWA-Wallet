@@ -11,7 +11,7 @@ const doSubmit = async () => {
     const rz = await passworder.decrypt(password.value, encryptedMnemonic.value)
     await sendMessage('storeInMemory', { mnemonicStr: rz.mnemonic }, 'background')
     hasError.value = false
-    router.push('/options')
+    router.push('/options/book/new')
   }
   catch (err) {
     if (err)

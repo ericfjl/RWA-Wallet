@@ -1,11 +1,38 @@
 <script setup lang="ts">
+import { sendMessage } from 'webext-bridge/options'
+
 const payBy = $ref('$BSTEntropy')
 const payTokenList = ['$BSTSwap', '$BSTEntropy']
 
 const storeBy = $ref('NFT.Storage')
 const storeServiceList = ['NFT.Storage', 'Arweave']
+let params = $ref({})
+let opts = $ref({})
+let tabId = $ref('')
+onMounted(async () => {
+  const rz = await sendMessage('getStoreInMemory', { keys: ['action', 'params', 'opts', 'tabId'] }, 'background')
+  params = rz.params
+  opts = rz.opts
+  tabId = rz.tabId
+  console.log('====> tabId :', tabId)
+})
+const doSubmit = async () => {
+  // call allowance
+  // upload to decentralized storage
+  // create token
+  try {
+    await sendMessage('actionResolve', { tabId }, `content-script@${tabId}`)
+    self.close()
+  }
+  catch (e) {
+    console.log('====> e :', e, tabId)
+  }
+}
 
-const open = $ref(true)
+const doCancel = async () => {
+  await sendMessage('actionReject', { tabId }, `content-script@${tabId}`)
+  self.close()
+}
 </script>
 
 <template>
@@ -71,13 +98,13 @@ const open = $ref(true)
               </div>
             </li>
             <li class="flex py-6">
-              <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
-                <img class="h-full object-cover object-center w-full">
+              <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-0 w-24 overflow-hidden">
+                <BsBoxImg :src="params.image" :has-modal="true" class="h-full object-cover object-center w-full" />
               </div>
 
               <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
                 <h3>
-                  Create new NFT Collection
+                  {{ params.name }}
                 </h3>
                 <p class="mt-1 text-sm text-gray-500">
                   Use the metadata to build your RWA NFT!
@@ -109,12 +136,14 @@ const open = $ref(true)
         </div>
       </div>
       <div class="mt-6">
-        <a href="#" class="border border-transparent rounded-md flex font-medium bg-indigo-600 shadow-sm text-base text-white py-3 px-6 items-center justify-center hover:bg-indigo-700">Action Confirm</a>
+        <button class="border border-transparent rounded-md flex font-medium bg-indigo-600 shadow-sm text-base text-white w-full py-3 px-6 items-center justify-center hover:bg-indigo-700" @click="doSubmit">
+          Action Confirm
+        </button>
       </div>
-      <div v-if="false" class="flex mt-6 text-center text-sm text-gray-500 justify-center">
+      <div class="flex mt-6 text-center text-sm text-gray-500 justify-center">
         <p>
           or
-          <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="">
+          <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="doCancel">
             Reject
             <span aria-hidden="true"> &rarr;</span>
           </button>

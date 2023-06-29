@@ -14,50 +14,18 @@ browser.runtime.onInstalled.addListener((): void => {
   console.log('Extension installed')
 })
 
-browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  await sendMessage('updateTabId', { tabId }, `content-script@${tabId}`)
-})
-
 let memoryStoreMap = {
   password: '',
-  mnemonicStr: '',
+  mnemonicStr: 'truth similar disagree slot lecture quiz hundred season energy fix alarm spring',
   popupId: '',
+  tabId: '',
+  action: '',
+  params: '',
+  opts: '',
 }
 
-const reFocusUnProcessPopup = async () => {
-  if (!memoryStoreMap.popupId)
-    return null
-
-  const windows = await browser.windows.getAll()
-  return windows
-    ? windows.find((win) => {
-      return win && win.type === 'popup' && win.id === memoryStoreMap.popupId
-    })
-    : null
-}
-
-onMessage('internalCall', async (msg) => {
-  if (!isInternalEndpoint(msg.sender))
-    return false
-
-  const existPopup = await reFocusUnProcessPopup()
-  if (existPopup)
-    return browser.windows.update(memoryStoreMap.popupId, { focused: true })
-
-  const { action, params, opts } = msg.data
-  console.log('====> msg.data :', msg.data)
-  const { top, left, width, height } = opts
-  const newWindow = await browser.windows.create({
-    url: './dist/options/index.html#/options/tx/preview',
-    type: 'popup',
-    width,
-    height,
-    left,
-    top,
-  })
-
-  memoryStoreMap.popupId = newWindow.id
-  return newWindow
+browser.tabs.onActivated.addListener(async ({ tabId }) => {
+  await sendMessage('updateTabId', { tabId }, `content-script@${tabId}`)
 })
 
 onMessage('storeInMemory', async (msg) => {
@@ -78,4 +46,54 @@ onMessage('getStoreInMemory', async (msg) => {
   const data = {}
   msg.data.keys.map(key => data[key] = memoryStoreMap[key])
   return data
+})
+
+const reFocusUnProcessPopup = async () => {
+  if (!memoryStoreMap.popupId)
+    return null
+
+  const windows = await browser.windows.getAll()
+  return windows
+    ? windows.find((win) => {
+      return win && win.type === 'popup' && win.id === memoryStoreMap.popupId
+    })
+    : null
+}
+
+onMessage('internalCall', async (msg) => {
+  if (!isInternalEndpoint(msg.sender))
+    return false
+
+  try {
+    const existPopup = await reFocusUnProcessPopup()
+    if (existPopup) {
+      await browser.windows.update(memoryStoreMap.popupId, { focused: true })
+      return existPopup
+    }
+
+    const { action, params, opts } = msg.data
+    memoryStoreMap.action = action
+    memoryStoreMap.params = params
+    memoryStoreMap.opts = opts
+
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
+    memoryStoreMap.tabId = tab.id
+
+    const { top, left, width, height } = opts
+    const newWindow = await browser.windows.create({
+      url: './dist/options/index.html#/options/tx/preview',
+      type: 'popup',
+      width,
+      height,
+      left,
+      top,
+    })
+
+    memoryStoreMap.popupId = newWindow.id
+    console.log('====> tab.id, newWindow.id :', tab.id, newWindow.id)
+    return newWindow
+  }
+  catch (e) {
+    console.log('====> e :', e)
+  }
 })

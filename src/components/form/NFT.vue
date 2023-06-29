@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { formatEther, formatUnits } from 'viem'
-import { sendMessage } from 'webext-bridge/content-script'
+import { onMessage, sendMessage } from 'webext-bridge/content-script'
+import { createBgAction } from '~/logic/callBackground'
+const internalCall = createBgAction(sendMessage, onMessage)
 
 const addTokenCost = $ref('0.001')
 const bstBalance = $ref('1000')
@@ -52,36 +54,15 @@ const canSubmit = $computed(() => {
   return true
 })
 
-const internalCall = async (action: string, params = {}, opts = {}, dest = 'background') => {
-  let left = 0
-  let top = 0
-
-  const width = 800
-  const height = 800
-  const { screenX, screenY, outerWidth } = window
-  top = Math.max(screenY, 0)
-  left = Math.max(screenX + (outerWidth - width), 0)
-
-  opts = {
-    top,
-    left,
-    width,
-    height,
-    ...opts,
-  }
-  const rz = await sendMessage('internalCall', { action, params, opts }, dest)
-  return rz
-}
-
 const doSubmit = async () => {
   if (isLoading)
     return
   isLoading = true
-
+  console.log('====> aaaa :')
   try {
     const params = {}
     const opts = {}
-    await internalCall('createRwaNft', params, opts)
+    const rz = await internalCall('createRwaNft', params, opts)
     // opt1: JSON-RPC window.ethereum
     // const [address] = await window.ethereum.request({
     //   method: 'eth_requestAccounts',
@@ -116,9 +97,12 @@ const doSubmit = async () => {
     //   walletClient,
     //   publicClient,
     // })
+
+    console.log('====> success :', rz)
   }
   catch (err) {
     error = err
+    console.log('====> error :', error)
   }
   isLoading = false
 }

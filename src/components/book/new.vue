@@ -1,6 +1,14 @@
 <script setup lang="ts">
-const image = $ref('')
-const isLoading = $ref(false)
+import { onMessage, sendMessage } from 'webext-bridge/options'
+import { createBgAction } from '~/logic/callBackground'
+
+const image = $ref('ipfs://bafybeidhf5bw7xx3pq3pxzcgazxy7qdf5a2zlumqubg6vpdehxekyr3jwq')
+const name = $ref('My First RWA NFT')
+const description = $ref('What a good NFT!')
+const tokenType = 'Web3NFT.Social'
+const inviteCommission = $ref(1)
+const distributor = $ref('rwa-wallet')
+let isLoading = $ref(false)
 const category = $ref('Uncategory')
 const categoryList = $ref([
   'Uncategory',
@@ -17,9 +25,36 @@ const categoryList = $ref([
   'Art',
 ])
 
-const tags = $ref('')
+const tags = $ref('Web3, RWA, NFT')
 const basicPrice = $ref(100) // $BST
 const maxSupply = $ref(10000)
+const error = $ref('')
+
+const internalCall = createBgAction(sendMessage, onMessage)
+const doSubmit = async () => {
+  isLoading = true
+  const params = {
+    image,
+    name,
+    description,
+    category,
+    tags,
+    tokenType,
+    distributor,
+    basicPrice,
+    maxSupply,
+    inviteCommission,
+  }
+  const opts = {}
+  try {
+    const rz = await internalCall('createRwaNft', params, opts)
+    console.log('====> rz :', rz)
+  }
+  catch (e) {
+    console.log('====> createRwaNft error :', e)
+  }
+  isLoading = false
+}
 </script>
 
 <template>
@@ -38,7 +73,7 @@ const maxSupply = $ref(10000)
             <label for="name" class="font-medium   leading-6 block">NFT Name</label>
             <div class="mt-2">
               <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                <input id="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1  py-1.5 pl-1 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name">
+                <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1  py-1.5 pl-1 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name">
               </div>
             </div>
           </div>
@@ -51,7 +86,7 @@ const maxSupply = $ref(10000)
           <div class="col-span-full">
             <label for="about" class="font-medium   leading-6 block">NFT Description</label>
             <div class="mt-2">
-              <textarea id="about" name="about" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset  w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500 " />
+              <textarea id="about" v-model="description" name="about" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset  w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500 " />
             </div>
             <p class="mt-3  text-gray-400 leading-6">
               Write a few sentences about this NFT.

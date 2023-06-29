@@ -4,6 +4,11 @@ import { storageDemo } from '~/logic/storage'
 function openOptionsPage() {
   browser.runtime.openOptionsPage()
 }
+
+const testWindow = async () => {
+  const { screenX, screenY, outerWidth } = window
+  console.log('====> window :', screenX, screenY, outerWidth)
+}
 </script>
 
 <template>
@@ -14,6 +19,9 @@ function openOptionsPage() {
 
     <button class="mt-2 btn" @click="openOptionsPage">
       Open Options
+    </button>
+    <button class="mt-2 btn" @click="testWindow">
+      test window
     </button>
     <div class="mt-2">
       <span class="opacity-50">Storage:</span> {{ storageDemo }}

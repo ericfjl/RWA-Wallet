@@ -7,15 +7,9 @@ import {
   MenuItems,
 } from '@headlessui/vue'
 import {
-  ChartBarSquareIcon,
-  Cog6ToothIcon,
-  FolderIcon,
-  GlobeAltIcon,
-  ServerIcon,
   SignalIcon,
 } from '@heroicons/vue/24/outline'
 import { ChevronRightIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
-
 
 const statuses = {
   offline: 'text-gray-500 bg-gray-100/10',
@@ -58,7 +52,7 @@ const activityItems = [
 const sidebarOpen = ref(false)
 
 const router = useRouter()
-// router.push('/options/onboarding/create-password')
+router.push('/options/book/new')
 </script>
 
 <template>
