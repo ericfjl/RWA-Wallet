@@ -98,7 +98,9 @@ const sidebarOpen = ref(false)
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex flex-col bg-black/10 px-6 ring-1 ring-white/5 gap-y-5 grow overflow-y-auto">
         <div class="flex h-16 items-center shrink-0">
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+          <router-link to="/options/">
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="RWA Wallet">
+          </router-link>
         </div>
         <nav class="flex flex-col flex-1">
           <ul role="list" class="flex flex-col flex-1 gap-y-7">

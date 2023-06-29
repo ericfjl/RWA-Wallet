@@ -1,11 +1,5 @@
 <script setup>
-const secondaryNavigation = [
-  { name: 'Overview', href: '#', current: true },
-  { name: 'Activity', href: '#', current: false },
-  { name: 'Settings', href: '#', current: false },
-  { name: 'Collaborators', href: '#', current: false },
-  { name: 'Notifications', href: '#', current: false },
-]
+
 const stats = [
   { name: 'Number of books RWA NFT', value: '405' },
   { name: 'Average books RWA NFT sale Price', value: '100', unit: '$BST' },
@@ -17,14 +11,7 @@ const stats = [
 <template>
   <main>
     <header>
-      <!-- Secondary navigation -->
-      <nav class="border-b flex border-white/10 py-4 overflow-x-auto">
-        <ul role="list" class="flex flex-none font-semibold min-w-full text-sm px-4 text-gray-400 leading-6 gap-x-6 sm:px-6 lg:px-8">
-          <li v-for="item in secondaryNavigation" :key="item.name">
-            <a :href="item.href" :class="item.current ? 'text-indigo-400' : ''">{{ item.name }}</a>
-          </li>
-        </ul>
-      </nav>
+      <BookTopNav />
 
       <!-- Heading -->
       <div class="flex flex-col bg-gray-700/10 py-4 px-4 gap-x-8 gap-y-4 items-start justify-between sm:flex-row sm:px-6 sm:items-center lg:px-8">
