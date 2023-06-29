@@ -48,7 +48,7 @@ const addNewOption = () => {
         </button>
       </div>
       <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
-        <ListboxOptions class="bg-white rounded-md shadow-lg ring-black mt-1 text-base  max-h-60 py-1 ring-1 ring-opacity-5 z-10 absolute overflow-auto sm:text-sm focus:outline-none">
+        <ListboxOptions class="bg-white rounded-md shadow-lg ring-black mt-1 text-base max-h-60  py-1 right-0 ring-1 ring-opacity-5 z-10 absolute overflow-auto sm:text-sm focus:outline-none">
           <ListboxOption v-for="item in list" :key="item" v-slot="{ active, selected }" as="template" :value="item">
             <li class="cursor-pointer w-full py-2 pr-9 pl-3 relative select-none" :class="[active ? 'bg-gray-700 text-white' : 'text-gray-900']">
               <span class="block truncate" :class="[selected ? 'font-semibold' : 'font-normal']">{{ item }}</span>

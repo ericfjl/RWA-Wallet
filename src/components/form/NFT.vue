@@ -56,8 +56,8 @@ const internalCall = async (action: string, params = {}, opts = {}, dest = 'back
   let left = 0
   let top = 0
 
-  const width = 400
-  const height = 620
+  const width = 800
+  const height = 800
   const { screenX, screenY, outerWidth } = window
   top = Math.max(screenY, 0)
   left = Math.max(screenX + (outerWidth - width), 0)

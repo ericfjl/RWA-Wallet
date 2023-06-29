@@ -9,6 +9,12 @@ const {
 } = defineProps<Props>()
 const emit = defineEmits(['update:modelValue'])
 
+const payBy = $ref('$BSTEntropy')
+const payTokenList = ['$BSTSwap', '$BSTEntropy']
+
+const storeBy = $ref('NFT.Storage')
+const storeServiceList = ['NFT.Storage', 'Arweave']
+
 const products = [
   {
     id: 1,
@@ -20,18 +26,6 @@ const products = [
     imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
     imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
   },
-  {
-    id: 2,
-    name: 'Medium Stuff Satchel',
-    href: '#',
-    color: 'Blue',
-    price: '$32.00',
-    quantity: 1,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-    imageAlt:
-      'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-  },
-  // More products...
 ]
 
 const open = $ref(true)
@@ -49,6 +43,56 @@ const open = $ref(true)
       <div class="mt-8">
         <div class="flow-root">
           <ul role="list" class="divide-y divide-gray-200 -my-6">
+            <li class="flex py-6">
+              <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
+                <div i-streamline-money-currency-bitcoin-crypto-circle-payment-blokchain-finance-bitcoin-currency-money class="h-full object-cover object-center  w-full" />
+              </div>
+
+              <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
+                <h3>
+                  Create New RWA Fee
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                  Grant 100 $BST allowance
+                </p>
+              </div>
+              <div flex flex-col justify-between items-end>
+                <BsFormSelect id="payBy" v-model="payBy" :list="payTokenList" />
+                <div class="flex flex-col text-gray-500 items-end">
+                  <div>
+                    0 $BST
+                  </div>
+                  <div>
+                    46 Gwei
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="flex py-6">
+              <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
+                <div i-simple-icons-ipfs class="h-full object-cover object-center  w-full" />
+              </div>
+
+              <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
+                <h3>
+                  Pack and Store metadata
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                  Pack metadata and store onto Decentralized storage platform
+                </p>
+              </div>
+              <div flex flex-col justify-between items-end>
+                <BsFormSelect id="storeBy" v-model="storeBy" :list="storeServiceList" />
+                <div class="flex flex-col text-gray-500 items-end">
+                  <div>
+                    0 $BST
+                  </div>
+                  <div>
+                    0 Gwei
+                  </div>
+                </div>
+              </div>
+            </li>
             <li v-for="product in products" :key="product.id" class="flex py-6">
               <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 w-24 overflow-hidden">
                 <img :src="product.imageSrc" :alt="product.imageAlt" class="h-full object-cover object-center w-full">
