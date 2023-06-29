@@ -38,7 +38,7 @@ const maxSupply = $ref(10000)
             <label for="name" class="font-medium   leading-6 block">NFT Name</label>
             <div class="mt-2">
               <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                <input id="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1  py-1.5 pl-1 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name">
+                <input id="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1  py-1.5 pl-1 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name">
               </div>
             </div>
           </div>
@@ -68,14 +68,14 @@ const maxSupply = $ref(10000)
           <div class="col-span-full">
             <label for="tags" class="font-medium   leading-6 block">Tags</label>
             <div mt-2>
-              <input id="tags" v-model="tags" type="text" name="tags" autocomplete="tags" class="rounded-md flex bg-white/5 ring-inset w-full ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500" placeholder="Seperated by comma">
+              <input id="tags" v-model="tags" type="text" name="tags" autocomplete="tags" class="rounded-md flex bg-white/5 ring-inset w-full ring-1 ring-white/10 placeholder:text-slate-600 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500" placeholder="Seperated by comma">
             </div>
           </div>
 
           <div class="col-span-full">
             <label for="basicPrice" class="font-medium   leading-6 block">Invest share basic price</label>
             <div class="rounded-md flex shadow-sm mt-2">
-              <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset  w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-gray-400 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500 ">
+              <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset  w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500 ">
               <span class="border rounded-r-md border-l-0 border-gray-300 px-3 text-gray-500 inline-flex items-center ">$BST</span>
             </div>
           </div>
@@ -83,7 +83,7 @@ const maxSupply = $ref(10000)
           <div class="col-span-full">
             <label for="maxSupply" class="font-medium   leading-6 block">Invest share max supply</label>
             <div class="rounded-md flex shadow-sm mt-2">
-              <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset mt-2  w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-400 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700 " placeholder="">
+              <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset mt-2  w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700 " placeholder="">
             </div>
           </div>
         </div>
@@ -99,7 +99,7 @@ const maxSupply = $ref(10000)
           </span>
         </div>
         <div mt-5 text-right text-gray-5 leading-5>
-          10% of the sales revenue will be shared with these share investors according to the corresponding proportion
+          10% of the sales revenue will be shared with these <br> share investors according to the corresponding proportion
         </div>
       </div>
     </div>

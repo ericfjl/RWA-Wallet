@@ -22,7 +22,7 @@ const secondaryNavigation = [
       </li>
     </ul>
     <div flex-1 space-x-2 flex justify="end" pr-8>
-      <router-link v-if="path !== '/options/book/new'" to="/options/book/new" class="rounded-md font-semibold bg-indigo-500 shadow-sm text-sm text-white py-2 px-3 inline-flex items-center hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+      <router-link v-if="path !== '/options/book/new'" to="/options/book/new" class="rounded-md font-semibold bg-indigo-600 shadow-sm text-sm text-white py-2 px-3 inline-flex items-center hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
         New Book
       </router-link>
     </div>

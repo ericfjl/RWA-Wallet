@@ -39,7 +39,7 @@ const addNewOption = () => {
   <Listbox v-model="value" as="div">
     <div class="relative">
       <div flex items-center>
-        <ListboxButton class="rounded-md cursor-default shadow-sm ring-inset text-left   py-1.5 pr-10 pl-3 ring-1 ring-gray-300 relative sm:text-sm sm:leading-6 focus:outline-none focus:ring-2 focus:ring-gray-700" :class="isDark ? 'text-white' : 'text-gray-900'">
+        <ListboxButton class="rounded-md cursor-pointer shadow-sm ring-inset text-left   py-1.5 pr-10 pl-3 ring-1 ring-gray-300 relative sm:text-sm sm:leading-6 focus:outline-none focus:ring-2 focus:ring-gray-700" :class="isDark ? 'text-white' : 'text-gray-900'">
           <span class="block truncate">{{ modelValue }}</span>
           <span class="flex pr-2 inset-y-0 right-0 pointer-events-none absolute items-center">
             <ChevronUpDownIcon class="h-5 text-gray-400 w-5" aria-hidden="true" />
