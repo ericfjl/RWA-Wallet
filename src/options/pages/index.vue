@@ -16,19 +16,7 @@ import {
 } from '@heroicons/vue/24/outline'
 import { ChevronRightIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 
-const navigation = [
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Deployments', href: '#', icon: ServerIcon, current: true },
-  { name: 'Activity', href: '#', icon: SignalIcon, current: false },
-  { name: 'Domains', href: '#', icon: GlobeAltIcon, current: false },
-  { name: 'Usage', href: '#', icon: ChartBarSquareIcon, current: false },
-  { name: 'Settings', href: '#', icon: Cog6ToothIcon, current: false },
-]
-const teams = [
-  { id: 1, name: 'Planetaria', href: '#', initial: 'P', current: false },
-  { id: 2, name: 'Protocol', href: '#', initial: 'P', current: false },
-  { id: 3, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-]
+
 const statuses = {
   offline: 'text-gray-500 bg-gray-100/10',
   online: 'text-green-400 bg-green-400/10',
@@ -90,13 +78,13 @@ const router = useRouter()
           <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
             <MenuItems class="bg-white rounded-md shadow-lg mt-2.5 py-2 origin-top-right right-0 ring-1 ring-gray-900/5 w-40 z-10 absolute focus:outline-none">
               <MenuItem v-slot="{ active }">
-                <a href="#" class="text-sm py-1 px-3 text-gray-900 leading-6 block" :class="[active ? 'bg-gray-50' : '']">Name</a>
+              <a href="#" class="text-sm py-1 px-3 text-gray-900 leading-6 block" :class="[active ? 'bg-gray-50' : '']">Name</a>
               </MenuItem>
               <MenuItem v-slot="{ active }">
-                <a href="#" class="text-sm py-1 px-3 text-gray-900 leading-6 block" :class="[active ? 'bg-gray-50' : '']">Date updated</a>
+              <a href="#" class="text-sm py-1 px-3 text-gray-900 leading-6 block" :class="[active ? 'bg-gray-50' : '']">Date updated</a>
               </MenuItem>
               <MenuItem v-slot="{ active }">
-                <a href="#" class="text-sm py-1 px-3 text-gray-900 leading-6 block" :class="[active ? 'bg-gray-50' : '']">Environment</a>
+              <a href="#" class="text-sm py-1 px-3 text-gray-900 leading-6 block" :class="[active ? 'bg-gray-50' : '']">Environment</a>
               </MenuItem>
             </MenuItems>
           </transition>
