@@ -1,5 +1,5 @@
 import { isInternalEndpoint } from 'webext-bridge'
-import { onMessage, sendMessage } from 'webext-bridge/background'
+import { onMessage } from 'webext-bridge/background'
 
 // only on dev mode
 if (import.meta.hot) {
@@ -30,15 +30,11 @@ let memoryStoreMap = {
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   memoryStoreMap.tabId = tabId
+  console.log('====> background tabs.onActivated tabId :', tabId)
 })
 
 onMessage('getTabId', () => {
   return memoryStoreMap.tabId
-})
-onMessage('actionResolve', async (msg) => {
-  const { tabId } = msg.data
-  console.log('====> tabId :', tabId)
-  await sendMessage(`actionResolve@${tabId}`, msg.data, `options@${tabId}`)
 })
 
 onMessage('storeInMemory', async (msg) => {
@@ -84,12 +80,13 @@ onMessage('internalCall', async (msg) => {
       return existPopup
     }
 
+    console.log('====> msg :', msg)
     const { action, params, opts } = msg.data
     memoryStoreMap.action = action
     memoryStoreMap.params = params
     memoryStoreMap.opts = opts
 
-    await sendMessage(`actionResolve@${opts.tabId}`, msg.data, `options@${opts.tabId}`)
+    // await sendMessage(`actionResolve@${opts.tabId}`, msg.data, `options@${opts.tabId}`)
 
     const { top, left, width, height } = opts
     const newWindow = await browser.windows.create({

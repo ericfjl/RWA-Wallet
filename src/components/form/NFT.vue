@@ -30,6 +30,7 @@ const categoryList = $ref([
   'Cryptocurrency',
   'Art',
 ])
+const tabId = $(inject('tabId'))
 const tags = $ref('')
 const basicPrice = $ref(100) // $BST
 const maxSupply = $ref(10000)
@@ -61,7 +62,7 @@ const doSubmit = async () => {
   console.log('====> aaaa :')
   try {
     const params = {}
-    const opts = {}
+    const opts = { tabId }
     const rz = await internalCall('createRwaNft', params, opts)
     // opt1: JSON-RPC window.ethereum
     // const [address] = await window.ethereum.request({

@@ -8,6 +8,12 @@ export const createBgAction = (sendMessage: Function, onMessage: Function) => {
     const { screenX, screenY, outerWidth } = window
     top = Math.max(screenY, 0)
     left = Math.max(screenX + (outerWidth - width), 0)
+    const returnedPromise = new Promise((resolve, reject) => {
+      const { tabId } = opts
+      // console.log('====> returnedPromise tabId :', tabId)
+      onMessage(`actionResolve@${tabId}`, resolve)
+      onMessage(`actionReject@${tabId}`, reject)
+    })
 
     try {
       opts = {
@@ -23,13 +29,6 @@ export const createBgAction = (sendMessage: Function, onMessage: Function) => {
       console.log('====> e :', e)
     }
 
-    return new Promise((resolve, reject) => {
-      const { tabId } = opts
-      console.log('====> tabId :', tabId)
-      // onMessage(`actionResolve`, async (msg) => {
-      //   console.log('====> actionResolve :', msg)
-      // })
-      onMessage('actionReject', reject)
-    })
+    return returnedPromise
   }
 }

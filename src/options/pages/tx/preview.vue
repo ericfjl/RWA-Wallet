@@ -9,8 +9,6 @@ const storeServiceList = ['NFT.Storage', 'Arweave']
 let params = $ref({})
 let opts = $ref({})
 
-const tabId = $(inject('tabId'))
-console.log('====> tabId :', tabId)
 onMounted(async () => {
   const rz = await sendMessage('getStoreInMemory', { keys: ['action', 'params', 'opts'] }, 'background')
   params = rz.params
@@ -22,16 +20,16 @@ const doSubmit = async () => {
   // upload to decentralized storage
   // create token
   try {
-    await sendMessage('actionResolve', { tabId: opts.tabId }, 'background')
-    // self.close()
+    await sendMessage(`actionResolve@${opts.tabId}`, { tabId: opts.tabId }, `content-script@${opts.tabId}`)
+    self.close()
   }
   catch (e) {
-    console.log('====> e :', e, tabId)
+    console.log('====> e :', e)
   }
 }
 
 const doCancel = async () => {
-  await sendMessage('actionReject', { tabId }, 'background')
+  await sendMessage(`actionReject@${opts.tabId}`, { tabId: opts.tabId }, `content-script@${opts.tabId}`)
   self.close()
 }
 </script>

@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+ 
 import { onMessage, sendMessage } from 'webext-bridge/content-script'
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -21,8 +21,4 @@ import { patchPortalRoot, setupApp } from '~/logic/common-setup'
   const app = createApp(App)
   setupApp(app, { routeMode: 'memory', sendMessage, onMessage })
   app.mount(root)
-
-  onMessage('updateTabId', ({ data }) => {
-    console.log('====> data :', data)
-  })
 })()
