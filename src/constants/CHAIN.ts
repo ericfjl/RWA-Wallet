@@ -1,12 +1,13 @@
 import chainMap from './chainMap.json'
 import contractAddressMap from './contractAddressMap.json'
 
-const allABIJsons = import.meta.globEager('./abis/*.json')
+const allABIJsons = import.meta.glob('./abis/*.json', {eager: true})
 const allABIs = {}
-useMap(allABIJsons, (val, key) => {
+for (let key in allABIJsons) {
+  const val = allABIJsons[key]
   key = key.replace('./abis/', '').replace('.json', '')
   allABIs[key] = val.default
-})
+}
 
 export const CONTRACT_ADDRESS_MAP = contractAddressMap
 
@@ -32,7 +33,7 @@ const BuidlerProtocol = [
   ...allABIs.Buidler,
   ...allABIs.App,
   ...allABIs.Market,
-  ...allABIs.DataDAO,
+  // ...allABIs.DataDAO,
 ]
 
 export const CHAIN_CONTRACT_ABI_MAP = {

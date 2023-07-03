@@ -10,9 +10,14 @@ export const createBgAction = (sendMessage: Function, onMessage: Function) => {
     left = Math.max(screenX + (outerWidth - width), 0)
     const returnedPromise = new Promise((resolve, reject) => {
       const { tabId } = opts
-      // console.log('====> returnedPromise tabId :', tabId)
-      onMessage(`actionResolve@${tabId}`, resolve)
-      onMessage(`actionReject@${tabId}`, reject)
+      console.log('====> returnedPromise tabId :', tabId)
+      onMessage(`actionResolve@${tabId}`, msg => {
+        resolve(msg.data)
+      })
+      onMessage(`actionReject@${tabId}`, msg => {
+        console.log(`actionReject@${tabId}`, msg)
+        reject(msg.data.err)
+      })
     })
 
     try {

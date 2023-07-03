@@ -1,23 +1,6 @@
 <script setup lang="ts">
 import { sendMessage } from "webext-bridge/options";
-import { createWalletClient, http } from "viem";
-import { polygonMumbai } from "viem/chains";
-
-import { mnemonicToAccount } from "viem/accounts";
-
-const contractAddressMap = {
-  polygonMumbai: {
-    BSTEntropy: "0x996Db8762113e8a9f3e7430Ad9bbA911e17CAf62",
-    BSTSwap: "0xc0aC23757Ae17cf93419a46b1bEc5C65a5ce0290",
-    BP: "0x257E0a363E57bFC62d7130907452AAe91876E451",
-  },
-};
-const account = mnemonicToAccount("legal winner thank year wave sausage worth useful legal winner thank yellow");
-const walletClient = createWalletClient({
-  account,
-  chain: polygonMumbai,
-  transport: http(),
-});
+import { getAccount, getContractInfo, parseEther, writeContract } from "~/logic/web3";
 
 const payBy = $ref("$BSTEntropy");
 const payTokenList = ["$BSTSwap", "$BSTEntropy"];
@@ -26,37 +9,42 @@ const storeBy = $ref("NFT.Storage");
 const storeServiceList = ["NFT.Storage", "Arweave"];
 let params = $ref({});
 let opts = $ref({});
+let account = $ref("");
 
 onMounted(async () => {
   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "action", "params", "opts"] }, "background");
   params = rz.params;
   opts = rz.opts;
+  account = getAccount(rz.mnemonicStr);
 });
 
-const doApproveAllance = async () => {
-  const { request } = await publicClient.simulateContract({
-    account,
-    address: contractAddressMap["BSTEntropy"],
-    abi: wagmiAbi,
-    functionName: "approve",
-  });
-  await walletClient.writeContract(request);
-};
 const doSubmit = async () => {
-  // call allowance
-  await doApproveAllance();
-  // upload to decentralized storage
-  // create token
   try {
+    // call allowance
+    const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
+    const bstPayAmount = parseEther("100");
+    await writeContract(
+      {
+        account,
+        contractName: "BSTEntropy",
+        methodName: "approve",
+      },
+      spenderAddress,
+      bstPayAmount
+    );
+    // upload to decentralized storage
+    // create token
     await sendMessage(`actionResolve@${opts.tabId}`, { tabId: opts.tabId }, `content-script@${opts.tabId}`);
+  } catch (err) {
+    await sendMessage(`actionReject@${opts.tabId}`, { err }, `content-script@${opts.tabId}`);
+  } finally {
     self.close();
-  } catch (e) {
-    console.log("====> e :", e);
   }
 };
 
 const doCancel = async () => {
-  await sendMessage(`actionReject@${opts.tabId}`, { tabId: opts.tabId }, `content-script@${opts.tabId}`);
+  console.log("====> doCancel :", opts);
+  await sendMessage(`actionReject@${opts.tabId}`, { err: { message: "user deny" } }, `content-script@${opts.tabId}`);
   self.close();
 };
 </script>
@@ -65,7 +53,7 @@ const doCancel = async () => {
   <div class="bg-white flex flex-col h-screen min-w-sm shadow-xl w-full overflow-y-scroll">
     <div class="flex-1 py-6 px-4 overflow-y-auto sm:px-6">
       <div class="flex items-start justify-between">
-        <h2 class="font-medium text-lg text-gray-900">RWA Action Preview {{ tabId }}</h2>
+        <h2 class="font-medium text-lg text-gray-900">RWA Action Preview</h2>
       </div>
 
       <div class="mt-8">

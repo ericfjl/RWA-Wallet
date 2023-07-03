@@ -49,6 +49,7 @@ export const sharedConfig: UserConfig = {
       imports: [
         'vue',
         'vue-router',
+        '@vueuse/core',
         {
           'webextension-polyfill': [
             ['*', 'browser'],
