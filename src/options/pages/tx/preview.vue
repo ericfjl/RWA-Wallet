@@ -8,21 +8,22 @@ const storeBy = $ref('NFT.Storage')
 const storeServiceList = ['NFT.Storage', 'Arweave']
 let params = $ref({})
 let opts = $ref({})
-let tabId = $ref('')
+
+const tabId = $(inject('tabId'))
+console.log('====> tabId :', tabId)
 onMounted(async () => {
-  const rz = await sendMessage('getStoreInMemory', { keys: ['action', 'params', 'opts', 'tabId'] }, 'background')
+  const rz = await sendMessage('getStoreInMemory', { keys: ['action', 'params', 'opts'] }, 'background')
   params = rz.params
   opts = rz.opts
-  tabId = rz.tabId
-  console.log('====> tabId :', tabId)
+  console.log('====> opts :', opts)
 })
 const doSubmit = async () => {
   // call allowance
   // upload to decentralized storage
   // create token
   try {
-    await sendMessage('actionResolve', { tabId }, `content-script@${tabId}`)
-    self.close()
+    await sendMessage('actionResolve', { tabId: opts.tabId }, 'background')
+    // self.close()
   }
   catch (e) {
     console.log('====> e :', e, tabId)
@@ -30,7 +31,7 @@ const doSubmit = async () => {
 }
 
 const doCancel = async () => {
-  await sendMessage('actionReject', { tabId }, `content-script@${tabId}`)
+  await sendMessage('actionReject', { tabId }, 'background')
   self.close()
 }
 </script>
@@ -40,7 +41,7 @@ const doCancel = async () => {
     <div class="flex-1 py-6 px-4 overflow-y-auto sm:px-6">
       <div class="flex items-start justify-between">
         <h2 class="font-medium text-lg text-gray-900">
-          RWA Action Preview
+          RWA Action Preview {{ tabId }}
         </h2>
       </div>
 

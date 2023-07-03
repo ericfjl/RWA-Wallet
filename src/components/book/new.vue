@@ -30,6 +30,9 @@ const basicPrice = $ref(100) // $BST
 const maxSupply = $ref(10000)
 const error = $ref('')
 
+const tabId = $(inject('tabId'))
+console.log('====> tabId :', tabId)
+
 const internalCall = createBgAction(sendMessage, onMessage)
 const doSubmit = async () => {
   isLoading = true
@@ -45,7 +48,9 @@ const doSubmit = async () => {
     maxSupply,
     inviteCommission,
   }
-  const opts = {}
+  const opts = {
+    tabId,
+  }
   try {
     const rz = await internalCall('createRwaNft', params, opts)
     console.log('====> rz :', rz)

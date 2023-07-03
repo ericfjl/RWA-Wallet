@@ -9,15 +9,19 @@ if (import.meta.hot) {
   import('./contentScriptHMR')
 }
 
-browser.runtime.onInstalled.addListener((): void => {
-  // eslint-disable-next-line no-console
-  console.log('Extension installed')
+browser.runtime.onInstalled.addListener(({ reason }): void => {
+  if (reason === chrome.runtime.OnInstalledReason.INSTALL)
+    // while install trigger open the options page to route to onboarding page
+    browser.runtime.openOptionsPage()
+    // chrome.tabs.create({
+    //   url: 'onboarding.html'
+    // })
+    // chrome.runtime.setUninstallURL('https://example.com/extension-survey');
 })
 
 let memoryStoreMap = {
   password: '',
   mnemonicStr: 'truth similar disagree slot lecture quiz hundred season energy fix alarm spring',
-  popupId: '',
   tabId: '',
   action: '',
   params: '',
@@ -25,7 +29,16 @@ let memoryStoreMap = {
 }
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  await sendMessage('updateTabId', { tabId }, `content-script@${tabId}`)
+  memoryStoreMap.tabId = tabId
+})
+
+onMessage('getTabId', () => {
+  return memoryStoreMap.tabId
+})
+onMessage('actionResolve', async (msg) => {
+  const { tabId } = msg.data
+  console.log('====> tabId :', tabId)
+  await sendMessage(`actionResolve@${tabId}`, msg.data, `options@${tabId}`)
 })
 
 onMessage('storeInMemory', async (msg) => {
@@ -76,8 +89,7 @@ onMessage('internalCall', async (msg) => {
     memoryStoreMap.params = params
     memoryStoreMap.opts = opts
 
-    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true })
-    memoryStoreMap.tabId = tab.id
+    await sendMessage(`actionResolve@${opts.tabId}`, msg.data, `options@${opts.tabId}`)
 
     const { top, left, width, height } = opts
     const newWindow = await browser.windows.create({
@@ -89,8 +101,6 @@ onMessage('internalCall', async (msg) => {
       top,
     })
 
-    memoryStoreMap.popupId = newWindow.id
-    console.log('====> tab.id, newWindow.id :', tab.id, newWindow.id)
     return newWindow
   }
   catch (e) {

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { onMessage } from 'webext-bridge/content-script'
+import { onMessage, sendMessage } from 'webext-bridge/content-script'
 import { createApp } from 'vue'
 import App from './App.vue'
 import { patchPortalRoot, setupApp } from '~/logic/common-setup'
@@ -19,11 +19,10 @@ import { patchPortalRoot, setupApp } from '~/logic/common-setup'
   shadowDOM.appendChild(root)
   document.body.appendChild(container)
   const app = createApp(App)
-  setupApp(app, { routeMode: 'memory' })
+  setupApp(app, { routeMode: 'memory', sendMessage, onMessage })
   app.mount(root)
 
   onMessage('updateTabId', ({ data }) => {
-    app.config.globalProperties.$app.tabId = data.tabId
-    console.log('====> data :', app.config.globalProperties.$app)
+    console.log('====> data :', data)
   })
 })()

@@ -1,4 +1,5 @@
 import type { App } from 'vue'
+import { ref } from 'vue'
 import { createMemoryHistory, createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
@@ -7,14 +8,9 @@ import { encryptedMnemonic } from '~/logic/storage'
 
 export function setupApp(app: App, opts = { }) {
   const { routeMode = 'webHash', sendMessage } = opts
-  // Inject a globally available `$app` object in template
-  app.config.globalProperties.$app = {
-    context: '',
-    tabId: '',
-  }
 
-  // Provide access to `app` in script setup with `const app = inject('app')`
-  app.provide('app', app.config.globalProperties.$app)
+  const tabId = ref('')
+  app.provide('tabId', tabId)
 
   // route
   const routeModeMap = {

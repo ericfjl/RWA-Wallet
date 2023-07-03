@@ -24,7 +24,11 @@ export const createBgAction = (sendMessage: Function, onMessage: Function) => {
     }
 
     return new Promise((resolve, reject) => {
-      onMessage('actionResolve', resolve)
+      const { tabId } = opts
+      console.log('====> tabId :', tabId)
+      // onMessage(`actionResolve`, async (msg) => {
+      //   console.log('====> actionResolve :', msg)
+      // })
       onMessage('actionReject', reject)
     })
   }
