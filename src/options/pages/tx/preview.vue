@@ -10,7 +10,7 @@ const storeServiceList = ["NFT.Storage", "Arweave"];
 let params = $ref({});
 let opts = $ref({});
 let account = $ref("");
-
+let isLoading = $ref(false);
 onMounted(async () => {
   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "action", "params", "opts"] }, "background");
   params = rz.params;
@@ -19,26 +19,30 @@ onMounted(async () => {
 });
 
 const doSubmit = async () => {
+  isLoading = true;
   try {
     // call allowance
     const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
     const bstPayAmount = parseEther("100");
-    await writeContract(
+    const rz1 = await writeContract(
       {
         account,
         contractName: "BSTEntropy",
-        methodName: "approve",
+        functionName: "approve",
       },
       spenderAddress,
       bstPayAmount
     );
+    console.log("====> rz1 :", rz1);
     // upload to decentralized storage
     // create token
     await sendMessage(`actionResolve@${opts.tabId}`, { tabId: opts.tabId }, `content-script@${opts.tabId}`);
   } catch (err) {
+    console.log("====> err :", err);
     await sendMessage(`actionReject@${opts.tabId}`, { err }, `content-script@${opts.tabId}`);
   } finally {
-    self.close();
+    // self.close();
+    isLoading = false;
   }
 };
 
@@ -129,12 +133,7 @@ const doCancel = async () => {
         </div>
       </div>
       <div class="mt-6">
-        <button
-          class="border border-transparent rounded-md flex font-medium bg-indigo-600 shadow-sm text-base text-white w-full py-3 px-6 items-center justify-center hover:bg-indigo-700"
-          @click="doSubmit"
-        >
-          Action Confirm
-        </button>
+        <BsBtnIndigo :is-loading="isLoading" @click="doSubmit" w-full> Action Confirm </BsBtnIndigo>
       </div>
       <div class="flex mt-6 text-center text-sm text-gray-500 justify-center">
         <p>
