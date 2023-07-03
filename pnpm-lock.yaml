@@ -11,9 +11,6 @@ dependencies:
   '@heroicons/vue':
     specifier: ^2.0.18
     version: 2.0.18(vue@3.2.47)
-  '@holoflows/kit':
-    specifier: ^0.9.0
-    version: 0.9.0(webextension-polyfill@0.10.0)
   '@metamask/browser-passworder':
     specifier: ^4.1.0
     version: 4.1.0
@@ -994,18 +991,6 @@ packages:
       vue: 3.2.47
     dev: false
 
-  /@holoflows/kit@0.9.0(webextension-polyfill@0.10.0):
-    resolution: {integrity: sha512-OB6bXgSl2KyG8SJWlSmBce2jKqH5t5EnPfvxK/sEogulY4FWeiGhNnojgyyYvdqNr5OTZqhmX7HGdRzuWO65Ig==}
-    peerDependencies:
-      webextension-polyfill: '*'
-    dependencies:
-      '@servie/events': 3.0.0
-      event-iterator: 2.0.0
-      lodash-es: 4.17.21
-      tslib: 2.5.0
-      webextension-polyfill: 0.10.0
-    dev: false
-
   /@humanwhocodes/config-array@0.11.8:
     resolution: {integrity: sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==}
     engines: {node: '>=10.10.0'}
@@ -1372,10 +1357,6 @@ packages:
     dependencies:
       '@noble/hashes': 1.3.0
       '@scure/base': 1.1.1
-    dev: false
-
-  /@servie/events@3.0.0:
-    resolution: {integrity: sha512-Zd79bWhTuG8NvPgSiOcivorJIDg+goMw76TIqYTIR5ua5HOEkS29fmIh2VVSeDeabNF6z8ceTwzB0pSh/BhXyw==}
     dev: false
 
   /@sindresorhus/is@5.3.0:
@@ -4767,10 +4748,6 @@ packages:
       - utf-8-validate
     dev: false
 
-  /event-iterator@2.0.0:
-    resolution: {integrity: sha512-KGft0ldl31BZVV//jj+IAIGCxkvvUkkON+ScH6zfoX+l+omX6001ggyRSpI0Io2Hlro0ThXotswCtfzS8UkIiQ==}
-    dev: false
-
   /event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
@@ -6309,10 +6286,6 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
-
-  /lodash-es@4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
 
   /lodash.defaults@4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
@@ -9195,6 +9168,7 @@ packages:
 
   /webextension-polyfill@0.10.0:
     resolution: {integrity: sha512-c5s35LgVa5tFaHhrZDnr3FpQpjj1BB+RXhLTYUxGqBVN460HkbM8TBtEqdXWbpTKfzwCcjAZVF7zXCYSKtcp9g==}
+    dev: true
 
   /webextension-polyfill@0.9.0:
     resolution: {integrity: sha512-LTtHb0yR49xa9irkstDxba4GATDAcDw3ncnFH9RImoFwDlW47U95ME5sn5IiQX2ghfaECaf6xyXM8yvClIBkkw==}

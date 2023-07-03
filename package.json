@@ -28,7 +28,7 @@
     "lint": "eslint --cache .",
     "test": "vitest test",
     "test:e2e": "playwright test",
-    "postinstall": "simple-git-hooks",
+    "postinstall2": "simple-git-hooks",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
@@ -79,10 +79,9 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.18",
-    "@holoflows/kit": "^0.9.0",
     "@metamask/browser-passworder": "^4.1.0",
-    "@rwa/web3-storage": "link:../RWA-JS-SDK/packages/web3-storage",
     "@rwa/core": "link:../RWA-JS-SDK/packages/core",
+    "@rwa/web3-storage": "link:../RWA-JS-SDK/packages/web3-storage",
     "@wagmi/core": "^1.0.6",
     "buffer": "^6.0.3",
     "events": "^3.3.0",

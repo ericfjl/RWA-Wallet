@@ -31,7 +31,6 @@ const maxSupply = $ref(10000)
 const error = $ref('')
 
 const tabId = $(inject('tabId'))
-console.log('====> tabId :', tabId)
 
 const internalCall = createBgAction(sendMessage, onMessage)
 const doSubmit = async () => {
