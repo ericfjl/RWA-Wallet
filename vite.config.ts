@@ -59,6 +59,7 @@ export const sharedConfig: UserConfig = {
             'uniq',
             'random',
             'find',
+            'pick',
             'remove',
             'some',
             'trim',

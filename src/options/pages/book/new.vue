@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main>
@@ -20,9 +18,7 @@
               <span class="font-semibold text-white">New</span>
             </h1>
           </div>
-          <p class="mt-2 text-xs text-gray-400 leading-6">
-            Create new book NFT via our RWA Protocol
-          </p>
+          <p class="mt-2 text-xs text-gray-400 leading-6">Create new book NFT via our RWA Protocol</p>
         </div>
       </div>
     </header>

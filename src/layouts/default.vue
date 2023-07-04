@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { sendMessage } from "webext-bridge/options";
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
 import IcBaselineMenuBook from "~icons/ic/baseline-menu-book";
@@ -26,44 +27,25 @@ const teams = [
 ];
 const sidebarOpen = ref(false);
 
-const doLogout = async () => {};
+const router = useRouter();
+
+const doLogout = async () => {
+  await sendMessage("storeInMemory", { mnemonicStr: "" }, "background");
+  router.push("/options/onboarding/");
+};
 </script>
 
 <template>
   <div>
     <TransitionRoot as="template" :show="sidebarOpen">
       <Dialog as="div" class="z-50 relative xl:hidden" @close="sidebarOpen = false">
-        <TransitionChild
-          as="template"
-          enter="transition-opacity ease-linear duration-300"
-          enter-from="opacity-0"
-          enter-to="opacity-100"
-          leave="transition-opacity ease-linear duration-300"
-          leave-from="opacity-100"
-          leave-to="opacity-0"
-        >
+        <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
           <div class="bg-gray-900/80 inset-0 fixed" />
         </TransitionChild>
         <div class="flex inset-0 fixed">
-          <TransitionChild
-            as="template"
-            enter="transition ease-in-out duration-300 transform"
-            enter-from="-translate-x-full"
-            enter-to="translate-x-0"
-            leave="transition ease-in-out duration-300 transform"
-            leave-from="translate-x-0"
-            leave-to="-translate-x-full"
-          >
+          <TransitionChild as="template" enter="transition ease-in-out duration-300 transform" enter-from="-translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0" leave-to="-translate-x-full">
             <DialogPanel class="flex max-w-xs flex-1 mr-16 w-full relative">
-              <TransitionChild
-                as="template"
-                enter="ease-in-out duration-300"
-                enter-from="opacity-0"
-                enter-to="opacity-100"
-                leave="ease-in-out duration-300"
-                leave-from="opacity-100"
-                leave-to="opacity-0"
-              >
+              <TransitionChild as="template" enter="ease-in-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in-out duration-300" leave-from="opacity-100" leave-to="opacity-0">
                 <div class="flex left-full pt-5 top-0 w-16 absolute justify-center">
                   <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
                     <span class="sr-only">Close sidebar</span>
@@ -81,11 +63,7 @@ const doLogout = async () => {};
                     <li>
                       <ul role="list" class="space-y-1 -mx-2">
                         <li v-for="item in navigation" :key="item.name">
-                          <a
-                            :href="item.href"
-                            class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group"
-                            :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']"
-                          >
+                          <a :href="item.href" class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']">
                             <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                             {{ item.name }}
                           </a>
@@ -96,15 +74,8 @@ const doLogout = async () => {};
                       <div class="font-semibold text-xs text-gray-400 leading-6">Your teams</div>
                       <ul role="list" class="space-y-1 -mx-2 mt-2">
                         <li v-for="team in teams" :key="team.name">
-                          <a
-                            :href="team.href"
-                            class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group"
-                            :class="[team.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']"
-                          >
-                            <span
-                              class="border rounded-lg flex font-medium bg-gray-800 border-gray-700 h-6 text-[0.625rem] text-gray-400 w-6 items-center justify-center shrink-0 group-hover:text-white"
-                              >{{ team.initial }}</span
-                            >
+                          <a :href="team.href" class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group" :class="[team.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']">
+                            <span class="border rounded-lg flex font-medium bg-gray-800 border-gray-700 h-6 text-[0.625rem] text-gray-400 w-6 items-center justify-center shrink-0 group-hover:text-white">{{ team.initial }}</span>
                             <span class="truncate">{{ team.name }}</span>
                           </a>
                         </li>
@@ -112,11 +83,7 @@ const doLogout = async () => {};
                     </li>
                     <li class="mt-auto -mx-6">
                       <a href="#" class="flex font-semibold text-sm text-white py-3 px-6 leading-6 gap-x-4 items-center hover:bg-gray-800">
-                        <img
-                          class="rounded-full bg-gray-800 h-8 w-8"
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                          alt=""
-                        />
+                        <img class="rounded-full bg-gray-800 h-8 w-8" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                         <span class="sr-only">Your profile</span>
                         <span aria-hidden="true">Tom Cook</span>
                       </a>
@@ -144,33 +111,23 @@ const doLogout = async () => {};
             <li>
               <ul role="list" class="space-y-1 -mx-2">
                 <li v-for="item in navigation" :key="item.name">
-                  <router-link
-                    :to="item.href"
-                    class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group"
-                    :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']"
-                  >
+                  <router-link :to="item.href" class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']">
                     <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                     {{ item.name }}
                   </router-link>
                 </li>
               </ul>
             </li>
-            <li class="mt-auto">
-              <button
-                @click="doLogout"
-                class="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
-              >
+            <li class="-mx-6 mt-auto">
+              <a @click="doLogout" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800 cursor-pointer">
                 <div i-lucide-log-out class="h-6 w-6 shrink-0" aria-hidden="true" />
-                Logout
-              </button>
+                <span class="sr-only">Logout</span>
+                <span aria-hidden="true">Logout</span>
+              </a>
             </li>
             <!-- <li class="-mx-6 mt-auto">
               <a href="#" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800">
-                <img
-                  class="h-8 w-8 rounded-full bg-gray-800"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                />
+                <img class="h-8 w-8 rounded-full bg-gray-800" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                 <span class="sr-only">Your profile</span>
                 <span aria-hidden="true">Tom Cook</span>
               </a>

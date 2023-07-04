@@ -8,7 +8,7 @@ const CHAIN_ID = '0x13881'
 export const getContractInfo = (contractName, chain = CHAIN_ID) => {
   const address = CONTRACT_ADDRESS_MAP[contractName][chain]
   const abi = CHAIN_CONTRACT_ABI_MAP[contractName]
-  console.log('====> address, abi :', address, abi)
+  // console.log('====> address, abi :', address, abi)
   return {
     address,
     abi,
@@ -18,7 +18,7 @@ export const getContractInfo = (contractName, chain = CHAIN_ID) => {
 export const getPublicClient = () => {
   return createPublicClient({
     chain: polygonMumbai,
-    transport: http(),
+    transport: http('https://polygon-mumbai.g.alchemy.com/v2/LwtsIVO7HQgliuatrjYmnqs0gVp5uxrl'),
   })
 }
 
@@ -30,7 +30,7 @@ export const getWalletClient = (account) => {
   })
 }
 
-export const simulateContract = async ({ account, contractName, functionName, value = null }, ...args) => {
+export const simulateContract = async ({ account, contractName, functionName, value = '' }, ...args) => {
   const publicClient = getPublicClient()
   const { address, abi } = getContractInfo(contractName)
   const params = {
@@ -46,7 +46,21 @@ export const simulateContract = async ({ account, contractName, functionName, va
   return publicClient.simulateContract(params)
 }
 
-export const writeContract = async ({ account, contractName, functionName, value = null }, ...args) => {
+export const readContract = async ({ account, contractName, functionName }, ...args) => {
+  const publicClient = getPublicClient()
+  const { address, abi } = getContractInfo(contractName)
+  const params = {
+    address,
+    abi,
+    functionName,
+    account,
+    args,
+  }
+
+  return publicClient.readContract(params)
+}
+
+export const writeContract = async ({ account, contractName, functionName, value = '' }, ...args) => {
   const walletClient = getWalletClient(account)
   const publicClient = getPublicClient()
 

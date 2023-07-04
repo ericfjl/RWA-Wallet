@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import { useNFTStorage } from "@rwa/web3-storage";
 import { sendMessage } from "webext-bridge/options";
-import { getAccount, getContractInfo, parseEther, writeContract } from "~/logic/web3";
+import { getAccount, getContractInfo, parseEther, readContract, writeContract } from "~/logic/web3";
 
 const payBy = $ref("$BSTEntropy");
 const payTokenList = ["$BSTSwap", "$BSTEntropy"];
+const payTokenAddress = $computed(() => {
+  const { address } = getContractInfo("BSTSwap");
+  const { address: address2 } = getContractInfo("BSTEntropy");
+  if (payBy === "$BSTEntropy") return address2;
+  return address;
+});
 
 const storeBy = $ref("NFT.Storage");
 const storeServiceList = ["NFT.Storage", "Arweave"];
@@ -11,20 +18,34 @@ let params = $ref({});
 let opts = $ref({});
 let account = $ref("");
 let isLoading = $ref(false);
+const route = useRoute();
+const tabId = $computed(() => route.query.tabId);
+let context = "";
+
 onMounted(async () => {
-  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "action", "params", "opts"] }, "background");
-  params = rz.params;
-  opts = rz.opts;
+  console.log("====> route :", route, route.query, location);
+  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
+  params = rz.previewData[tabId].params;
+  opts = rz.previewData[tabId].opts;
+  context = opts.context;
   account = getAccount(rz.mnemonicStr);
 });
+
+const { storeJson } = useNFTStorage({
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzM4MTgzMDU2MywibmFtZSI6Ik5UQiJ9.Yj9ie65LXh6t6QECtGzKViX-AeTiAHnVoYybY3qfqNk",
+});
+
+let status = $ref("");
 
 const doSubmit = async () => {
   isLoading = true;
   try {
     // call allowance
+    status = "approve allowance";
     const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
     const bstPayAmount = parseEther("100");
-    const rz1 = await writeContract(
+    const rzApprove = await writeContract(
       {
         account,
         contractName: "BSTEntropy",
@@ -33,22 +54,74 @@ const doSubmit = async () => {
       spenderAddress,
       bstPayAmount
     );
-    console.log("====> rz1 :", rz1);
+    console.log("====> rzApprove :", rzApprove);
+
     // upload to decentralized storage
+    status = "upload to decentralized storage";
+    const properties = pick(params, ["category", "tags", "tokenType", "distributor", "basicPrice", "maxSupply", "inviteCommission"]);
+    const external_url = ""; // This is the URL that will appear below the asset's image on OpenSea and will allow users to leave OpenSea and view the item on your site.
+    const metadata = {
+      ...pick(params, ["name", "description", "image"]),
+      properties,
+      external_url,
+    };
+    const cid = await storeJson(metadata);
+    console.log("====> cid :", cid);
+
+    const tokenList = await readContract(
+      {
+        account,
+        contractName: "BuidlerProtocol",
+        functionName: "getTokenList",
+      },
+      0,
+      1000
+    );
+    const tokenId = tokenList[0].length;
     // create token
-    await sendMessage(`actionResolve@${opts.tabId}`, { tabId: opts.tabId }, `content-script@${opts.tabId}`);
+    status = "create new NFT on BuidlerProtocol";
+    const rzToken = await writeContract(
+      {
+        account,
+        contractName: "BuidlerProtocol",
+        functionName: "addToken",
+      },
+      params.tokenType,
+      parseEther(params.basicPrice.toString()),
+      params.inviteCommission * 100,
+      params.maxSupply,
+      cid,
+      payTokenAddress
+    );
+    console.log("====> rzApprove2, cid, rzToken, tokenId :", rzApprove, cid, rzToken, tokenId);
+    // send back the result
+    await sendMessage(`actionResolve@${tabId}`, { tokenId }, `content-script@${tabId}`);
   } catch (err) {
     console.log("====> err :", err);
-    await sendMessage(`actionReject@${opts.tabId}`, { err }, `content-script@${opts.tabId}`);
-  } finally {
-    // self.close();
-    isLoading = false;
+    await sendMessage(`actionReject@${tabId}`, { err }, `content-script@${tabId}`);
   }
+
+  isLoading = false;
+  self.close();
+};
+
+const doSubmit2 = async () => {
+  isLoading = true;
+
+  status = "approve allowance";
+  await new Promise((r) => setTimeout(r, 2000));
+  status = "upload to decentralized storage";
+  await new Promise((r) => setTimeout(r, 2000));
+  status = "create new NFT on BuidlerProtocol";
+  await new Promise((r) => setTimeout(r, 2000));
+  await sendMessage(`actionResolve@${tabId}`, { tokenId: 13 }, `${context}@${tabId}`);
+  isLoading = false;
+  self.close();
 };
 
 const doCancel = async () => {
-  console.log("====> doCancel :", opts);
-  await sendMessage(`actionReject@${opts.tabId}`, { err: { message: "user deny" } }, `content-script@${opts.tabId}`);
+  console.log("====> `${context}@${tabId}` :", `${context}@${tabId}`);
+  await sendMessage(`actionReject@${tabId}`, { err: { message: "user deny" } }, `${context}@${tabId}`);
   self.close();
 };
 </script>
@@ -65,10 +138,7 @@ const doCancel = async () => {
           <ul role="list" class="divide-y divide-gray-200 -my-6">
             <li class="flex py-6">
               <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
-                <div
-                  i-streamline-money-currency-bitcoin-crypto-circle-payment-blokchain-finance-bitcoin-currency-money
-                  class="h-full object-cover object-center w-full"
-                />
+                <div i-streamline-money-currency-bitcoin-crypto-circle-payment-blokchain-finance-bitcoin-currency-money class="h-full object-cover object-center w-full" />
               </div>
 
               <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
@@ -133,7 +203,12 @@ const doCancel = async () => {
         </div>
       </div>
       <div class="mt-6">
-        <BsBtnIndigo :is-loading="isLoading" @click="doSubmit" w-full> Action Confirm </BsBtnIndigo>
+        <div flex mb-3 text-base justify-center items-center v-if="status">
+          <div i-eos-icons-loading class="h-6 text-black w-6 mr-2" />
+
+          {{ status }}
+        </div>
+        <BsBtnIndigo :is-loading="isLoading" @click="doSubmit2" w-full> Action Confirm </BsBtnIndigo>
       </div>
       <div class="flex mt-6 text-center text-sm text-gray-500 justify-center">
         <p>

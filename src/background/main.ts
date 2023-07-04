@@ -21,12 +21,12 @@ browser.runtime.onInstalled.addListener(({ reason }): void => {
 
 let memoryStoreMap = {
   password: '',
-  // mnemonicStr: 'truth similar disagree slot lecture quiz hundred season energy fix alarm spring',
-  mnemonicStr: '',
+  mnemonicStr: 'truth similar disagree slot lecture quiz hundred season energy fix alarm spring',
+  // mnemonicStr: '',
   tabId: '',
-  action: '',
-  params: '',
-  opts: '',
+  popupId: '',
+  previewData: {},
+  openOptionToUrl: ''
 }
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
@@ -36,6 +36,11 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
 
 onMessage('getTabId', () => {
   return memoryStoreMap.tabId
+})
+
+onMessage('openOption', msg => {
+  memoryStoreMap.openOptionToUrl = msg.data.url
+  browser.runtime.openOptionsPage();
 })
 
 onMessage('storeInMemory', async (msg) => {
@@ -74,24 +79,20 @@ onMessage('internalCall', async (msg) => {
   if (!isInternalEndpoint(msg.sender))
     return false
 
+  const { opts } = msg.data
+
   try {
     const existPopup = await reFocusUnProcessPopup()
     if (existPopup) {
-      await browser.windows.update(memoryStoreMap.popupId, { focused: true })
+      await browser.windows.update(opts.tabId || memoryStoreMap.popupId, { focused: true })
       return existPopup
     }
 
-    console.log('====> msg :', msg)
-    const { action, params, opts } = msg.data
-    memoryStoreMap.action = action
-    memoryStoreMap.params = params
-    memoryStoreMap.opts = opts
-
-    // await sendMessage(`actionResolve@${opts.tabId}`, msg.data, `options@${opts.tabId}`)
+    memoryStoreMap.previewData[opts.tabId] = msg.data
 
     const { top, left, width, height } = opts
     const newWindow = await browser.windows.create({
-      url: './dist/options/index.html#/options/tx/preview',
+      url: `./dist/options/index.html#/options/tx/preview?tabId=${opts.tabId}`,
       type: 'popup',
       width,
       height,
