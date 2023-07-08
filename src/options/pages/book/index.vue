@@ -1,11 +1,10 @@
 <script setup>
-
 const stats = [
-  { name: 'Number of books RWA NFT', value: '405' },
-  { name: 'Average books RWA NFT sale Price', value: '100', unit: '$BST' },
-  { name: 'Total OTP-SBT Sale', value: '50B', unit: '$BST' },
-  { name: 'Total Market Cap', value: '123B', unit: '$BST' },
-]
+  { name: "Number of books RWA NFT", value: "405" },
+  { name: "Average books RWA NFT sale Price", value: "100", unit: "$BST" },
+  { name: "Total OTP-SBT Sale", value: "50B", unit: "$BST" },
+  { name: "Total Market Cap", value: "123B", unit: "$BST" },
+];
 </script>
 
 <template>
@@ -26,9 +25,7 @@ const stats = [
               <span class="font-semibold text-white">Overview</span>
             </h1>
           </div>
-          <p class="mt-2 text-xs text-gray-400 leading-6">
-            The book which publish via our RWA Protocol
-          </p>
+          <p class="mt-2 text-xs text-gray-400 leading-6">The book which publish via our RWA Protocol</p>
         </div>
         <!-- <div class="rounded-full flex-none order-first font-medium bg-indigo-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-indigo-400/30 text-indigo-400 sm:order-none">
           Production
