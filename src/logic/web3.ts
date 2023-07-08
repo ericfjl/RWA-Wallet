@@ -30,6 +30,22 @@ export const getWalletClient = (account) => {
   })
 }
 
+export const estimateContractGas = async ({ account, contractName, functionName, value = '' }, ...args) => {
+  const publicClient = getPublicClient()
+  const { address, abi } = getContractInfo(contractName)
+  const params = {
+    address,
+    abi,
+    functionName,
+    account,
+    args,
+  }
+  if (value)
+    params.value = value
+
+  return publicClient.estimateContractGas(params)
+}
+
 export const simulateContract = async ({ account, contractName, functionName, value = '' }, ...args) => {
   const publicClient = getPublicClient()
   const { address, abi } = getContractInfo(contractName)

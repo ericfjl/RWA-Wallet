@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { createBgAction } from "~/logic/callBackground";
+let { updateParams, toggle } = $(txStore());
 
 const image = $ref("ipfs://bafybeidhf5bw7xx3pq3pxzcgazxy7qdf5a2zlumqubg6vpdehxekyr3jwq");
 const name = $ref("My First RWA NFT");
@@ -29,12 +29,8 @@ const basicPrice = $ref(100); // $BST
 const maxSupply = $ref(10000);
 const error = $ref("");
 
-const tabId = $(inject("tabId"));
-
-const internalCall = createBgAction("options");
 const doSubmit = async () => {
-  isLoading = true;
-  const params = {
+  updateParams({
     image,
     name,
     description,
@@ -45,17 +41,8 @@ const doSubmit = async () => {
     basicPrice,
     maxSupply,
     inviteCommission,
-  };
-  const opts = {
-    tabId,
-  };
-  try {
-    const rz = await internalCall("createRwaNft", params, opts);
-    console.log("====> rz :", rz);
-  } catch (e) {
-    console.log("====> createRwaNft error :", e);
-  }
-  isLoading = false;
+  })
+  toggle()
 };
 </script>
 

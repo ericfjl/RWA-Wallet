@@ -1,8 +1,13 @@
 export const txStore = defineStore('txStore', () => {
-  let isShow = $ref(true)
+  let isShow = $ref(false)
+  let params = $ref({})
 
-  const toggle = async() => {
+  const toggle = () => {
     isShow = !isShow
+  }
+
+  const updateParams = _params => {
+    params = _params
   }
   watchEffect(async() => {
     // do some init stuff
@@ -10,6 +15,8 @@ export const txStore = defineStore('txStore', () => {
 
   return $$({
     isShow,
+    params,
+    updateParams,
     toggle,
   })
 })

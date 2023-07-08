@@ -191,5 +191,6 @@ const doLogout = async () => {
       <RouterView />
     </div>
     <TxPreview />
+    <BsNotification />
   </div>
 </template>

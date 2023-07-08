@@ -1,34 +1,52 @@
 <script setup lang="ts">
 import { useNFTStorage } from "@rwa/web3-storage";
 import { sendMessage } from "webext-bridge/options";
-import { getAccount, getContractInfo, parseEther, readContract, writeContract } from "~/logic/web3";
-const { isShow, toggle } = $(txStore());
+import { getAccount, getContractInfo, parseEther, readContract, writeContract, estimateContractGas } from "~/logic/web3";
+const { isShow, toggle, params } = $(txStore());
 const payBy = $ref("$BSTEntropy");
 const payTokenList = ["$BSTSwap", "$BSTEntropy"];
 const payTokenAddress = $computed(() => {
-  const { address } = getContractInfo("BSTSwap");
-  const { address: address2 } = getContractInfo("BSTEntropy");
-  if (payBy === "$BSTEntropy") return address2;
+  const { address } = getContractInfo(payBy.replace("$", ""));
   return address;
 });
+const router = useRouter();
+const { addLoading, addSuccess, alertError } = $(notificationStore());
 
 const storeBy = $ref("NFT.Storage");
 const storeServiceList = ["NFT.Storage", "Arweave"];
-let params = $ref({});
-let opts = $ref({});
 let account = $ref("");
 let isLoading = $ref(false);
 const route = useRoute();
 const tabId = $computed(() => route.query.tabId);
 let context = "";
+let approveGas = $ref("");
+const paymentContractName = $computed(() => payBy.replace("$", ""));
+const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
+const bstPayAmount = parseEther("100");
+
+const addTokenGas = 310796n;
 
 onMounted(async () => {
-  console.log("====> route :", route, route.query, location);
   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
-  params = rz.previewData[tabId].params;
-  opts = rz.previewData[tabId].opts;
-  context = opts.context;
   account = getAccount(rz.mnemonicStr);
+});
+
+watchEffect(async () => {
+  if (!account) return;
+  // estimate approve BST allowance gas
+  approveGas = await estimateContractGas({ account, contractName: paymentContractName, functionName: "approve" }, spenderAddress, bstPayAmount);
+
+  // estimate addToken gas
+  // addTokenGas = await estimateContractGas(
+  //   { account, contractName: "BuidlerProtocol", functionName: "addToken" },
+  //   params.tokenType,
+  //   parseEther(params.basicPrice.toString()),
+  //   params.inviteCommission * 100,
+  //   params.maxSupply,
+  //   "fake-cid",
+  //   payTokenAddress
+  // );
+  console.log("====> approveGas, addTokenGas :", approveGas, addTokenGas);
 });
 
 const { storeJson } = useNFTStorage({
@@ -37,18 +55,16 @@ const { storeJson } = useNFTStorage({
 });
 
 let status = $ref("");
-
 const doSubmit = async () => {
   isLoading = true;
   try {
     // call allowance
     status = "approve allowance";
-    const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
-    const bstPayAmount = parseEther("100");
+
     const rzApprove = await writeContract(
       {
         account,
-        contractName: "BSTEntropy",
+        contractName: paymentContractName,
         functionName: "approve",
       },
       spenderAddress,
@@ -94,41 +110,48 @@ const doSubmit = async () => {
       payTokenAddress
     );
     console.log("====> rzApprove2, cid, rzToken, tokenId :", rzApprove, cid, rzToken, tokenId);
-    // send back the result
-    await sendMessage(`actionResolve@${tabId}`, { tokenId }, `content-script@${tabId}`);
+    toggle();
+    router.push("/options/book");
+    // showNotice()?
+    // go to token main page:
+    // rwa://book/1
+    // rwa://twitter/1
+    // rwa://book
+    // rwa://twitter
+    // rwa://sneaker
+    // rwa://1
+    // rwa://2
   } catch (err) {
     console.log("====> err :", err);
-    await sendMessage(`actionReject@${tabId}`, { err }, `content-script@${tabId}`);
   }
-
+  status = "";
   isLoading = false;
-  self.close();
 };
 
 const doSubmit2 = async () => {
   isLoading = true;
 
   status = "approve allowance";
-  await new Promise((r) => setTimeout(r, 2000));
+  await new Promise((r) => setTimeout(r, 500));
   status = "upload to decentralized storage";
-  await new Promise((r) => setTimeout(r, 2000));
+  await new Promise((r) => setTimeout(r, 500));
   status = "create new NFT on BuidlerProtocol";
-  await new Promise((r) => setTimeout(r, 2000));
-  await sendMessage(`actionResolve@${tabId}`, { tokenId: 13 }, `${context}@${tabId}`);
+  await new Promise((r) => setTimeout(r, 500));
+  status = "";
+  toggle();
+  router.push("/options/book");
+  addSuccess("Create New NFT Successed!");
   isLoading = false;
-  self.close();
 };
 
 const doCancel = async () => {
-  console.log("====> `${context}@${tabId}` :", `${context}@${tabId}`);
-  await sendMessage(`actionReject@${tabId}`, { err: { message: "user deny" } }, `${context}@${tabId}`);
-  self.close();
+  toggle();
 };
 </script>
 
 <template>
   <BsDialogDefault :show="isShow" @close="toggle">
-    <div class="bg-white flex flex-col h-screen min-w-sm shadow-xl w-full overflow-y-scroll">
+    <div class="bg-white flex flex-col min-w-sm w-full">
       <div class="flex-1 py-6 px-4 overflow-y-auto sm:px-6">
         <div class="flex items-start justify-between">
           <h2 class="font-medium text-lg text-gray-900">RWA Action Preview</h2>
@@ -150,7 +173,7 @@ const doCancel = async () => {
                   <BsFormSelect id="payBy" v-model="payBy" :list="payTokenList" />
                   <div class="flex flex-col text-gray-500 items-end">
                     <div>0 $BST</div>
-                    <div>46 Gwei</div>
+                    <div>{{ approveGas }} Wei</div>
                   </div>
                 </div>
               </li>
@@ -167,7 +190,7 @@ const doCancel = async () => {
                   <BsFormSelect id="storeBy" v-model="storeBy" :list="storeServiceList" />
                   <div class="flex flex-col text-gray-500 items-end">
                     <div>0 $BST</div>
-                    <div>0 Gwei</div>
+                    <div>0 Wei</div>
                   </div>
                 </div>
               </li>
@@ -186,7 +209,7 @@ const doCancel = async () => {
                   <div />
                   <div class="flex flex-col text-gray-500 items-end">
                     <div>100 $BST</div>
-                    <div>2000 Gwei</div>
+                    <div>{{ addTokenGas }} Wei</div>
                   </div>
                 </div>
               </li>
@@ -197,22 +220,24 @@ const doCancel = async () => {
 
       <div class="border-t border-gray-200 py-6 px-4 sm:px-6">
         <div class="flex font-medium text-base text-gray-900 justify-between">
-          <p>Subtotal</p>
+          <p>Total</p>
           <div flex flex-col items-end>
             <div>100<span inline-block w-12 text-right>$BST</span></div>
-            <div>2046 <span inline-block w-12 text-right>Gwei</span></div>
+            <div>
+              {{ approveGas + addTokenGas }}
+              <span text-gray-4 text-sm>(estimated)</span>
+              <span inline-block w-8 text-right>Wei</span>
+            </div>
           </div>
         </div>
-        <div class="mt-6">
-          <div flex mb-3 text-base justify-center items-center v-if="status">
-            <div i-eos-icons-loading class="h-6 text-black w-6 mr-2" />
+        <div my-6 py-6 flex text-base justify-center items-center v-if="status">
+          <div i-eos-icons-loading class="h-6 text-black w-6 mr-2" />
 
-            {{ status }}
-          </div>
-          <BsBtnIndigo :is-loading="isLoading" @click="doSubmit2" w-full> Action Confirm </BsBtnIndigo>
+          {{ status }}
         </div>
-        <div class="flex mt-6 text-center text-sm text-gray-500 justify-center">
-          <p>
+        <div v-else class="mt-6 text-center text-sm text-gray-500 justify-center">
+          <BsBtnIndigo :is-loading="isLoading" @click="doSubmit2" w-full> Action Confirm </BsBtnIndigo>
+          <p mt-6>
             or
             <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="doCancel">
               Reject
