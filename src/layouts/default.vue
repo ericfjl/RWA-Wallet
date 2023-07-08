@@ -190,5 +190,6 @@ const doLogout = async () => {
 
       <RouterView />
     </div>
+    <TxPreview />
   </div>
 </template>

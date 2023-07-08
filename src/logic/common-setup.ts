@@ -5,6 +5,7 @@ import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
 import ResizeTextarea from 'resize-textarea-vue3'
 import { encryptedMnemonic } from '~/logic/storage'
+import { createPinia } from 'pinia'
 
 export function setupApp(app: App, opts = { }) {
   const { routeMode = 'webHash', sendMessage } = opts
@@ -48,6 +49,12 @@ export function setupApp(app: App, opts = { }) {
   })
   app.use(router)
   app.use(ResizeTextarea)
+
+  // pinia
+  const pinia = createPinia()
+  app.use(pinia)
+  pinia.state.value = {}
+
   // Here you can install additional plugins for all contexts: popup, options page and content-script.
   // example: app.use(i18n)
   // example excluding content-script context: if (context !== 'content-script') app.use(i18n)

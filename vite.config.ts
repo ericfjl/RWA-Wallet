@@ -73,7 +73,15 @@ export const sharedConfig: UserConfig = {
             'take',
             'shuffle',
           ],
+          'pinia': [
+            'acceptHMRUpdate',
+            'defineStore',
+            'storeToRefs',
+          ],
         },
+      ],
+      dirs: [
+        r('src/stores'),
       ],
       dts: r('src/auto-imports.d.ts'),
     }),
