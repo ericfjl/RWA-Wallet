@@ -2,23 +2,22 @@
 import { useNFTStorage } from "@rwa/web3-storage";
 import { sendMessage } from "webext-bridge/options";
 import { getAccount, getContractInfo, parseEther, readContract, writeContract, estimateContractGas } from "~/logic/web3";
-const { isShow, toggle, params } = $(txStore());
+import imgArweave from '~/assets/arweave.svg'
+import imgCess from '~/assets/cess.svg'
+
+const { isShow, toggle, params, opts } = $(txStore());
 const payBy = $ref("$BSTEntropy");
 const payTokenList = ["$BSTSwap", "$BSTEntropy"];
 const payTokenAddress = $computed(() => {
   const { address } = getContractInfo(payBy.replace("$", ""));
   return address;
 });
-const router = useRouter();
 const { addLoading, addSuccess, alertError } = $(notificationStore());
 
 const storeBy = $ref("NFT.Storage");
-const storeServiceList = ["NFT.Storage", "Arweave"];
+const storeServiceList = ["NFT.Storage", "Arweave", 'CESS'];
 let account = $ref("");
 let isLoading = $ref(false);
-const route = useRoute();
-const tabId = $computed(() => route.query.tabId);
-let context = "";
 let approveGas = $ref("");
 const paymentContractName = $computed(() => payBy.replace("$", ""));
 const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
@@ -110,8 +109,10 @@ const doSubmit = async () => {
       payTokenAddress
     );
     console.log("====> rzApprove2, cid, rzToken, tokenId :", rzApprove, cid, rzToken, tokenId);
-    toggle();
-    router.push("/options/book");
+    if (opts.afterSuccess) {
+      await opts.afterSuccess()
+    }
+
     // showNotice()?
     // go to token main page:
     // rwa://book/1
@@ -124,8 +125,11 @@ const doSubmit = async () => {
   } catch (err) {
     console.log("====> err :", err);
   }
-  status = "";
-  isLoading = false;
+  nextTick(() => {
+    status = "";
+    isLoading = false;
+    toggle();
+  })
 };
 
 const doSubmit2 = async () => {
@@ -138,10 +142,14 @@ const doSubmit2 = async () => {
   status = "create new NFT on BuidlerProtocol";
   await new Promise((r) => setTimeout(r, 500));
   status = "";
-  toggle();
-  router.push("/options/book");
-  addSuccess("Create New NFT Successed!");
-  isLoading = false;
+  if (opts.afterSuccess) {
+    await opts.afterSuccess()
+  }
+  nextTick(() => {
+    addSuccess("Create New NFT Successed!");
+    isLoading = false;
+    toggle();
+  })
 };
 
 const doCancel = async () => {
@@ -179,14 +187,16 @@ const doCancel = async () => {
               </li>
               <li class="flex py-6">
                 <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
-                  <div i-simple-icons-ipfs class="h-full object-cover object-center w-full" />
+                  <div i-simple-icons-ipfs class="h-full object-cover object-center w-full" v-if="storeBy === 'NFT.Storage'" />
+                  <img :src="imgArweave" class="h-full object-cover object-center w-full" v-if="storeBy === 'Arweave'" />
+                  <img :src="imgCess" class="h-full object-cover object-center w-full" v-if="storeBy === 'CESS'" />
                 </div>
 
                 <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
                   <h3>Pack and Store metadata</h3>
                   <p class="mt-1 text-sm text-gray-500">Pack metadata and store onto Decentralized storage platform</p>
                 </div>
-                <div flex flex-col justify-between items-end>
+                <div flex flex-col justify-between items-end min-w-40>
                   <BsFormSelect id="storeBy" v-model="storeBy" :list="storeServiceList" />
                   <div class="flex flex-col text-gray-500 items-end">
                     <div>0 $BST</div>
@@ -231,7 +241,7 @@ const doCancel = async () => {
           </div>
         </div>
         <div my-6 py-6 flex text-base justify-center items-center v-if="status">
-          <div i-eos-icons-loading class="h-6 text-black w-6 mr-2" />
+          <div i-eos-icons-loading class="h-6 text-black mr-2 w-6" />
 
           {{ status }}
         </div>

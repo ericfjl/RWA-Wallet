@@ -4,6 +4,6 @@
   <main>
     <TopNav />
 
-    <!-- <TwitterNew /> -->
+    <TwitterNew />
   </main>
 </template>
