@@ -12,12 +12,13 @@ let { learnMoreAction } = defineProps<Props>();
       <div class="mx-auto max-w-7xl py-32 px-6 sm:py-40 lg:px-8">
         <div class="mx-auto max-w-2xl lg:max-w-none lg:mx-0 lg:grid lg:gap-x-16 lg:gap-y-6 lg:grid-cols-2 xl:gap-x-8 xl:grid-cols-1 xl:grid-rows-1">
           <h1 class="font-bold tracking-tight max-w-2xl text-4xl text-gray-900 sm:text-6xl lg:col-span-2 xl:col-auto">
-            We’re changing the way people connect.
+            We’re changing the way people connect to Web3.
           </h1>
           <div class="max-w-xl mt-6 lg:mt-0 xl:col-end-1 xl:row-start-1">
             <p class="text-lg text-gray-600 leading-8">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat
-              aliqua. Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.
+              RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It
+              introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining
+              the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.
             </p>
             <div class="flex mt-10 gap-x-6 items-center">
               <button @click="learnMoreAction" class="rounded-md font-semibold bg-indigo-600 shadow-sm text-sm text-white py-2.5 px-3.5 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

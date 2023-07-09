@@ -8,8 +8,7 @@ const activity = [
     person: { name: "Eduardo Benz", href: "#" },
     imageUrl:
       "https://images.unsplash.com/photo-1520785643438-5bf77931f493?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam. ",
+    comment: `How are you calculating 'real' rates - e.g. "DAI Savings Rate (DSR), which was providing ~7% subsidised via high interest rates, the “real” DAI yield was between 1%-2%."? The yield after inflation, if so where are you getting the inflation data?`,
     date: "6d ago",
   },
   {
@@ -35,8 +34,13 @@ const activity = [
     person: { name: "Jason Meyers", href: "#" },
     imageUrl:
       "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80",
-    comment:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tincidunt nunc ipsum tempor purus vitae id. Morbi in vestibulum nec varius. Et diam cursus quis sed purus nam. Scelerisque amet elit non sit ut tincidunt condimentum. Nisl ultrices eu venenatis diam.",
+    comment: `Fantastic article - simple message, eloquently delivered. Hadn’t considered the cyclical nature of DeFi yields, especially in relation to stablecoins.
+
+It’s true that new hype cycles will spawn a new bull market to drive up yields and increase activity across DeFi platforms.
+
+Quick question related to the Yearn images above - why is it that USDC yields less than the ‘risk-free rate’. Given it’s a USDC product, shouldn’t we expect yields matching those of traditional deposit accounts? Am I missing something here?
+
+Thanks again for sharing!`,
     date: "2h ago",
   },
 ];
