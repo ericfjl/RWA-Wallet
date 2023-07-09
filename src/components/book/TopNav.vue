@@ -1,20 +1,20 @@
 <script setup lang="ts">
-const route = useRoute()
+const route = useRoute();
 
-const path = $computed(() => route.path)
+const path = $computed(() => route.path);
 
 const secondaryNavigation = [
-  { name: 'Overview', href: '/options/book', current: path === '/options/book' },
-  { name: 'Activity', href: '#', current: false },
-  { name: 'Settings', href: '#', current: false },
-  { name: 'Collaborators', href: '#', current: false },
-  { name: 'Notifications', href: '#', current: false },
-]
+  { name: "Overview", href: "/options/book", current: path === "/options/book" },
+  { name: "Activity", href: "#", current: false },
+  { name: "Settings", href: "#", current: false },
+  { name: "Collaborators", href: "#", current: false },
+  { name: "Notifications", href: "#", current: false },
+];
 </script>
 
 <template>
   <nav class="border-b flex border-white/10 h-18 py-4 overflow-x-auto">
-    <ul role="list" class="flex flex-none  font-semibold text-sm px-4 text-gray-400 leading-6 gap-x-6 items-center sm:px-6 lg:px-8">
+    <ul role="list" class="flex flex-none font-semibold text-sm px-4 text-gray-400 leading-6 gap-x-6 items-center sm:px-6 lg:px-8">
       <li v-for="item in secondaryNavigation" :key="item.name">
         <router-link :to="item.href" :class="item.current ? 'text-indigo-400' : ''">
           {{ item.name }}
