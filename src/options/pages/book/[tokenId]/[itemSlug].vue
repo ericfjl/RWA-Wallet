@@ -4,8 +4,6 @@
     <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
       <LandingItemBreadcrumb py-10 />
       <LandingItemImgs />
-      <LandingItemText />
-      <LandingFooter />
     </div>
   </div>
 </template>
