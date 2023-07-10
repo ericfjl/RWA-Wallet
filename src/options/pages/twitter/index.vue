@@ -1,20 +1,58 @@
 <script setup lang="ts">
-const statuses = { Completed: "text-green-400 bg-green-400/10", Error: "text-rose-400 bg-rose-400/10" };
-const activityItems = [
-  {
-    user: {
-      name: "Michael Foster",
-      imageUrl:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-    commit: "2d89f0c8",
-    branch: "main",
-    status: "Completed",
-    duration: "25s",
-    date: "45 minutes ago",
-    dateTime: "2023-01-23T11:00",
-  },
-];
+import { formatEther } from 'viem'
+import { sendMessage } from "webext-bridge/options";
+import { getAccount, getContractInfo, parseEther, readContract, writeContract, estimateContractGas } from "~/logic/web3";
+import { useNFTStorage } from "@rwa/web3-storage";
+
+const { getJson, getStatus } = useNFTStorage({
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzM4MTgzMDU2MywibmFtZSI6Ik5UQiJ9.Yj9ie65LXh6t6QECtGzKViX-AeTiAHnVoYybY3qfqNk",
+});
+let account = $ref('')
+let items = $ref([])
+onMounted(async () => {
+  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
+  account = getAccount(rz.mnemonicStr);
+  const functionName = 'getTokenList'
+  const [tokenURIArr,
+    basicPriceArr,
+    totalSupplyArr,
+    maxSupplyArr,
+    itemsCountArr,
+    metaCountArr] = await readContract({ account, contractName: 'BuidlerProtocol', functionName }, 0, 100)
+  // const functionName = 'getTokenListByType'
+  // readContract({ account, contractName: 'BuidlerProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
+  const tokenInfoArr = await Promise.all(tokenURIArr.map(async cid => {
+    const token = await getJson(cid)
+    const status = await getStatus(cid)
+    return {
+      ...token,
+      createdAt: status.created
+    }
+  }));
+  items = reverse(tokenInfoArr.map((token, index) => {
+    // console.log({
+    //   token,
+    //   basicPrice: basicPriceArr[index].toString(),
+    //   totalSupply: totalSupplyArr[index],
+    //   maxSupply: maxSupplyArr[index],
+    //   itemsCount: itemsCountArr[index],
+    //   metaCount: metaCountArr[index],
+    // })
+
+    return {
+      tokenId: index,
+      token,
+      basicPrice: basicPriceArr[index].toString(),
+      totalSupply: totalSupplyArr[index].toString(),
+      maxSupply: maxSupplyArr[index].toString(),
+      itemsCount: itemsCountArr[index].toString(),
+      metaCount: metaCountArr[index].toString(),
+    };
+  }))
+  console.log('====> items[0] :', items[0])
+})
+
 </script>
 
 <template>
@@ -33,47 +71,47 @@ const activityItems = [
         </colgroup>
         <thead class="border-b border-white/10 text-sm text-white leading-6">
           <tr>
-            <th scope="col" class="font-semibold py-2 pr-8 pl-4 sm:pl-6 lg:pl-8">User</th>
-            <th scope="col" class="font-semibold py-2 pr-8 pl-0 hidden sm:table-cell">Commit</th>
-            <th scope="col" class="font-semibold text-right py-2 pr-4 pl-0 sm:text-left sm:pr-8 lg:pr-20">Status</th>
-            <th scope="col" class="font-semibold py-2 pr-8 pl-0 hidden md:table-cell lg:pr-20">Duration</th>
-            <th scope="col" class="font-semibold text-right py-2 pr-4 pl-0 hidden sm:pr-6 sm:table-cell lg:pr-8">Deployed at</th>
+            <th scope="col" class="font-semibold py-2 pr-8 pl-4 sm:pl-6 lg:pl-8">NFT</th>
+            <th scope="col" class="font-semibold py-2 pr-8 pl-0 hidden sm:table-cell">Description</th>
+            <th scope="col" class="font-semibold text-right py-2 pr-4 pl-0 sm:text-left sm:pr-8 lg:pr-20">Sold / Max</th>
+            <th scope="col" class="font-semibold py-2 pr-8 pl-0 hidden md:table-cell lg:pr-20">Tags</th>
+            <th scope="col" class="font-semibold py-2 pr-8 pl-0 hidden md:table-cell lg:pr-20">Price <span text-gray-5>($BST)</span></th>
+            <th scope="col" class="font-semibold text-right py-2 pr-4 pl-0 hidden sm:pr-6 sm:table-cell lg:pr-8">Created at</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-white/5">
-          <tr v-for="item in activityItems" :key="item.commit">
+          <tr v-for="item in items" :key="item.tokenId">
             <td class="py-4 pr-8 pl-4 sm:pl-6 lg:pl-8">
-              <div class="flex gap-x-4 items-center">
-                <img :src="item.user.imageUrl" alt="" class="rounded-full bg-gray-800 h-8 w-8" />
-                <div class="font-medium text-sm text-white leading-6 truncate">
-                  {{ item.user.name }}
+              <router-link :to="`/options/twitter/${item.tokenId}`" class="flex gap-x-4 items-center ">
+                <BsBoxImg :src="item.token.image" alt="" class="rounded-full bg-gray-800 h-8 w-8" />
+                <div class="font-medium text-sm text-white leading-6 truncate hover:text-indigo-600">
+                  #{{ item.tokenId }} {{ item.token.name }}
                 </div>
-              </div>
+              </router-link>
             </td>
             <td class="py-4 pr-4 pl-0 hidden sm:pr-8 sm:table-cell">
               <div class="flex gap-x-3">
                 <div class="font-mono text-sm text-gray-400 leading-6">
-                  {{ item.commit }}
+                  {{ item.token.description }}
                 </div>
-                <span class="rounded-md font-medium bg-gray-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-gray-400/20 text-gray-400 inline-flex items-center">{{ item.branch }}</span>
+                <span class="rounded-md font-medium bg-gray-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-gray-400/20 text-gray-400 inline-flex items-center">{{ item.token.properties.category }}</span>
               </div>
             </td>
             <td class="text-sm py-4 pr-4 pl-0 leading-6 sm:pr-8 lg:pr-20">
               <div class="flex gap-x-2 items-center justify-end sm:justify-start">
-                <time class="text-gray-400 sm:hidden" :datetime="item.dateTime">{{ item.date }}</time>
-                <div class="rounded-full flex-none p-1" :class="[statuses[item.status]]">
-                  <div class="bg-current rounded-full h-1.5 w-1.5" />
-                </div>
                 <div class="text-white hidden sm:block">
-                  {{ item.status }}
+                  {{ item.totalSupply }} / {{ item.maxSupply }}
                 </div>
               </div>
             </td>
             <td class="text-sm py-4 pr-8 pl-0 text-gray-400 leading-6 hidden md:table-cell lg:pr-20">
-              {{ item.duration }}
+              <BsTags :tags="item.token.properties.tags" />
+            </td>
+            <td class="text-sm py-4 pr-8 pl-0 text-gray-400 leading-6 hidden md:table-cell lg:pr-20">
+              {{ formatEther(item.basicPrice) }}
             </td>
             <td class="text-right text-sm py-4 pr-4 pl-0 text-gray-400 leading-6 hidden sm:pr-6 sm:table-cell lg:pr-8">
-              <time :datetime="item.dateTime">{{ item.date }}</time>
+              <time :datetime="item.token.createdAt">{{ item.token.createdAt }}</time>
             </td>
           </tr>
         </tbody>

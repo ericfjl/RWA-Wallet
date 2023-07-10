@@ -54,6 +54,9 @@ export const sharedConfig: UserConfig = {
           'webextension-polyfill': [
             ['*', 'browser'],
           ],
+          'viem': [
+            'formatEther'
+          ],
           'lodash': [
             'isEqual',
             'uniq',
@@ -72,6 +75,7 @@ export const sharedConfig: UserConfig = {
             'sortBy',
             'upperFirst',
             'take',
+            'reverse',
             'shuffle',
           ],
           'pinia': [

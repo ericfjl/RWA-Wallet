@@ -32,7 +32,7 @@ const maxSupply = $ref(10000);
 const error = $ref("");
 
 const afterSuccess = async () => {
-  router.push("/options/twitter");
+  router.push("/options/twitter/");
 }
 
 const doSubmit = async () => {

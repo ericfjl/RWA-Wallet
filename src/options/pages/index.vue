@@ -51,7 +51,7 @@ onMounted(async () => {
     await sendMessage("storeInMemory", { openOptionToUrl: "" }, "background");
     router.replace(openOptionToUrl);
   } else {
-    router.replace("/options/book/new");
+    router.replace("/options/twitter/");
   }
 });
 </script>

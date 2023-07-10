@@ -20,7 +20,7 @@ const items = $computed(() => {
       hidden: true,
       desc: "Create new NFT that connect with your twitter",
     },
-    { name: "Overview", href: `/options/${categoryKey}`, current: path === `/options/${categoryKey}`, desc: "Financialize your twitter via Web3" },
+    { name: "Overview", href: `/options/${categoryKey}/`, current: path === `/options/${categoryKey}/`, desc: "Financialize your twitter via Web3" },
     { name: "Topics", href: "#", current: false },
     { name: "Trending", href: "#", current: false },
     { name: "Top", href: "#", current: false },
@@ -30,7 +30,7 @@ const items = $computed(() => {
 });
 
 const showInNavItems = $computed(() => items.filter((item) => !item.hidden));
-const currentItem = $computed(() => find(items, (item) => item.current));
+const currentItem = $computed(() => find(items, (item) => item.current) || {});
 const overviewItem = $computed(() => find(items, (item) => item.name === "Overview"));
 const isOverview = $computed(() => currentItem.name === overviewItem.name);
 
