@@ -50,7 +50,6 @@ onMounted(async () => {
       metaCount: metaCountArr[index].toString(),
     };
   }))
-  console.log('====> items[0] :', items[0])
 })
 
 </script>
@@ -60,7 +59,7 @@ onMounted(async () => {
     <TopNav />
 
     <div class="border-t border-white/10 pt-11">
-      <h2 class="font-semibold text-base text-white px-4 leading-7 sm:px-6 lg:px-8">Latest activity</h2>
+      <h2 class="font-semibold text-base text-white px-4 leading-7 sm:px-6 lg:px-8">Newest</h2>
       <table class="mt-6 text-left w-full whitespace-nowrap">
         <colgroup>
           <col class="w-full sm:w-4/12" />

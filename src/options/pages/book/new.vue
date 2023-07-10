@@ -3,7 +3,7 @@
 <template>
   <main>
     <header>
-      <BookTopNav />
+      <TopNav />
 
       <!-- Heading -->
       <div class="flex flex-col bg-gray-700/10 py-4 px-4 gap-x-8 gap-y-4 items-start justify-between sm:flex-row sm:px-6 sm:items-center lg:px-8">
