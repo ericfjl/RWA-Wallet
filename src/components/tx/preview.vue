@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useNFTStorage } from "@rwa/web3-storage";
 import { sendMessage } from "webext-bridge/options";
-import { getAccount, getContractInfo, parseEther, readContract, writeContract, estimateContractGas } from "~/logic/web3";
 import imgArweave from '~/assets/arweave.svg'
 import imgCess from '~/assets/cess.svg'
 
@@ -33,7 +32,11 @@ onMounted(async () => {
 watchEffect(async () => {
   if (!account) return;
   // estimate approve BST allowance gas
-  approveGas = await estimateContractGas({ account, contractName: paymentContractName, functionName: "approve" }, spenderAddress, bstPayAmount);
+  try {
+    approveGas = await estimateContractGas({ account, contractName: paymentContractName, functionName: "approve" }, spenderAddress, bstPayAmount);
+  } catch (e) {
+    console.log('====> e :', e)
+  }
 
   // estimate addToken gas
   // addTokenGas = await estimateContractGas(

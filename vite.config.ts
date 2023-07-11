@@ -54,9 +54,6 @@ export const sharedConfig: UserConfig = {
           'webextension-polyfill': [
             ['*', 'browser'],
           ],
-          'viem': [
-            'formatEther'
-          ],
           'lodash': [
             'isEqual',
             'uniq',
@@ -87,6 +84,7 @@ export const sharedConfig: UserConfig = {
       ],
       dirs: [
         r('src/stores'),
+        r('src/composables'),
       ],
       dts: r('src/auto-imports.d.ts'),
     }),

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useNFTStorage } from "@rwa/web3-storage";
 import { sendMessage } from "webext-bridge/options";
-import { getAccount, getContractInfo, parseEther, readContract, writeContract } from "~/logic/web3";
 
 const payBy = $ref("$BSTEntropy");
 const payTokenList = ["$BSTSwap", "$BSTEntropy"];
@@ -204,7 +203,7 @@ const doCancel = async () => {
       </div>
       <div class="mt-6">
         <div flex mb-3 text-base justify-center items-center v-if="status">
-          <div i-eos-icons-loading class="h-6 text-black w-6 mr-2" />
+          <div i-eos-icons-loading class="h-6 text-black mr-2 w-6" />
 
           {{ status }}
         </div>

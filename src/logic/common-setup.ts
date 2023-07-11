@@ -4,7 +4,6 @@ import { createMemoryHistory, createRouter, createWebHashHistory, createWebHisto
 import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
 import ResizeTextarea from 'resize-textarea-vue3'
-import { encryptedMnemonic } from '~/logic/storage'
 import { createPinia } from 'pinia'
 
 export function setupApp(app: App, opts = { }) {

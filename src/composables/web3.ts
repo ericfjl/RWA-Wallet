@@ -43,6 +43,7 @@ export const estimateContractGas = async ({ account, contractName, functionName,
   if (value)
     params.value = value
 
+    console.log('====> params :', params)
   return publicClient.estimateContractGas(params)
 }
 
@@ -62,7 +63,7 @@ export const simulateContract = async ({ account, contractName, functionName, va
   return publicClient.simulateContract(params)
 }
 
-export const readContract = async ({ account, contractName, functionName }, ...args) => {
+export const readContract = async ({ account=null, contractName, functionName }, ...args) => {
   const publicClient = getPublicClient()
   const { address, abi } = getContractInfo(contractName)
   const params = {

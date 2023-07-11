@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { sendMessage } from 'webext-bridge/options'
 import * as passworder from '@metamask/browser-passworder'
-import { encryptedMnemonic } from '~/logic/storage'
 
 const emit = defineEmits(['setTitle'])
 emit('setTitle', 'Access your wallet with your Secret Recovery Phrase')

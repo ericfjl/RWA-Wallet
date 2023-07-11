@@ -1,57 +1,44 @@
 <script setup lang="ts">
-import { formatEther } from 'viem'
 import { sendMessage } from "webext-bridge/options";
-import { getAccount, getContractInfo, parseEther, readContract, writeContract, estimateContractGas } from "~/logic/web3";
-import { useNFTStorage } from "@rwa/web3-storage";
+import { formatEther } from "viem";
 
-const { getJson, getStatus } = useNFTStorage({
-  token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzM4MTgzMDU2MywibmFtZSI6Ik5UQiJ9.Yj9ie65LXh6t6QECtGzKViX-AeTiAHnVoYybY3qfqNk",
-});
-let account = $ref('')
-let items = $ref([])
+let account = $ref("");
+let items = $ref([]);
 onMounted(async () => {
   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
   account = getAccount(rz.mnemonicStr);
-  const functionName = 'getTokenList'
-  const [tokenURIArr,
-    basicPriceArr,
-    totalSupplyArr,
-    maxSupplyArr,
-    itemsCountArr,
-    metaCountArr] = await readContract({ account, contractName: 'BuidlerProtocol', functionName }, 0, 100)
+  const functionName = "getTokenList";
+  const [tokenURIArr, basicPriceArr, totalSupplyArr, maxSupplyArr, itemsCountArr, metaCountArr] = await readContract(
+    { account, contractName: "BuidlerProtocol", functionName },
+    0,
+    100
+  );
   // const functionName = 'getTokenListByType'
   // readContract({ account, contractName: 'BuidlerProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
-  const tokenInfoArr = await Promise.all(tokenURIArr.map(async cid => {
-    const token = await getJson(cid)
-    const status = await getStatus(cid)
-    return {
-      ...token,
-      createdAt: status.created
-    }
-  }));
-  items = reverse(tokenInfoArr.map((token, index) => {
-    // console.log({
-    //   token,
-    //   basicPrice: basicPriceArr[index].toString(),
-    //   totalSupply: totalSupplyArr[index],
-    //   maxSupply: maxSupplyArr[index],
-    //   itemsCount: itemsCountArr[index],
-    //   metaCount: metaCountArr[index],
-    // })
+  const tokenInfoArr = await Promise.all(tokenURIArr.map(parseTokenURI));
+  items = reverse(
+    tokenInfoArr.map((token, index) => {
+      // console.log({
+      //   token,
+      //   basicPrice: basicPriceArr[index].toString(),
+      //   totalSupply: totalSupplyArr[index],
+      //   maxSupply: maxSupplyArr[index],
+      //   itemsCount: itemsCountArr[index],
+      //   metaCount: metaCountArr[index],
+      // })
 
-    return {
-      tokenId: index,
-      token,
-      basicPrice: basicPriceArr[index].toString(),
-      totalSupply: totalSupplyArr[index].toString(),
-      maxSupply: maxSupplyArr[index].toString(),
-      itemsCount: itemsCountArr[index].toString(),
-      metaCount: metaCountArr[index].toString(),
-    };
-  }))
-})
-
+      return {
+        tokenId: index,
+        token,
+        basicPrice: basicPriceArr[index].toString(),
+        totalSupply: totalSupplyArr[index].toString(),
+        maxSupply: maxSupplyArr[index].toString(),
+        itemsCount: itemsCountArr[index].toString(),
+        metaCount: metaCountArr[index].toString(),
+      };
+    })
+  );
+});
 </script>
 
 <template>
@@ -81,11 +68,9 @@ onMounted(async () => {
         <tbody class="divide-y divide-white/5">
           <tr v-for="item in items" :key="item.tokenId">
             <td class="py-4 pr-8 pl-4 sm:pl-6 lg:pl-8">
-              <router-link :to="`/options/twitter/${item.tokenId}`" class="flex gap-x-4 items-center ">
+              <router-link :to="`/options/twitter/${item.tokenId}`" class="flex gap-x-4 items-center">
                 <BsBoxImg :src="item.token.image" alt="" class="rounded-full bg-gray-800 h-8 w-8" />
-                <div class="font-medium text-sm text-white leading-6 truncate hover:text-indigo-600">
-                  #{{ item.tokenId }} {{ item.token.name }}
-                </div>
+                <div class="font-medium text-sm text-white leading-6 truncate hover:text-indigo-600">#{{ item.tokenId }} {{ item.token.name }}</div>
               </router-link>
             </td>
             <td class="py-4 pr-4 pl-0 hidden sm:pr-8 sm:table-cell">
@@ -98,9 +83,7 @@ onMounted(async () => {
             </td>
             <td class="text-sm py-4 pr-4 pl-0 leading-6 sm:pr-8 lg:pr-20">
               <div class="flex gap-x-2 items-center justify-end sm:justify-start">
-                <div class="text-white hidden sm:block">
-                  {{ item.totalSupply }} / {{ item.maxSupply }}
-                </div>
+                <div class="text-white hidden sm:block">{{ item.totalSupply }} / {{ item.maxSupply }}</div>
               </div>
             </td>
             <td class="text-sm py-4 pr-8 pl-0 text-gray-400 leading-6 hidden md:table-cell lg:pr-20">

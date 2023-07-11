@@ -1,20 +1,27 @@
 <script setup lang="ts">
-const nextView = $ref();
+const nextView = $ref(null);
 const scrollToNextView = () => {
   nextView.scrollIntoView({ behavior: "smooth" });
 };
+
+const route = useRoute()
+const tokenId = $computed(() => route.params.tokenId)
+const { getNftInfo } = $(nftStore())
+onMounted(async () => {
+  await getNftInfo(tokenId)
+})
 </script>
 
 <template>
   <main>
-    <LandingHero :learnMoreAction="scrollToNextView" />
+    <TwitterHero :learnMoreAction="scrollToNextView" />
     <div ref="nextView">
-      <LandingStatusPrice />
+      <TwitterStatusPrice />
     </div>
 
-    <!-- <LandingListBook /> -->
-    <LandingListPhoto />
-    <LandingFooter />
+    <!-- <TwitterListBook /> -->
+    <TwitterListPhoto />
+    <TwitterFooter />
   </main>
 </template>
 

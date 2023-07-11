@@ -13,7 +13,7 @@ const path = $computed(() => route.path);
 const navigation = $computed(() => {
   return [
     // { name: 'Home', href: '#', icon: HomeIcon, current: true },
-    { name: "NFTFi Twitter", href: "/options/twitter", icon: MdiTwitter, current: path.startsWith("/options/twitter") },
+    { name: "NFTFi Twitter", href: "/options/twitter/", icon: MdiTwitter, current: path.startsWith("/options/twitter/") },
     // { name: "Book", href: "/options/book", icon: IcBaselineMenuBook, current: path.startsWith("/options/book") },
     // { name: 'Domains', href: '#', icon: GlobeAltIcon, current: false },
     // { name: 'Usage', href: '#', icon: ChartBarSquareIcon, current: false },
