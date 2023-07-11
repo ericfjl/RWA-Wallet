@@ -5,6 +5,8 @@
 // }
 // let { modelValue, foo = "default-val" } = defineProps<Props>();
 // const emit = defineEmits(["update:modelValue"]);
+
+const textContent = $ref("");
 </script>
 <template>
   <div>
@@ -15,6 +17,16 @@
       both worlds, RWA Wallet offers users a unique and powerful financial tool.
     </p>
     <div class="max-w-xl mt-10 text-base text-gray-700 leading-7 lg:max-w-none">
+      <v-md-preview v-if="textContent" :text="textContent" />
+      <div v-else border border-dashed py-20 border-gray-7 rounded-md flex flex-col items-center bg-gray-5 text-white mb-10>
+        <div flex justify="center" items-center>
+          <BsBtnBlack @click="showMintModal(nftPassMintParams)"> Mint {{ mintNFTPassCount }} NFT Pass </BsBtnBlack>
+          <div mx-5 font-bold>Or</div>
+          <BsBtnBlack @click="showMintModal(optTokenMintParams)"> Mint 1 OTP-SBT </BsBtnBlack>
+        </div>
+        <div mt-5>to Unlock the RWA content</div>
+      </div>
+      <!--       
       <p>
         Web3 wallets have become an integral part of the digital landscape, allowing users to securely store, manage, and interact with their
         cryptocurrencies and decentralized applications. Among the various options available, RWA Wallet stands out as a revolutionary addition to the
@@ -23,26 +35,32 @@
       <ul role="list" class="space-y-8 mt-8 text-gray-600">
         <li class="flex gap-x-3">
           <div i-ic-baseline-link class="flex-none h-5 mt-1 text-indigo-600 w-5" aria-hidden="true" />
-          <span><strong class="font-semibold text-gray-900">Connect Web3 to Real World.</strong>One of the key features that sets RWA Wallet apart is its
+          <span
+            ><strong class="font-semibold text-gray-900">Connect Web3 to Real World.</strong>One of the key features that sets RWA Wallet apart is its
             ability to integrate real-world assets into the blockchain ecosystem. This means that users can now tokenize their physical assets, such
             as real estate, commodities, or even rare artwork, and store them securely within their RWA Wallet. This opens up a whole new realm of
             possibilities for asset management, as users can now easily buy, sell, trade, and even lend their tokenized assets using smart
-            contracts.</span>
+            contracts.</span
+          >
         </li>
         <li class="flex gap-x-3">
           <div i-ic-baseline-settings-suggest class="flex-none h-5 mt-1 text-indigo-600 w-5" aria-hidden="true" />
-          <span><strong class="font-semibold text-gray-900">Tight integration with Web3 infrastructure.</strong>Another significant advantage of RWA
+          <span
+            ><strong class="font-semibold text-gray-900">Tight integration with Web3 infrastructure.</strong>Another significant advantage of RWA
             Wallet is its tight integration with the web3 infrastructure. As web3 continues to gain traction, RWA Wallet ensures seamless
             compatibility with popular decentralized applications (dApps) and blockchain protocols. This means that users can effortlessly interact
             with a wide range of dApps, from decentralized finance (DeFi) platforms to non-fungible token (NFT) marketplaces, all from within their
-            RWA Wallet.</span>
+            RWA Wallet.</span
+          >
         </li>
         <li class="flex gap-x-3">
           <div i-ion-lock-closed class="flex-none h-5 mt-1 text-indigo-600 w-5" aria-hidden="true" />
-          <span><strong class="font-semibold text-gray-900">Furthermore, RWA Wallet emphasizes security and user control.</strong> It incorporates
+          <span
+            ><strong class="font-semibold text-gray-900">Furthermore, RWA Wallet emphasizes security and user control.</strong> It incorporates
             advanced security measures, such as multi-factor authentication and hardware wallet integration, to ensure the safety of users' assets.
             Additionally, RWA Wallet gives users full control over their private keys, which are never shared with any third-party entity. This puts
-            users in charge of their own financial sovereignty, a key principle of the decentralized movement.</span>
+            users in charge of their own financial sovereignty, a key principle of the decentralized movement.</span
+          >
         </li>
       </ul>
       <p class="mt-8">
@@ -57,7 +75,7 @@
         integration with web3 infrastructure, emphasis on security and user control, and user-friendly interface, RWA Wallet brings a new level of
         innovation and convenience to the world of decentralized finance. As the web3 ecosystem continues to evolve, RWA Wallet is poised to play a
         significant role in shaping the future of blockchain-based finance.
-      </p>
+      </p> -->
     </div>
   </div>
 </template>
