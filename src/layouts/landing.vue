@@ -5,5 +5,6 @@
     <RouterView />
 
     <BsTokenMintModal />
+    <BsNotification />
   </div>
 </template>

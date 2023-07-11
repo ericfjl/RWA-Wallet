@@ -3,9 +3,9 @@ import { formatEther } from "viem";
 import { get } from "lodash";
 import { sendMessage } from "webext-bridge/options";
 
-let { isShow, params, opts, tokenId, toggle } = $(tokenMintStore());
+let { isShow, params, opts, tokenId } = $(tokenMintStore());
 
-const { payTokenAddress, payBy, distributor } = $(appStore());
+const { payTokenAddress, payBy, distributor, currentAllowance } = $(appStore());
 
 let account = $ref("");
 onMounted(async () => {
@@ -13,6 +13,7 @@ onMounted(async () => {
   account = getAccount(rz.mnemonicStr);
 });
 
+const { addSuccess } = $(notificationStore());
 const { metadata, basicPrice, totalSupply, maxSupply, isLoading: isTokenLoading, doUpdate: updateToken } = $(useToken($$(tokenId)));
 let status = $ref("");
 
@@ -51,18 +52,31 @@ const doSubmit = async () => {
   const metadata = {
     amount,
     metaType,
-    basicPrice,
+    basicPrice: basicPrice.toString(),
     payTokenAddress,
     payBy,
     distributor,
   };
   status = "start pack and store mint metadata";
   const cid = await storeJson(metadata);
-  let rc = "";
+
+  if (currentAllowance < mintCost) {
+    status = "start add allowance for pay token";
+    const spenderAddress = getContractInfo("BuidlerProtocol").address;
+    await writeContract(
+      {
+        account,
+        contractName: payBy.replace("$", ""),
+        functionName: "approve",
+      },
+      spenderAddress,
+      mintCost
+    );
+  }
 
   if (metaType === "OTP") {
     status = "start buy One Time Payment SBT";
-    const tx = await writeContract(
+    await writeContract(
       {
         account,
         contractName: "BuidlerProtocol",
@@ -74,9 +88,10 @@ const doSubmit = async () => {
       payTokenAddress,
       distributor
     );
+    addSuccess(`Buy ${params.amount} One Time Payment SBT Successed!`);
   } else {
     status = "start buy RWA NFT";
-    const tx = await writeContract(
+    await writeContract(
       {
         account,
         contractName: "BuidlerProtocol",
@@ -89,6 +104,7 @@ const doSubmit = async () => {
       payTokenAddress,
       distributor
     );
+    addSuccess(`Buy ${params.amount} RWA NFT Successed!`);
   }
   await doClose();
 };
@@ -119,6 +135,10 @@ const doSubmit = async () => {
         <BsFormSelectBst v-model="mintCost" v-model:balance-enough="balanceEnough" my-4 space-y-4 border-y-gray-2 border-y-1 py-5>
           Total Cost
         </BsFormSelectBst>
+        <div v-if="status" flex flex-col justify-center items-center py-4>
+          <BsLoadingIcon />
+          <div mt-2>{{ status }}</div>
+        </div>
         <BsBtnBlack w-full :disabled="!canSubmit" my-4 :is-loading="isLoading" @click="doSubmit"> Mint</BsBtnBlack>
       </div>
     </div>
