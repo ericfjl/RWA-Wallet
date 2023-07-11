@@ -31,7 +31,7 @@
               </li>
             </ul>
             <div class="rounded-md shadow">
-              <a :href="tier.href" class="border border-transparent rounded-md flex font-medium bg-gray-800 text-base text-white py-3 px-5 items-center justify-center hover:bg-gray-900" aria-describedby="tier-standard">Mint Now</a>
+              <BsBtnBlack @click="mintNow" class="border border-transparent w-full rounded-md flex font-medium bg-gray-800 text-base text-white py-3 px-5 items-center justify-center hover:bg-gray-900" aria-describedby="tier-standard">Mint Now</BsBtnBlack>
             </div>
           </div>
         </div>

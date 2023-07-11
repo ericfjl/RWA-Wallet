@@ -22,7 +22,7 @@ const selected = ref(moods[5]);
       <form action="#">
         <div class="border-b border-gray-200 focus-within:border-indigo-600">
           <label for="comment" class="sr-only">Add your comment</label>
-          <textarea rows="3" name="comment" id="comment" class="block w-full resize-none border-0 border-b border-transparent p-0 pb-2 text-gray-900 placeholder:text-gray-400 focus:border-indigo-600 focus:ring-0 sm:text-sm sm:leading-6" placeholder="Add your comment..." />
+          <textarea rows="3" name="comment" id="comment" class="p-3 block w-full resize-none border-0 border-b border-transparent pb-2 text-gray-900 placeholder:text-gray-400 focus:border-indigo-600 focus:ring-0 sm:text-sm sm:leading-6" placeholder="Add your comment..." />
         </div>
         <div class="flex justify-between pt-2">
           <div class="flex items-center space-x-5">

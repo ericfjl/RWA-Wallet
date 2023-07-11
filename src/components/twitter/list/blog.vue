@@ -1,6 +1,16 @@
 <script setup lang="ts">
 const posts = [
   {
+    id: 6,
+    title: "The future Of Web3: RWA Wallet",
+    href: "#",
+    description: `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`,
+    imageUrl: "ipfs://bafkreif64ufq5qc67th2pzto2aprficdwg4f7hqz73vqop22hhqed2v2ze",
+    date: "Jun 28, 2023",
+    datetime: "2020-06-28",
+    category: { title: "RWA Wallet", href: "#" },
+  },
+  {
     id: 5,
     title: "Value Flow: How NFT Artists Are Getting Paid via our RWA Protocol",
     href: "#",
@@ -83,10 +93,10 @@ In fact, the current Mask plug-in can also solve this problem. I’m not sure ab
             </div>
             <div class="group relative">
               <h3 class="font-semibold mt-3 text-lg text-gray-900 leading-6 group-hover:text-gray-600">
-                <a :href="post.href">
+                <router-link :to="`/options/twitter/${post.tokenId}/${post.itemId}-${post.title}`">
                   <span class="inset-0 absolute" />
                   {{ post.title }}
-                </a>
+                </router-link>
               </h3>
               <p class="mt-5 text-sm text-gray-600 leading-6 line-clamp-3">{{ post.description }}</p>
             </div>
