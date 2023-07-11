@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { get, kebabCase } from 'lodash'
+import { get, kebabCase } from "lodash";
 const posts = [
   {
     id: 6,
@@ -77,9 +77,11 @@ In fact, the current Mask plug-in can also solve this problem. I’m not sure ab
   // More posts...
 ];
 
+const categoryLink = (post) => `/options/category/${get(post, "metadata.category")}`;
+const postLink = (post) => `/options/twitter/${post.tokenId}/${post.itemid}-${kebabCase(get(post, "metadata.title"))}`;
 
-const categoryLink = post => `/options/category/${get(post, 'metadata.category')}`
-const postLink = post => `/options/twitter/${post.tokenId}/${post.itemid}-${kebabCase(get(post, 'metadata.title'))}`
+const route = useRoute();
+const tokenId = $computed(() => route.params.tokenId);
 </script>
 
 <template>
@@ -88,6 +90,7 @@ const postLink = post => `/options/twitter/${post.tokenId}/${post.itemid}-${keba
       <div class="mx-auto text-center max-w-2xl">
         <h2 class="font-bold tracking-tight text-3xl text-gray-900 sm:text-4xl">NFT Holder Only Content</h2>
         <p class="mt-2 text-lg text-gray-600 leading-8">Get fully access by NFT Holder or One-Time-Payment NFT buyer.</p>
+        <BsBtnIndigo mt-10 @click="$router.push(`/options/twitter/${tokenId}/new`)">Create new RWA Content</BsBtnIndigo>
       </div>
       <div class="mx-auto mt-16 max-w-2xl grid gap-x-8 gap-y-20 grid-cols-1 lg:max-w-none lg:mx-0 lg:grid-cols-3">
         <article v-for="post in posts" :key="post.id" class="flex flex-col items-start justify-between">
@@ -98,9 +101,11 @@ const postLink = post => `/options/twitter/${post.tokenId}/${post.itemid}-${keba
           <div class="max-w-xl">
             <div class="flex mt-8 text-xs gap-x-4 items-center">
               <time :datetime="post.datetime" class="text-gray-500">{{ post.date }}</time>
-              <router-link :to="categoryLink(post)" class="rounded-full font-medium bg-gray-50 py-1.5 px-3 text-gray-600 z-10 relative hover:bg-gray-100">{{
-                post.category.title
-              }}</router-link>
+              <router-link
+                :to="categoryLink(post)"
+                class="rounded-full font-medium bg-gray-50 py-1.5 px-3 text-gray-600 z-10 relative hover:bg-gray-100"
+                >{{ post.category.title }}</router-link
+              >
             </div>
             <div class="group relative">
               <h3 class="font-semibold mt-3 text-lg text-gray-900 leading-6 group-hover:text-gray-600">
