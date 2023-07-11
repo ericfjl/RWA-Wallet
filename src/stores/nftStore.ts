@@ -1,12 +1,11 @@
 export const nftStore = defineStore('nftStore', () => {
   let nft = $ref({tokenURI: '', token: {}})
 
-  const getNftInfo = async(tokenId) => {
+  const getNftInfo = async (tokenId) => {
     const rz = await readContract({
         contractName: 'BuidlerProtocol',
         functionName: 'getToken'
     }, tokenId, '', '')
-    
     nft.tokenURI = rz[0]
     nft.tokenOwner  = rz[1]
     nft.basicPrice  = rz[2]
@@ -16,7 +15,6 @@ export const nftStore = defineStore('nftStore', () => {
     nft.metas = rz[6]
 
     nft.token = await parseTokenURI(nft.tokenURI)
-    console.log('====> nft :', nft)
   }
   watchEffect(async() => {
     // do some init stuff

@@ -1,6 +1,9 @@
-export const tplStore = defineStore('tplStore', () => {
+export const tokenMintStore = defineStore('tokenMintStore', () => {
   let isShow = $ref(false)
-  let params = $ref({})
+  let params = $ref({
+    tokenId: ''
+  })
+  const tokenId = $computed(()=> params.tokenId || '')
   let opts = $ref({})
 
   const toggle = () => {
@@ -23,10 +26,11 @@ export const tplStore = defineStore('tplStore', () => {
     isShow,
     params,
     opts,
+    tokenId,
     update,
     toggle,
   })
 })
 
 if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(tplStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(tokenMintStore, import.meta.hot))

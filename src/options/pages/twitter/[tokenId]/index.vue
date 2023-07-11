@@ -14,7 +14,7 @@ onMounted(async () => {
 
 <template>
   <main>
-    <TwitterHero :learnMoreAction="scrollToNextView" />
+    <!-- <TwitterHero :learnMoreAction="scrollToNextView" /> -->
     <div ref="nextView">
       <TwitterStatusPrice />
     </div>

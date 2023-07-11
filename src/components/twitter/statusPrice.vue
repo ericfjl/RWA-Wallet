@@ -31,7 +31,7 @@
               </li>
             </ul>
             <div class="rounded-md shadow">
-              <BsBtnBlack @click="mintNow" class="border border-transparent w-full rounded-md flex font-medium bg-gray-800 text-base text-white py-3 px-5 items-center justify-center hover:bg-gray-900" aria-describedby="tier-standard">Mint Now</BsBtnBlack>
+              <BsBtnBlack @click="showMintModal(tier.name)" class="border border-transparent w-full rounded-md flex font-medium bg-gray-800 text-base text-white py-3 px-5 items-center justify-center hover:bg-gray-900" aria-describedby="tier-standard">Mint Now</BsBtnBlack>
             </div>
           </div>
         </div>
@@ -66,4 +66,18 @@ const tiers = [
     features: ["All Standard benefits included", "Social Shoutout", "Early access", "Ask my guest a question"],
   },
 ];
+
+const { toggle, update } = $(tokenMintStore());
+
+const route = useRoute();
+const tokenId = $computed(() => route.params.tokenId);
+
+const showMintModal = (tier) => {
+  console.log("====> tier :", tier);
+  update({
+    tokenId,
+    amount: 1,
+  });
+  toggle();
+};
 </script>

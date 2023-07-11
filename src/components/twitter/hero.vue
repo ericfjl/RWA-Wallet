@@ -34,7 +34,7 @@ const { nft } = $(nftStore());
               </button> -->
             </div>
           </div>
-          <BsBoxImg :src="nft.token.image2 || 'ipfs://bafkreib2di3auwwykb5v4rdtrcjyvbpt6eeqqyrovihj5le2pqekrgbxru'" alt="" class="max-w-lg object-cover rounded-2xl mt-10 w-full aspect-[6/5] sm:mt-16 lg:max-w-none lg:mt-0 xl:mt-26 xl:row-span-2 xl:row-end-2" />
+          <BsBoxImg :src="nft.token.image2 || 'ipfs://bafkreib2di3auwwykb5v4rdtrcjyvbpt6eeqqyrovihj5le2pqekrgbxru'" alt="" class="max-w-lg object-cover rounded-2xl mt-6 w-full aspect-[6/5] sm:mt-10 lg:max-w-none lg:mt-0 xl:mt-16 xl:row-span-2 xl:row-end-2" />
         </div>
       </div>
       <div class="bg-gradient-to-t from-white h-24 inset-x-0 bottom-0 -z-10 absolute sm:h-32" />

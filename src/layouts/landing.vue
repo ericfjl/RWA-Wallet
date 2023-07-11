@@ -3,5 +3,7 @@
   <div>
     <LandingNav />
     <RouterView />
+
+    <BsTokenMintModal />
   </div>
 </template>

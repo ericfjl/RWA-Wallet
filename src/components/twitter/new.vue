@@ -4,7 +4,9 @@ let { update, toggle } = $(txStore());
 const image = $ref("");
 const name = $ref("My First RWA NFT");
 const subTitle = $ref(`We’re changing the way people connect to Web3.`);
-const description = $ref(`RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`);
+const description = $ref(
+  `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`
+);
 const tokenType = "NFTFi-Twitter";
 const inviteCommission = $ref(1);
 const distributor = $ref("rwa-wallet");
@@ -26,30 +28,33 @@ const categoryList = $ref([
 ]);
 
 const router = useRouter();
-const tags = $ref(["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"].join(', '));
+const tags = $ref(["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"].join(", "));
 const basicPrice = $ref(100); // $BSTa
 const maxSupply = $ref(10000);
 const error = $ref("");
 
 const afterSuccess = async () => {
   router.push("/options/twitter/");
-}
+};
 
 const doSubmit = async () => {
-  update({
-    image,
-    name,
-    description,
-    category,
-    tags,
-    tokenType,
-    distributor,
-    basicPrice,
-    maxSupply,
-    inviteCommission,
-  }, {
-    afterSuccess
-  });
+  update(
+    {
+      image,
+      name,
+      description,
+      category,
+      tags,
+      tokenType,
+      distributor,
+      basicPrice,
+      maxSupply,
+      inviteCommission,
+    },
+    {
+      afterSuccess,
+    }
+  );
   toggle();
 };
 </script>
@@ -66,7 +71,7 @@ const doSubmit = async () => {
             <label for="name" class="font-medium leading-6 block">NFT Name</label>
             <div class="mt-2">
               <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name" />
+                <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="Your Cool NFT Name" />
               </div>
             </div>
           </div>
@@ -79,7 +84,7 @@ const doSubmit = async () => {
           <div class="col-span-full">
             <label for="about" class="font-medium leading-6 block">NFT Description</label>
             <div class="mt-2">
-              <textarea id="about" v-model="description" name="about" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500 " />
+              <textarea id="about" v-model="description" name="about" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500" />
             </div>
             <p class="mt-3 text-gray-400 leading-6">Write a few sentences about this NFT.</p>
           </div>
@@ -101,7 +106,7 @@ const doSubmit = async () => {
           <div class="col-span-full">
             <label for="basicPrice" class="font-medium leading-6 block">Invest share basic price</label>
             <div class="rounded-md flex shadow-sm mt-2">
-              <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500 " />
+              <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500" />
               <span class="border rounded-r-md border-l-0 border-gray-300 px-3 text-gray-500 inline-flex items-center">$BST</span>
             </div>
           </div>
@@ -109,7 +114,7 @@ const doSubmit = async () => {
           <div class="col-span-full">
             <label for="maxSupply" class="font-medium leading-6 block">Invest share max supply</label>
             <div class="rounded-md flex shadow-sm mt-2">
-              <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset mt-2 w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700 " placeholder="" />
+              <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset mt-2 w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700" placeholder="" />
             </div>
           </div>
         </div>
