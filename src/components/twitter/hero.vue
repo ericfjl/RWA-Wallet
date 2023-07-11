@@ -14,7 +14,7 @@ const { nft } = $(nftStore());
       <div class="mx-auto max-w-7xl py-32 px-6 sm:py-40 lg:px-8">
         <div class="mx-auto max-w-2xl lg:max-w-none lg:mx-0 lg:grid lg:gap-x-16 lg:gap-y-6 lg:grid-cols-2 xl:gap-x-8 xl:grid-cols-1 xl:grid-rows-1">
           <h1 class="font-bold tracking-tight max-w-2xl text-4xl text-gray-900 sm:text-6xl lg:col-span-2 xl:col-auto">
-            {{ nft.token.subTitle || `We’re changing the way people connect to Web3.` }}
+            {{ nft.token.subTitle || `RWA Wallet are changing the way people use Web3.` }}
           </h1>
           <div class="max-w-xl mt-6 lg:mt-0 xl:col-end-1 xl:row-start-1">
             <p class="text-lg text-gray-600 leading-8">

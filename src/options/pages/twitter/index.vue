@@ -4,6 +4,7 @@ import { formatEther } from "viem";
 
 let account = $ref("");
 let items = $ref([]);
+let isLoading = $ref(true);
 onMounted(async () => {
   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
   account = getAccount(rz.mnemonicStr);
@@ -38,6 +39,7 @@ onMounted(async () => {
       };
     })
   );
+  isLoading = false;
 });
 </script>
 
@@ -47,7 +49,10 @@ onMounted(async () => {
 
     <div class="border-t border-white/10 pt-11">
       <h2 class="font-semibold text-base text-white px-4 leading-7 sm:px-6 lg:px-8">Newest</h2>
-      <table class="mt-6 text-left w-full whitespace-nowrap">
+      <div v-if="isLoading" flex justify-center items-center w-full h-100>
+        <div i-svg-spinners-blocks-shuffle-3 text-white class="w-14 h-14"></div>
+      </div>
+      <table v-else class="mt-6 text-left w-full whitespace-nowrap">
         <colgroup>
           <col class="w-full sm:w-4/12" />
           <col class="lg:w-4/12" />
