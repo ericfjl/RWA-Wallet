@@ -1,3 +1,5 @@
+const distributor = '0xC6E58fb4aFFB6aB8A392b7CC23CD3feF74517F6C'
+
 export const appStore = defineStore('appStore', () => {
   const payBy = $ref('$BSTSwap')
   const payTokenList = ['$BSTSwap', '$BSTEntropy']
@@ -17,8 +19,11 @@ export const appStore = defineStore('appStore', () => {
 
   let addTokenCost = $ref(parseEther('0'))
   let platformCommission = $ref('')
+  
 
   const bstBalance = $computed(() => tokenDataMap[payBy].balance)
+  const payTokenAddress = $computed(() => tokenDataMap[payBy].address)
+  const currentAllowance = $computed(() => tokenDataMap[payBy].allowance)
 
   const queryBstBalance = async () => {
     const rz = await Promise.all([
@@ -72,10 +77,13 @@ export const appStore = defineStore('appStore', () => {
 
   return $$({
     payBy,
+    payTokenAddress,
     payTokenList,
     addTokenCost,
+    currentAllowance,
     platformCommission,
     bstBalance,
+    distributor,
   })
 })
 

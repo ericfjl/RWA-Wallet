@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { formatEther } from "viem";
 import { get } from "lodash";
+import { sendMessage } from "webext-bridge/options";
 
-const { isShow, params, opts, tokenId } = $(tokenMintStore());
+let { isShow, params, opts, tokenId, toggle } = $(tokenMintStore());
 
-// const { payTokenAddress, payBy, currentAllowance, allowanceModal, distributor, queryAllowance, showAllowanceModal } = $(tokenMintStore());
+const { payTokenAddress, payBy, distributor } = $(appStore());
 
-// const { walletAddress: address, storeJsonWithStatus, bpAction } = $(tokenMintStore());
-const { insertDataWithStatus } = $(tokenMintStore());
-
-const { metadata, basicPrice, totalSupply, maxSupply, isLoading: isTokenLoading, doUpdate: updateToken } = $(useToken($$(tokenId)));
-
-watchEffect(async () => {
-  if (!isShow) return;
-  // await updateToken(true);
-  console.log("====> basicPrice :", basicPrice);
+let account = $ref("");
+onMounted(async () => {
+  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
+  account = getAccount(rz.mnemonicStr);
 });
 
+const { metadata, basicPrice, totalSupply, maxSupply, isLoading: isTokenLoading, doUpdate: updateToken } = $(useToken($$(tokenId)));
+let status = $ref("");
+
 const mintCost = $computed(() => {
+  if (!params.amount) return 0;
   return basicPrice * BigInt(params.amount);
 });
 
@@ -32,26 +32,22 @@ const canSubmit = $computed(() => {
 });
 
 const doClose = async () => {
-  // await params.doClose();
-  // toggle();
+  if (opts.doClose) {
+    await opts.doClose();
+  }
+  isShow = false;
   isLoading = false;
+  status = "";
+  params = {};
+  opts = {};
 };
 const doSubmit = async () => {
-  console.log("====> balanceEnough :", balanceEnough);
-  if (currentAllowance.lt(mintCost)) {
-    showAllowanceModal({
-      amount: mintCost,
-      doClose: async () => {
-        await queryAllowance();
-        allowanceModal.isShow = false;
-        if (!currentAllowance.lt(mintCost)) await doSubmit();
-      },
-    });
-    return;
-  }
+  if (isLoading) return;
 
   isLoading = true;
 
+  const amount = params.amount;
+  const metaType = params.metaType;
   const metadata = {
     amount,
     metaType,
@@ -60,11 +56,40 @@ const doSubmit = async () => {
     payBy,
     distributor,
   };
-  const cid = await storeJsonWithStatus(metadata);
+  status = "start pack and store mint metadata";
+  const cid = await storeJson(metadata);
   let rc = "";
-  if (metaType === "OTP") rc = await bpAction("buyOTP", tokenId, amount, cid, payTokenAddress, distributor);
-  else rc = await bpAction("addMeta", metaType, tokenId, amount, cid, payTokenAddress, distributor);
-  await insertDataWithStatus("meta", { metadata, chain, tokenId, appaddress, address, metatype: metaType });
+
+  if (metaType === "OTP") {
+    status = "start buy One Time Payment SBT";
+    const tx = await writeContract(
+      {
+        account,
+        contractName: "BuidlerProtocol",
+        functionName: "buyOTP",
+      },
+      tokenId,
+      params.amount,
+      cid,
+      payTokenAddress,
+      distributor
+    );
+  } else {
+    status = "start buy RWA NFT";
+    const tx = await writeContract(
+      {
+        account,
+        contractName: "BuidlerProtocol",
+        functionName: "addMeta",
+      },
+      metaType,
+      tokenId,
+      amount,
+      cid,
+      payTokenAddress,
+      distributor
+    );
+  }
   await doClose();
 };
 </script>

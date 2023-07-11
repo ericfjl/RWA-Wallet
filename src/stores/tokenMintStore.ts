@@ -1,7 +1,8 @@
 export const tokenMintStore = defineStore('tokenMintStore', () => {
   let isShow = $ref(false)
   let params = $ref({
-    tokenId: ''
+    tokenId: '',
+    amount: 0,
   })
   const tokenId = $computed(()=> params.tokenId || '')
   let opts = $ref({})
@@ -15,8 +16,12 @@ export const tokenMintStore = defineStore('tokenMintStore', () => {
   }
 
   const update = (_params, _opts = {}) => {
-    params = _params
-    opts = _opts
+    params = {
+      ..._params,
+    }
+    opts = {
+      ..._opts
+    }
   }
   watchEffect(async() => {
     // do some init stuff

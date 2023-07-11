@@ -1,3 +1,49 @@
+<script setup lang="ts">
+import { CheckIcon } from "@heroicons/vue/24/outline";
+
+const stats = [
+  { id: 1, name: "Sold / Max Supply", value: "2434 / 10K" },
+  { id: 2, name: "OTP NFT income ($BST)", value: "84572" },
+  { id: 3, name: "Total Value Sold ($BST)", value: "103298" },
+];
+
+const tiers = [
+  {
+    name: "Standard",
+    href: "#",
+    priceMonthly: 100,
+    description:
+      "This tier of benefits is to support the time & resources spent to produce the podcast + Exclusive access to my custom branded wallpapers & Discord Role!",
+    features: ["Social Shoutout", "Discord Role", "Desktop Wallpaper", "Early access"],
+  },
+  {
+    name: "Super",
+    href: "#",
+    priceMonthly: 1000,
+    description: "Know who my guest is once the show has been booked + Early access to podcast episodes before they air and monthly AMA.",
+    features: ["All Standard benefits included", "Social Shoutout", "Early access", "Ask my guest a question"],
+  },
+];
+
+const { toggle, update } = $(tokenMintStore());
+
+const route = useRoute();
+const tokenId = $computed(() => route.params.tokenId);
+
+const showMintModal = (tier) => {
+  let amount = 1;
+  if (tier === "Super") {
+    amount = 10;
+  }
+  update({
+    tokenId,
+    amount,
+    metaType: "mint",
+  });
+  toggle();
+};
+</script>
+
 <template>
   <div class="bg-gray-900 py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
@@ -39,45 +85,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { CheckIcon } from "@heroicons/vue/24/outline";
-
-const stats = [
-  { id: 1, name: "Sold / Max Supply", value: "2434 / 10K" },
-  { id: 2, name: "OTP NFT income ($BST)", value: "84572" },
-  { id: 3, name: "Total Value Sold ($BST)", value: "103298" },
-];
-
-const tiers = [
-  {
-    name: "Standard",
-    href: "#",
-    priceMonthly: 100,
-    description:
-      "This tier of benefits is to support the time & resources spent to produce the podcast + Exclusive access to my custom branded wallpapers & Discord Role!",
-    features: ["Social Shoutout", "Discord Role", "Desktop Wallpaper", "Early access"],
-  },
-  {
-    name: "Super",
-    href: "#",
-    priceMonthly: 1000,
-    description: "Know who my guest is once the show has been booked + Early access to podcast episodes before they air and monthly AMA.",
-    features: ["All Standard benefits included", "Social Shoutout", "Early access", "Ask my guest a question"],
-  },
-];
-
-const { toggle, update } = $(tokenMintStore());
-
-const route = useRoute();
-const tokenId = $computed(() => route.params.tokenId);
-
-const showMintModal = (tier) => {
-  console.log("====> tier :", tier);
-  update({
-    tokenId,
-    amount: 1,
-  });
-  toggle();
-};
-</script>
