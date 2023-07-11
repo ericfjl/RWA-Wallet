@@ -54,25 +54,16 @@ const tiers = [
     name: "Standard",
     href: "#",
     priceMonthly: 100,
-    description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
-    features: [
-      "Pariatur quod similique",
-      "Sapiente libero doloribus modi nostrum",
-      "Vel ipsa esse repudiandae excepturi",
-      "Itaque cupiditate adipisci quibusdam",
-    ],
+    description:
+      "This tier of benefits is to support the time & resources spent to produce the podcast + Exclusive access to my custom branded wallpapers & Discord Role!",
+    features: ["Social Shoutout", "Discord Role", "Desktop Wallpaper", "Early access"],
   },
   {
     name: "Super",
     href: "#",
     priceMonthly: 1000,
-    description: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
-    features: [
-      "Pariatur quod similique",
-      "Sapiente libero doloribus modi nostrum",
-      "Vel ipsa esse repudiandae excepturi",
-      "Itaque cupiditate adipisci quibusdam",
-    ],
+    description: "Know who my guest is once the show has been booked + Early access to podcast episodes before they air and monthly AMA.",
+    features: ["All Standard benefits included", "Social Shoutout", "Early access", "Ask my guest a question"],
   },
 ];
 </script>

@@ -1,5 +1,5 @@
 export const nftStore = defineStore('nftStore', () => {
-  let nft = $ref({tokenURI: ''})
+  let nft = $ref({tokenURI: '', token: {}})
 
   const getNftInfo = async(tokenId) => {
     const rz = await readContract({

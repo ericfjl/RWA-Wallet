@@ -12,7 +12,7 @@
           <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
         </a>
       </div>
-      <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; 2023 Your Twitter, Inc. All rights reserved.</p>
+      <p class="mt-10 text-center text-xs leading-5 text-gray-500">&copy; 2023 NFT-Fi Twitter, Inc. All rights reserved.</p>
     </div>
   </footer>
 </template>

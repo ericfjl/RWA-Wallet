@@ -4,12 +4,12 @@ const scrollToNextView = () => {
   nextView.scrollIntoView({ behavior: "smooth" });
 };
 
-const route = useRoute()
-const tokenId = $computed(() => route.params.tokenId)
-const { getNftInfo } = $(nftStore())
+const route = useRoute();
+const tokenId = $computed(() => route.params.tokenId);
+const { getNftInfo } = $(nftStore());
 onMounted(async () => {
-  await getNftInfo(tokenId)
-})
+  await getNftInfo(tokenId);
+});
 </script>
 
 <template>
@@ -20,7 +20,8 @@ onMounted(async () => {
     </div>
 
     <!-- <TwitterListBook /> -->
-    <TwitterListPhoto />
+    <!-- <TwitterListPhoto /> -->
+    <TwitterListBlog />
     <TwitterFooter />
   </main>
 </template>
