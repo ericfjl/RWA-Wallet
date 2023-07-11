@@ -4,7 +4,6 @@ import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP } from '~/consta
 import { mnemonicToAccount } from 'viem/accounts'
 export { parseEther, formatEther } from 'viem'
 
-const CHAIN_ID = '0x13881'
 export const getContractInfo = (contractName, chain = CHAIN_ID) => {
   const address = CONTRACT_ADDRESS_MAP[contractName][chain]
   const abi = CHAIN_CONTRACT_ABI_MAP[contractName]

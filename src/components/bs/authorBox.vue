@@ -3,19 +3,29 @@ interface Props {
   author: Object;
 }
 const { author } = defineProps<Props>();
-const holdIt = async () => {
-  console.log("====> holdIt :");
+
+const route = useRoute();
+const tokenId = $computed(() => route.params.tokenId);
+const { toggle, update } = $(tokenMintStore());
+
+const showMintModal = () => {
+  const amount = 1;
+  update({
+    tokenId,
+    amount,
+    metaType: "mint",
+  });
+  toggle();
 };
 </script>
 
 <template>
   <div class="flex gap-x-4 relative items-center justify-between">
     <div flex>
-      <BsBoxImg :src="author.avatar" alt="" class="rounded-full bg-gray-50 h-10 w-10 mr-4" />
+      <BsBoxImg :src="author.avatar" alt="" class="rounded-full bg-gray-50 h-10 mr-4 w-10" />
       <div class="text-sm leading-6">
         <p class="font-semibold text-gray-900">
           <router-link :to="`/${author.address}`">
-            <span class="inset-0 absolute" />
             {{ author.firstname }}
             {{ author.lastname }}
           </router-link>
@@ -25,6 +35,6 @@ const holdIt = async () => {
         </p>
       </div>
     </div>
-    <BsBtnIndigo @click="holdIt"> Hold It </BsBtnIndigo>
+    <BsBtnBlack @click="showMintModal">Hold It</BsBtnBlack>
   </div>
 </template>

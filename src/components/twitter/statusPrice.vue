@@ -53,7 +53,7 @@ const showMintModal = (tier) => {
           <dd class="order-first font-semibold text-white tracking-tight text-3xl sm:text-5xl">{{ stat.value }}</dd>
         </div>
       </dl>
-      <div class="mx-auto max-w-md space-y-4 lg:space-y-0 lg:max-w-5xl lg:grid lg:gap-5 lg:grid-cols-2 mt-20">
+      <div class="mx-auto max-w-md space-y-4 mt-20 lg:space-y-0 lg:max-w-5xl lg:grid lg:gap-5 lg:grid-cols-2">
         <div v-for="tier in tiers" :key="tier.name" class="rounded-lg flex flex-col shadow-lg overflow-hidden">
           <div class="bg-white py-8 px-6 sm:p-10 sm:pb-6">
             <div>
@@ -77,7 +77,7 @@ const showMintModal = (tier) => {
               </li>
             </ul>
             <div class="rounded-md shadow">
-              <BsBtnBlack @click="showMintModal(tier.name)" class="border border-transparent w-full rounded-md flex font-medium bg-gray-800 text-base text-white py-3 px-5 items-center justify-center hover:bg-gray-900" aria-describedby="tier-standard">Mint Now</BsBtnBlack>
+              <BsBtnBlack @click="showMintModal(tier.name)" class="border border-transparent rounded-md flex font-medium bg-gray-800 text-base text-white w-full py-3 px-5 items-center justify-center hover:bg-gray-900" aria-describedby="tier-standard">Mint Now</BsBtnBlack>
             </div>
           </div>
         </div>

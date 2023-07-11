@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { get, kebabCase } from 'lodash'
 const posts = [
   {
     id: 6,
+    tokenId: 6,
     title: "The future Of Web3: RWA Wallet",
     href: "#",
     description: `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`,
@@ -12,6 +14,7 @@ const posts = [
   },
   {
     id: 5,
+    tokenId: 5,
     title: "Value Flow: How NFT Artists Are Getting Paid via our RWA Protocol",
     href: "#",
     description: `We will be releasing an NFT project - a collection of 21,000 NFTs. Revenue from this release will flow to the vault of this NFT - an automatic 10% distribution of project earnings to holders of these NFTs.`,
@@ -22,6 +25,7 @@ const posts = [
   },
   {
     id: 4,
+    tokenId: 4,
     title: "How to build your own NFT membership card reading platform via RWA Wallet?",
     href: "#",
     description: `In fact, I have thought about developing this function a few months ago, but as a senior procrastination enthusiast, I have never implemented it.
@@ -34,6 +38,7 @@ After seeing the competition held by ETH-Global’s FEVM hackathon, there are on
   },
   {
     id: 1,
+    tokenId: 1,
     title: "Tens of thousands of chains into one",
     href: "#",
     description: `Because we believe that the value of web3 does not lie in any chain, but in the true value of the product. The world will have only one chain or some logic to form a chain.
@@ -46,6 +51,7 @@ You can think about our real world: a product in different countries has almost 
   },
   {
     id: 2,
+    tokenId: 2,
     title: "The latest technology stack updates related to Web3 development",
     href: "#",
     description: `This week, I started to sign up for the Polkadot Hackathon. This time I plan to make an NFT-Fi-Twitter browser plug-in, which allows Twitter users to post NFT-Gating twitter or comments, and users who want to view encrypted content need to Pay $BST to unlock (the corresponding NFT will be obtained as a payment certificate when you pay to unlock), and a series of technical expansions need to be studied in the process of doing it.`,
@@ -56,6 +62,7 @@ You can think about our real world: a product in different countries has almost 
   },
   {
     id: 1,
+    tokenId: 1,
     title: "Sign up for Polkadot 2023 Summer Hackathon",
     href: "#",
     description: `Earlier CZ replied to Elon Musk on Twitter about how Web3 can help Twitter reduce bots etc.
@@ -69,6 +76,10 @@ In fact, the current Mask plug-in can also solve this problem. I’m not sure ab
   },
   // More posts...
 ];
+
+
+const categoryLink = post => `/options/category/${get(post, 'metadata.category')}`
+const postLink = post => `/options/twitter/${post.tokenId}/${post.itemid}-${kebabCase(get(post, 'metadata.title'))}`
 </script>
 
 <template>
@@ -87,13 +98,13 @@ In fact, the current Mask plug-in can also solve this problem. I’m not sure ab
           <div class="max-w-xl">
             <div class="flex mt-8 text-xs gap-x-4 items-center">
               <time :datetime="post.datetime" class="text-gray-500">{{ post.date }}</time>
-              <a :href="post.category.href" class="rounded-full font-medium bg-gray-50 py-1.5 px-3 text-gray-600 z-10 relative hover:bg-gray-100">{{
+              <router-link :to="categoryLink(post)" class="rounded-full font-medium bg-gray-50 py-1.5 px-3 text-gray-600 z-10 relative hover:bg-gray-100">{{
                 post.category.title
-              }}</a>
+              }}</router-link>
             </div>
             <div class="group relative">
               <h3 class="font-semibold mt-3 text-lg text-gray-900 leading-6 group-hover:text-gray-600">
-                <router-link :to="`/options/twitter/${post.tokenId}/${post.itemId}-${post.title}`">
+                <router-link :to="postLink(post)">
                   <span class="inset-0 absolute" />
                   {{ post.title }}
                 </router-link>

@@ -21,7 +21,7 @@ const chainNameMap = {
   '0x1389': 'mantleTestnet',
 }
 
-export const CHAIN_ID = import.meta.env.VITE_CHAIN_ID
+export const CHAIN_ID = import.meta.env.VITE_CHAIN_ID || '0x13881'
 export const CHAIN_MAP = chainMap
 export const CHAIN_NAME = chainNameMap[CHAIN_ID]
 
