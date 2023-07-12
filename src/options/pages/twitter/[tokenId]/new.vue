@@ -18,7 +18,7 @@ onMounted(async () => {
 });
 
 
-const tokentype = $computed(() => get(metadata, "properties.tokenType", ""));
+const tokenType = $computed(() => get(metadata, "properties.tokenType", ""));
 
 const title = $ref("The future Of Web3: RWA Wallet");
 const tags = $ref(["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"].join(", "));

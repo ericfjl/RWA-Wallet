@@ -33,14 +33,15 @@ const canSubmit = $computed(() => {
 });
 
 const doClose = async () => {
-  if (opts.doClose) {
-    await opts.doClose();
-  }
+  let doClose = opts.doClose
   isShow = false;
   isLoading = false;
   status = "";
   params = {};
   opts = {};
+  if (doClose) {
+    await doClose()
+  }
 };
 const doSubmit = async () => {
   if (isLoading) return;

@@ -19,7 +19,7 @@ const { nft } = $(nftStore());
           <div class="max-w-xl mt-6 lg:mt-0 xl:col-end-1 xl:row-start-1">
             <p class="text-lg text-gray-600 leading-8">
               {{
-                nft.token.description2 ||
+                nft.token.description ||
                 ` RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It
               introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining
               the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`
@@ -34,7 +34,7 @@ const { nft } = $(nftStore());
               </button> -->
             </div>
           </div>
-          <BsBoxImg :src="nft.token.image2 || 'ipfs://bafkreib2di3auwwykb5v4rdtrcjyvbpt6eeqqyrovihj5le2pqekrgbxru'" alt="" class="max-w-lg object-cover rounded-2xl mt-6 w-full aspect-[6/5] sm:mt-10 lg:max-w-none lg:mt-0 xl:mt-16 xl:row-span-2 xl:row-end-2" />
+          <BsBoxImg :src="nft.token.image || 'ipfs://bafkreib2di3auwwykb5v4rdtrcjyvbpt6eeqqyrovihj5le2pqekrgbxru'" alt="" class="max-w-lg object-cover rounded-2xl mt-6 w-full aspect-[6/5] sm:mt-10 lg:max-w-none lg:mt-0 xl:mt-16 xl:row-span-2 xl:row-end-2" />
         </div>
       </div>
       <div class="bg-gradient-to-t from-white h-24 inset-x-0 bottom-0 -z-10 absolute sm:h-32" />

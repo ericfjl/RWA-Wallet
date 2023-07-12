@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { sendMessage } from "webext-bridge/options";
 import { formatEther } from "viem";
-
+import { get, truncate } from 'lodash'
 let account = $ref("");
 let items = $ref([]);
 let isLoading = $ref(true);
@@ -18,7 +18,7 @@ onMounted(async () => {
   // readContract({ account, contractName: 'BuidlerProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
   const tokenInfoArr = await Promise.all(tokenURIArr.map(parseURIData));
   items = reverse(
-    tokenInfoArr.map((token, index) => {
+    tokenInfoArr.filter(token => 'OTP' !== get(token, 'properties.tokenType')).map((token, index) => {
       // console.log({
       //   token,
       //   basicPrice: basicPriceArr[index].toString(),
@@ -27,7 +27,6 @@ onMounted(async () => {
       //   itemsCount: itemsCountArr[index],
       //   metaCount: metaCountArr[index],
       // })
-
       return {
         tokenId: index,
         token,
@@ -81,7 +80,7 @@ onMounted(async () => {
             <td class="py-4 pr-4 pl-0 hidden sm:pr-8 sm:table-cell">
               <div class="flex gap-x-3">
                 <div class="font-mono text-sm text-gray-400 leading-6">
-                  {{ item.token.description }}
+                  {{ truncate(item.token.description) }}
                 </div>
                 <span class="rounded-md font-medium bg-gray-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-gray-400/20 text-gray-400 inline-flex items-center">{{ item.token.properties.category }}</span>
               </div>
@@ -92,7 +91,7 @@ onMounted(async () => {
               </div>
             </td>
             <td class="text-sm py-4 pr-8 pl-0 text-gray-400 leading-6 hidden md:table-cell lg:pr-20">
-              <BsTags :tags="item.token.properties.tags" />
+              <BsTags :tags="get(item, 'token.properties.tags', ['Web3', 'RWA', 'Twitter', 'NFT'])" />
             </td>
             <td class="text-sm py-4 pr-8 pl-0 text-gray-400 leading-6 hidden md:table-cell lg:pr-20">
               {{ formatEther(item.basicPrice) }}
