@@ -88,8 +88,6 @@ let items = $ref([])
 const categoryLink = (post) => `/options/category/${kebabCase(post.category)}`;
 const postLink = (post, index) => `/options/twitter/${tokenId}/${index}-${kebabCase(post.title)}`;
 
-
-
 onMounted(async () => {
   const { mnemonicStr } = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
   account = getAccount(mnemonicStr);

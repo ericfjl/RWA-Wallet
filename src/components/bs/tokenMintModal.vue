@@ -130,14 +130,7 @@ const doSubmit = async () => {
         </div>
         <div flex justify="between" items-center>
           <div>Mint Amount</div>
-          <input
-            id="amount"
-            v-model="params.amount"
-            type="text"
-            name="amount"
-            autocomplete="amount"
-            class="rounded-md border-0 shadow-sm ring-inset my-2 py-1.5 px-2 ring-1 ring-slate-300 text-slate-900 w-20 block placeholder:text-slate-400 sm:text-sm sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700"
-          />
+          <input id="amount" v-model="params.amount" type="text" name="amount" autocomplete="amount" class="rounded-md border-0 shadow-sm ring-inset my-2 py-1.5 px-2 ring-1 ring-slate-300 text-slate-900 w-20 block placeholder:text-slate-400 sm:text-sm sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700" />
         </div>
         <BsFormSelectBst v-model="mintCost" v-model:balance-enough="balanceEnough" my-4 space-y-4 border-y-gray-2 border-y-1 py-5>
           Total Cost

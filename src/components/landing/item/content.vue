@@ -1,28 +1,72 @@
 <script setup lang="ts">
-// interface Props {
-//   modelValue: string;
-//   foo?: string;
-// }
-// let { modelValue, foo = "default-val" } = defineProps<Props>();
-// const emit = defineEmits(["update:modelValue"]);
+import { sendMessage } from "webext-bridge/options";
+
+const route = useRoute()
+const tokenId = $computed(() => route.params.tokenId)
+const slug = $computed(() => route.params.itemSlug)
+const itemId = $computed(() => {
+  return slug.split('-')[0]
+})
 
 const textContent = $ref("");
+
+let account = $ref('')
+let item = $ref({})
+let isLoading = $ref(true)
+const excerpt = $computed(() => {
+  return item.excerpt || `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a
+      new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of
+      both worlds, RWA Wallet offers users a unique and powerful financial tool.`
+})
+onMounted(async () => {
+  const { mnemonicStr } = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
+  account = getAccount(mnemonicStr);
+  const itemURIArr = await readContract(
+    { account, contractName: "BuidlerProtocol", functionName: 'getItems' },
+    tokenId,
+    itemId,
+    1,
+    ''
+  );
+  item = await parseURIData(itemURIArr[0])
+  isLoading = false;
+});
+
+const { toggle, update } = $(tokenMintStore());
+
+const showMintModal = (metaType = 'mint') => {
+  let amount = item.content.requiredNFTCount
+  let _tokenId = tokenId
+  if (metaType === 'OTP') {
+    amount = 1
+    _tokenId = item.content.otpTokenId
+  }
+  update({
+    tokenId: _tokenId,
+    amount,
+    metaType,
+  });
+  toggle();
+};
+
+const requiredNFTCount = $computed(() => item.content?.requiredNFTCount || 0)
 </script>
 <template>
   <div>
-    <h1 class="font-bold mt-2 tracking-tight text-4xl text-gray-900 sm:text-5xl">The future Of Web3: RWA Wallet</h1>
+    <h1 class="font-bold mt-2 tracking-tight text-4xl text-gray-900 sm:text-5xl">{{ item.title }}</h1>
     <p class="mt-6 text-xl text-gray-700 leading-8">
-      RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a
-      new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of
-      both worlds, RWA Wallet offers users a unique and powerful financial tool.
+      {{ excerpt }}
     </p>
     <div class="mt-10 text-base text-gray-700 leading-7 lg:max-w-none">
-      <v-md-preview v-if="textContent" :text="textContent" />
+      <!-- <v-md-preview v-if="textContent" :text="textContent" /> -->
+      <div v-if="textContent">
+        {{ textContent }}
+      </div>
       <div v-else border border-dashed py-20 border-gray-7 rounded-md flex flex-col items-center bg-gray-5 text-white mb-10>
         <div flex justify="center" items-center>
-          <BsBtnBlack @click="showMintModal(nftPassMintParams)"> Mint {{ mintNFTPassCount }} NFT Pass </BsBtnBlack>
+          <BsBtnBlack @click="showMintModal()"> Mint {{ requiredNFTCount }} NFT Pass </BsBtnBlack>
           <div mx-5 font-bold>Or</div>
-          <BsBtnBlack @click="showMintModal(optTokenMintParams)"> Mint 1 OTP-SBT </BsBtnBlack>
+          <BsBtnBlack @click="showMintModal('OTP')"> Mint 1 OTP-SBT </BsBtnBlack>
         </div>
         <div mt-5>to Unlock the RWA content</div>
       </div>

@@ -39,9 +39,6 @@ export function setupApp(app: App, opts = { }) {
   app.provide('litNodeClient', litNodeClient)
 
   const initLit = async () => {
-    if (isLitConnecting) return 
-
-    isLitConnecting = true
     const client = new LitJsSdk.LitNodeClient({debug: false, litNetwork: "serrano"});
     await client.connect();
     litNodeClient.value = client
@@ -50,8 +47,11 @@ export function setupApp(app: App, opts = { }) {
   }
 
   router.beforeEach(async (to, from) => {
-    if (litNodeClient.value === '') {
-      await initLit()
+    if (litNodeClient.value === '' && !isLitConnecting) {
+      isLitConnecting = true
+      nextTick(async() => {
+        await initLit()
+      })
     }
 
     if (to.fullPath.startsWith('/options/onboarding'))
