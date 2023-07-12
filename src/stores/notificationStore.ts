@@ -94,8 +94,10 @@ export const notificationStore = defineStore('notificationStore', () => {
     if (alertCB)
       await alertCB()
 
-    alertType = false
-    alertCB = false
+    nextTick(() => {
+      alertType = false
+      alertCB = false
+    })
   }
 
   return $$({

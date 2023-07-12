@@ -6,5 +6,6 @@
 
     <BsTokenMintModal />
     <BsNotification />
+    <BsAlertDialog />
   </div>
 </template>

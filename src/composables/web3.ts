@@ -3,7 +3,7 @@ import { polygonMumbai } from 'viem/chains'
 import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP } from '~/constants/CHAIN'
 import { mnemonicToAccount } from 'viem/accounts'
 export { parseEther, formatEther } from 'viem'
-
+export {CHAIN_NAME, CHAIN_ID } from '~/constants/CHAIN'
 export const getContractInfo = (contractName, chain = CHAIN_ID) => {
   const address = CONTRACT_ADDRESS_MAP[contractName][chain]
   const abi = CHAIN_CONTRACT_ABI_MAP[contractName]
@@ -80,7 +80,7 @@ export const writeContract = async ({ account, contractName, functionName, value
   const walletClient = getWalletClient(account)
   const publicClient = getPublicClient()
 
-  const { request } = await simulateContract({ account, contractName, functionName, value }, ...args)
+  const { request, result } = await simulateContract({ account, contractName, functionName, value }, ...args)
   const hash = await walletClient.writeContract(request)
   const tx = await publicClient.waitForTransactionReceipt(
     { hash },
@@ -89,7 +89,10 @@ export const writeContract = async ({ account, contractName, functionName, value
     console.log('====> tx :', tx)
     throw new Error('tx error')
   }
-  return tx
+  return {
+    tx,
+    result
+  }
 }
 
 export const getAccount = mnemonicStr => mnemonicToAccount(mnemonicStr)

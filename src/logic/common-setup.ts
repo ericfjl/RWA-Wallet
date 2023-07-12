@@ -5,6 +5,7 @@ import { setupLayouts } from 'virtual:generated-layouts'
 import generatedRoutes from 'virtual:generated-pages'
 import ResizeTextarea from 'resize-textarea-vue3'
 import { createPinia } from 'pinia'
+import * as LitJsSdk from "@lit-protocol/lit-node-client";
 
 // import VMdEditor from '@kangc/v-md-editor'
 // import '@kangc/v-md-editor/lib/style/base-editor.css'
@@ -33,8 +34,25 @@ export function setupApp(app: App, opts = { }) {
     routes,
   })
   const hasLogin = ref(false)
+  const litNodeClient = ref('')
+  let isLitConnecting = false
+  app.provide('litNodeClient', litNodeClient)
+
+  const initLit = async () => {
+    if (isLitConnecting) return 
+
+    isLitConnecting = true
+    const client = new LitJsSdk.LitNodeClient({debug: false, litNetwork: "serrano"});
+    await client.connect();
+    litNodeClient.value = client
+    // litNodeClient.value = 'test'
+    isLitConnecting = false
+  }
+
   router.beforeEach(async (to, from) => {
-    // console.log('====> to :', to, hasLogin.value, encryptedMnemonic.value)
+    if (litNodeClient.value === '') {
+      await initLit()
+    }
 
     if (to.fullPath.startsWith('/options/onboarding'))
       return true
@@ -51,6 +69,7 @@ export function setupApp(app: App, opts = { }) {
 
       hasLogin.value = true
     }
+
     // ...
     // explicitly return false to cancel the navigation
     // return false

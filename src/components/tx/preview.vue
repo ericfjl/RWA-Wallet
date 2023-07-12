@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useNFTStorage } from "@rwa/web3-storage";
 import { sendMessage } from "webext-bridge/options";
 import imgArweave from '~/assets/arweave.svg'
 import imgCess from '~/assets/cess.svg'
@@ -49,11 +48,6 @@ watchEffect(async () => {
   //   payTokenAddress
   // );
   console.log("====> approveGas, addTokenGas :", approveGas, addTokenGas);
-});
-
-const { storeJson } = useNFTStorage({
-  token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzM4MTgzMDU2MywibmFtZSI6Ik5UQiJ9.Yj9ie65LXh6t6QECtGzKViX-AeTiAHnVoYybY3qfqNk",
 });
 
 let status = $ref("");

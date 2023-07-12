@@ -24,6 +24,8 @@ export const sharedConfig: UserConfig = {
     __DEV__: isDev,
     __NAME__: JSON.stringify(packageJson.name),
     global: 'window',
+		'process.env.NODE_DEBUG': 'false',
+		'window.global': 'globalThis'
   },
   plugins: [
     Vue({
