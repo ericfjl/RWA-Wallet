@@ -9,18 +9,15 @@ const author = {
 };
 
 const tags = ["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"];
+const { item } = $(itemStore())
 </script>
 
 <template>
-  <div class="bg-white relative pb-5">
+  <div class="bg-white pb-5 relative">
     <div class="mx-auto max-w-7xl lg:flex lg:justify-between xl:justify-end">
       <div class="lg:flex lg:w-1/2 lg:shrink lg:grow-0 xl:inset-y-0 xl:right-1/2 xl:w-1/2 xl:absolute">
-        <div class="relative xl:ml-0 h-80" lg="-ml-8 w-full grow h-[calc(100vh-184px)]">
-          <img
-            class="h-full object-cover bg-gray-50 w-full inset-0 absolute"
-            src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-x=.4&w=2560&h=3413&&q=80"
-            alt=""
-          />
+        <div class="h-80 relative xl:ml-0" lg="-ml-8 w-full grow h-[calc(100vh-184px)]">
+          <BsBoxImg class="h-full object-cover bg-gray-50 w-full inset-0 absolute" :src="item.image" alt="" />
         </div>
       </div>
       <div class="pt-6 lg:contents">

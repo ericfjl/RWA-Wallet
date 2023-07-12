@@ -158,17 +158,18 @@ const doSubmit = async () => {
     addSuccess("Encrypt your content with NFT Gating Successed!");
   }
 
-  const sbtMetadata = {
+  const nftItemData = {
     title,
+    image,
     excerpt,
     category,
     itemType,
     content,
   };
-  if (requireNFTPass || enableOneTimePayment) sbtMetadata.content = litRz;
+  if (requireNFTPass || enableOneTimePayment) nftItemData.content = litRz;
 
   status = "Start uploading the encrypt content onto IPFS"
-  const cid = await storeJson(sbtMetadata);
+  const cid = await storeJson(nftItemData);
   addSuccess("Upload the encrypt content onto IPFS Successed!");
 
   status = "Start submiting item data onto blockchain"

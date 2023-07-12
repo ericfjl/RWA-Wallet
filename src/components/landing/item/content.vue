@@ -1,38 +1,15 @@
 <script setup lang="ts">
-import { sendMessage } from "webext-bridge/options";
-
-const route = useRoute()
-const tokenId = $computed(() => route.params.tokenId)
-const slug = $computed(() => route.params.itemSlug)
-const itemId = $computed(() => {
-  return slug.split('-')[0]
-})
+const { toggle, update } = $(tokenMintStore());
 
 let textContent = $ref("");
 
-let account = $ref('')
-let item = $ref({})
-let isLoading = $ref(true)
+const { item, params } = $(itemStore())
+
 const excerpt = $computed(() => {
   return item.excerpt || `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a
       new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of
       both worlds, RWA Wallet offers users a unique and powerful financial tool.`
 })
-onMounted(async () => {
-  const { mnemonicStr } = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
-  account = getAccount(mnemonicStr);
-  const itemURIArr = await readContract(
-    { account, contractName: "BuidlerProtocol", functionName: 'getItems' },
-    tokenId,
-    itemId,
-    1,
-    ''
-  );
-  item = await parseURIData(itemURIArr[0])
-  isLoading = false;
-});
-
-const { toggle, update } = $(tokenMintStore());
 
 let status = $ref('')
 const doClose = async () => {
@@ -44,7 +21,7 @@ const doClose = async () => {
 
 const showMintModal = (metaType = 'mint') => {
   let amount = item.content.requiredNFTCount
-  let _tokenId = tokenId
+  let _tokenId = params.tokenId
   if (metaType === 'OTP') {
     amount = 1
     _tokenId = item.content.otpTokenId

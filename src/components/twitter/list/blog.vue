@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { get, kebabCase } from "lodash";
 import { sendMessage } from "webext-bridge/options";
+import { getDateString } from '~/composables/misc'
 
 const posts = [
   {
@@ -122,7 +123,7 @@ onMounted(async () => {
           </div>
           <div class="max-w-xl">
             <div class="flex mt-8 text-xs gap-x-4 items-center">
-              <time :datetime="post.createdAt" class="text-gray-500">{{ post.createdAt }}</time>
+              <time :datetime="post.createdAt" class="text-gray-500">{{ getDateString(post.createdAt) }}</time>
               <router-link :to="categoryLink(post)" class="rounded-full font-medium bg-gray-50 py-1.5 px-3 text-gray-600 z-10 relative hover:bg-gray-100">{{ post.category }}</router-link>
             </div>
             <div class="group relative">
