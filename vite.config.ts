@@ -66,6 +66,7 @@ export const sharedConfig: UserConfig = {
             'trim',
             'merge',
             'forEach',
+            'kebabCase',
             'get',
             'reverse',
             'filter',

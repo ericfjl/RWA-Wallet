@@ -1,4 +1,3 @@
-import { findIndex } from 'lodash';
 interface MessageItem { title: string; timeout?: number; type?: string; _id?: number }
 
 const timerMap = {}

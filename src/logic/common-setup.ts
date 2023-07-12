@@ -6,6 +6,15 @@ import generatedRoutes from 'virtual:generated-pages'
 import ResizeTextarea from 'resize-textarea-vue3'
 import { createPinia } from 'pinia'
 
+// import VMdEditor from '@kangc/v-md-editor'
+// import '@kangc/v-md-editor/lib/style/base-editor.css'
+// import VMdPreview from '@kangc/v-md-editor/lib/preview'
+// import '@kangc/v-md-editor/lib/style/preview.css'
+// import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
+// import '@kangc/v-md-editor/lib/theme/style/github.css'
+// import Hljs from 'highlight.js'
+
+
 export function setupApp(app: App, opts = { }) {
   const { routeMode = 'webHash', sendMessage } = opts
 
@@ -48,6 +57,16 @@ export function setupApp(app: App, opts = { }) {
   })
   app.use(router)
   app.use(ResizeTextarea)
+
+  // VMdEditor.use(githubTheme, {
+  //   Hljs,
+  // })
+  // app.use(VMdEditor)
+
+  // VMdPreview.use(githubTheme, {
+  //   Hljs,
+  // })
+  // app.use(VMdPreview)
 
   // pinia
   const pinia = createPinia()

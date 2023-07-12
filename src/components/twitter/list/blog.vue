@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { get, kebabCase } from "lodash";
+
 const posts = [
   {
     id: 6,
