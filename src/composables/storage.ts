@@ -10,7 +10,7 @@ export const { getJson, getStatus, storeJson } = useNFTStorage({
 });
 
 
-export const parseTokenURI = async (cid) => {
+export const parseURIData = async (cid) => {
   const token = await getJson(cid);
   const status = await getStatus(cid);
   return {

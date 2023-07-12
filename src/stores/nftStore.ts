@@ -14,7 +14,7 @@ export const nftStore = defineStore('nftStore', () => {
     nft.items  = rz[5]
     nft.metas = rz[6]
 
-    nft.token = await parseTokenURI(nft.tokenURI)
+    nft.token = await parseURIData(nft.tokenURI)
   }
   watchEffect(async() => {
     // do some init stuff

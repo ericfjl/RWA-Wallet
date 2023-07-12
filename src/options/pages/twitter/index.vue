@@ -6,7 +6,7 @@ let account = $ref("");
 let items = $ref([]);
 let isLoading = $ref(true);
 onMounted(async () => {
-  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
+  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
   account = getAccount(rz.mnemonicStr);
   const functionName = "getTokenList";
   const [tokenURIArr, basicPriceArr, totalSupplyArr, maxSupplyArr, itemsCountArr, metaCountArr] = await readContract(
@@ -16,7 +16,7 @@ onMounted(async () => {
   );
   // const functionName = 'getTokenListByType'
   // readContract({ account, contractName: 'BuidlerProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
-  const tokenInfoArr = await Promise.all(tokenURIArr.map(parseTokenURI));
+  const tokenInfoArr = await Promise.all(tokenURIArr.map(parseURIData));
   items = reverse(
     tokenInfoArr.map((token, index) => {
       // console.log({
@@ -50,7 +50,7 @@ onMounted(async () => {
     <div class="border-t border-white/10 pt-11">
       <h2 class="font-semibold text-base text-white px-4 leading-7 sm:px-6 lg:px-8">Newest</h2>
       <div v-if="isLoading" flex justify-center items-center w-full h-100>
-        <div i-svg-spinners-blocks-shuffle-3 text-white class="w-14 h-14"></div>
+        <div i-svg-spinners-blocks-shuffle-3 text-white class="h-14 w-14"></div>
       </div>
       <table v-else class="mt-6 text-left w-full whitespace-nowrap">
         <colgroup>

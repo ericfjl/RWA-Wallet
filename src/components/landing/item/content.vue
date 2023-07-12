@@ -16,7 +16,7 @@ const textContent = $ref("");
       new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of
       both worlds, RWA Wallet offers users a unique and powerful financial tool.
     </p>
-    <div class="max-w-xl mt-10 text-base text-gray-700 leading-7 lg:max-w-none">
+    <div class="mt-10 text-base text-gray-700 leading-7 lg:max-w-none">
       <v-md-preview v-if="textContent" :text="textContent" />
       <div v-else border border-dashed py-20 border-gray-7 rounded-md flex flex-col items-center bg-gray-5 text-white mb-10>
         <div flex justify="center" items-center>
