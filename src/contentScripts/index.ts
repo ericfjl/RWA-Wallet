@@ -145,10 +145,16 @@ const setupApp = app => {
     if (!textInTwitter)
       return
 
+    const text = textInTwitter.innerText
+    const exist = text.indexOf('rwa.web3hacker.world')
+
+    if (exist === -1)
+      return
+    
     clearInterval(interval)
 
     // const nftId = descText.substr(descText.indexOf('rwa.web3hacker.world')).replace('rwa.web3hacker.world/', '')
-    console.log('====> textInTwitter :', textInTwitter)
+    // console.log('====> textInTwitter :', textInTwitter)
 
     // let profileUrl = ''
     // for (const attr of profileLink.attributes) {
@@ -161,7 +167,7 @@ const setupApp = app => {
     // if (currentUrl !== profileUrl)
     //   return
 
-    textInTwitter.before(container)
+    textInTwitter.after(container)
     const app = createApp(TextInTwitterBtn)
     setupApp(app)
     app.mount(root)
