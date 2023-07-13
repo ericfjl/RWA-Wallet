@@ -81,6 +81,7 @@ export const writeContract = async ({ account, contractName, functionName, value
   const publicClient = getPublicClient()
 
   const { request, result } = await simulateContract({ account, contractName, functionName, value }, ...args)
+  console.log('====> request :', request)
   const hash = await walletClient.writeContract(request)
   const tx = await publicClient.waitForTransactionReceipt(
     { hash },
