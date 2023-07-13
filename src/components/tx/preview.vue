@@ -73,7 +73,7 @@ const doSubmit = async () => {
     const properties = pick(params, ["category", "tags", "tokenType", "distributor", "basicPrice", "maxSupply", "inviteCommission"]);
     const external_url = ""; // This is the URL that will appear below the asset's image on OpenSea and will allow users to leave OpenSea and view the item on your site.
     const metadata = {
-      ...pick(params, ["name", "description", "image"]),
+      ...pick(params, ["name", "description", "image", 'subTitle']),
       properties,
       external_url,
     };
@@ -91,7 +91,7 @@ const doSubmit = async () => {
     );
     const tokenId = tokenList[0].length;
     // create token
-    status = "create new NFT on BuidlerProtocol";
+    status = "create new NFT on RWA Protocol";
     const rzToken = await writeContract(
       {
         account,
@@ -243,7 +243,7 @@ const doCancel = async () => {
           {{ status }}
         </div>
         <div v-else class="mt-6 text-center text-sm text-gray-500 justify-center">
-          <BsBtnIndigo :is-loading="isLoading" @click="doSubmit2" w-full> Action Confirm </BsBtnIndigo>
+          <BsBtnIndigo :is-loading="isLoading" @click="doSubmit" w-full> Action Confirm </BsBtnIndigo>
           <p mt-6>
             or
             <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500" @click="doCancel">

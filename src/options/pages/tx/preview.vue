@@ -22,7 +22,6 @@ const tabId = $computed(() => route.query.tabId);
 let context = "";
 
 onMounted(async () => {
-  console.log("====> route :", route, route.query, location);
   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
   params = rz.previewData[tabId].params;
   opts = rz.previewData[tabId].opts;
@@ -30,10 +29,6 @@ onMounted(async () => {
   account = getAccount(rz.mnemonicStr);
 });
 
-const { storeJson } = useNFTStorage({
-  token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDIxMmZkRTRBOEFhY0RCZWE3RWFkRGNFMGU1NkI0NTFDQzdlNTM2QjYiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1NzM4MTgzMDU2MywibmFtZSI6Ik5UQiJ9.Yj9ie65LXh6t6QECtGzKViX-AeTiAHnVoYybY3qfqNk",
-});
 
 let status = $ref("");
 
@@ -60,7 +55,7 @@ const doSubmit = async () => {
     const properties = pick(params, ["category", "tags", "tokenType", "distributor", "basicPrice", "maxSupply", "inviteCommission"]);
     const external_url = ""; // This is the URL that will appear below the asset's image on OpenSea and will allow users to leave OpenSea and view the item on your site.
     const metadata = {
-      ...pick(params, ["name", "description", "image"]),
+      ...pick(params, ["name", "description", "image", "subTitle"]),
       properties,
       external_url,
     };
@@ -207,7 +202,7 @@ const doCancel = async () => {
 
           {{ status }}
         </div>
-        <BsBtnIndigo :is-loading="isLoading" @click="doSubmit2" w-full> Action Confirm </BsBtnIndigo>
+        <BsBtnIndigo :is-loading="isLoading" @click="doSubmit" w-full> Action Confirm </BsBtnIndigo>
       </div>
       <div class="flex mt-6 text-center text-sm text-gray-500 justify-center">
         <p>

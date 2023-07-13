@@ -18,7 +18,7 @@ onMounted(async () => {
   // readContract({ account, contractName: 'BuidlerProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
   const tokenInfoArr = await Promise.all(tokenURIArr.map(parseURIData));
   items = reverse(
-    tokenInfoArr.filter(token => 'OTP' !== get(token, 'properties.tokenType')).map((token, index) => {
+    tokenInfoArr.map((token, index) => {
       // console.log({
       //   token,
       //   basicPrice: basicPriceArr[index].toString(),
@@ -36,7 +36,7 @@ onMounted(async () => {
         itemsCount: itemsCountArr[index].toString(),
         metaCount: metaCountArr[index].toString(),
       };
-    })
+    }).filter(item => 'OTP' !== get(item, 'token.properties.tokenType'))
   );
   isLoading = false;
 });

@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 <template>
   <div>
-    <LandingNav />
+    <!-- <LandingNav /> -->
     <RouterView />
 
     <BsTokenMintModal />

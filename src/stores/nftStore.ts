@@ -6,15 +6,26 @@ export const nftStore = defineStore('nftStore', () => {
         contractName: 'BuidlerProtocol',
         functionName: 'getToken'
     }, tokenId, '', '')
-    nft.tokenURI = rz[0]
-    nft.tokenOwner  = rz[1]
-    nft.basicPrice  = rz[2]
-    nft.totalSupply  = rz[3]
-    nft.maxSupply  = rz[4]
-    nft.items  = rz[5]
-    nft.metas = rz[6]
+    const tokenURI = rz[0]
+    const tokenOwner  = rz[1]
+    const basicPrice  = rz[2]
+    const totalSupply  = rz[3]
+    const maxSupply  = rz[4]
+    const items  = rz[5]
+    const metas = rz[6]
+    const token = await parseURIData(tokenURI)
 
-    nft.token = await parseURIData(nft.tokenURI)
+    nft = {
+      tokenURI,
+      tokenOwner,
+      basicPrice,
+      totalSupply,
+      maxSupply,
+      items,
+      metas,
+      token,
+    }
+    console.log('====> tokenId, nft :', tokenId, nft)
   }
   watchEffect(async() => {
     // do some init stuff
