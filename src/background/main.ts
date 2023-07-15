@@ -1,5 +1,5 @@
 import { isInternalEndpoint } from 'webext-bridge'
-import { onMessage, sendMessage } from 'webext-bridge/background'
+import { onMessage } from 'webext-bridge/background'
 
 // only on dev mode
 if (import.meta.hot) {
@@ -9,37 +9,38 @@ if (import.meta.hot) {
   import('./contentScriptHMR')
 }
 
-browser.runtime.onInstalled.addListener((): void => {
-  // eslint-disable-next-line no-console
-  console.log('Extension installed')
-})
-
-browser.tabs.onActivated.addListener(async ({ tabId }) => {
-  await sendMessage('updateTabId', { tabId }, `content-script@${tabId}`)
+browser.runtime.onInstalled.addListener(({ reason }): void => {
+  if (reason === chrome.runtime.OnInstalledReason.INSTALL)
+    // while install trigger open the options page to route to onboarding page
+    browser.runtime.openOptionsPage()
+    // chrome.tabs.create({
+    //   url: 'onboarding.html'
+    // })
+    // chrome.runtime.setUninstallURL('https://example.com/extension-survey');
 })
 
 let memoryStoreMap = {
   password: '',
-  mnemonicStr: '',
+  mnemonicStr: 'truth similar disagree slot lecture quiz hundred season energy fix alarm spring',
+  // mnemonicStr: '',
+  tabId: '',
+  popupId: '',
+  previewData: {},
+  openOptionToUrl: ''
 }
 
-onMessage('internalCall', async (msg) => {
-  if (!isInternalEndpoint(msg.sender))
-    return false
-  console.log('====> msg :', msg)
+browser.tabs.onActivated.addListener(async ({ tabId }) => {
+  memoryStoreMap.tabId = tabId
+  console.log('====> background tabs.onActivated tabId :', tabId)
+})
 
-  // const { action, params, opts } = msg.data
-  // const { top, left, width, height } = opts
-  // const newWindow = await browser.windows.create({
-  //   url: './dist/options/index.html#/options/',
-  //   type: 'popup',
-  //   width,
-  //   height,
-  //   left,
-  //   top,
-  // })
-  // console.log('====> newWindow :', newWindow)
-  return 'hehe'
+onMessage('getTabId', () => {
+  return memoryStoreMap.tabId
+})
+
+onMessage('openOption', msg => {
+  memoryStoreMap.openOptionToUrl = msg.data.url
+  browser.runtime.openOptionsPage();
 })
 
 onMessage('storeInMemory', async (msg) => {
@@ -60,4 +61,48 @@ onMessage('getStoreInMemory', async (msg) => {
   const data = {}
   msg.data.keys.map(key => data[key] = memoryStoreMap[key])
   return data
+})
+
+const reFocusUnProcessPopup = async () => {
+  if (!memoryStoreMap.popupId)
+    return null
+
+  const windows = await browser.windows.getAll()
+  return windows
+    ? windows.find((win) => {
+      return win && win.type === 'popup' && win.id === memoryStoreMap.popupId
+    })
+    : null
+}
+
+onMessage('internalCall', async (msg) => {
+  if (!isInternalEndpoint(msg.sender))
+    return false
+
+  const { opts } = msg.data
+
+  try {
+    const existPopup = await reFocusUnProcessPopup()
+    if (existPopup) {
+      await browser.windows.update(opts.tabId || memoryStoreMap.popupId, { focused: true })
+      return existPopup
+    }
+
+    memoryStoreMap.previewData[opts.tabId] = msg.data
+
+    const { top, left, width, height } = opts
+    const newWindow = await browser.windows.create({
+      url: `./dist/options/index.html#/options/tx/preview?tabId=${opts.tabId}`,
+      type: 'popup',
+      width,
+      height,
+      left,
+      top,
+    })
+
+    return newWindow
+  }
+  catch (e) {
+    console.log('====> e :', e)
+  }
 })

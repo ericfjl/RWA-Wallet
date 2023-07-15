@@ -30,10 +30,10 @@ const secondaryNavigation = [
   { name: 'Notifications', href: '#', current: false },
 ]
 const stats = [
-  { name: 'Number of deploys', value: '405' },
-  { name: 'Average deploy time', value: '3.65', unit: 'mins' },
-  { name: 'Number of servers', value: '3' },
-  { name: 'Success rate', value: '98.5%' },
+  { name: 'Number of Twitter RWA NFT', value: '5032' },
+  { name: 'Average RWA NFT Sale Price', value: '345', unit: '$BST' },
+  { name: 'Total OTP-SBT Sale', value: '50B', unit: '$BST' },
+  { name: 'Total Market Cap', value: '123B', unit: '$BST' },
 ]
 const statuses = { Completed: 'text-green-400 bg-green-400/10', Error: 'text-rose-400 bg-rose-400/10' }
 const activityItems = [
@@ -76,18 +76,18 @@ const sidebarOpen = ref(false)
               <div class="bg-current rounded-full h-2 w-2" />
             </div>
             <h1 class="flex text-base leading-7 gap-x-3">
-              <span class="font-semibold text-white">Planetaria</span>
+              <span class="font-semibold text-white">Twitter</span>
               <span class="text-gray-600">/</span>
-              <span class="font-semibold text-white">mobile-api</span>
+              <span class="font-semibold text-white">Overview</span>
             </h1>
           </div>
           <p class="mt-2 text-xs text-gray-400 leading-6">
-            Deploys from GitHub via main branch
+            All RWA Status from Twitter
           </p>
         </div>
-        <div class="rounded-full flex-none order-first font-medium bg-indigo-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-indigo-400/30 text-indigo-400 sm:order-none">
-          Production
-        </div>
+        <!-- <div class="rounded-full flex-none order-first font-medium bg-indigo-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-indigo-400/30 text-indigo-400 sm:order-none">
+          Beta
+        </div> -->
       </div>
 
       <!-- Stats -->

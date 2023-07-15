@@ -33,7 +33,7 @@ const doSubmit = async () => {
 <template>
   <div class="space-y-6 text-white">
     <div text-lg>
-      This password will unlock your Buidlers.Space wallet only on this device. Buidlers.Space can not recover this password.
+      This password will unlock your Buidlers.Space RWA wallet only on this device. Buidlers.Space can not recover this password.
     </div>
     <div>
       <div class="flex items-center justify-between">
@@ -97,7 +97,7 @@ const doSubmit = async () => {
 
     <div>
       <button class="rounded-md  flex  font-semibold bg-indigo-500  shadow-sm text-sm w-full py-1.5 px-3  leading-6 justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-40 " :disabled="!isValid" @click="doSubmit">
-        Create a new wallet
+        {{ isImportWallet ? 'Import your wallet' : 'Create a new wallet' }}
       </button>
     </div>
   </div>

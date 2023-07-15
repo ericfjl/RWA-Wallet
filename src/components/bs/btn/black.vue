@@ -1,14 +1,12 @@
 <script setup lang="ts">
 interface Props {
-  isLoading?: boolean
+  isLoading?: boolean;
 }
-const {
-  isLoading,
-} = defineProps<Props>()
+const { isLoading } = defineProps<Props>();
 </script>
 
 <template>
-  <BsBtnDefault :disabled="isLoading" :is-loading="isLoading" class="bg-gray-900 text-white hover:bg-gray-700" v-bind="$attrs">
+  <BsBtnDefault :is-loading="isLoading" class="bg-gray-900 text-white hover:bg-gray-700" v-bind="$attrs">
     <slot />
   </BsBtnDefault>
 </template>

@@ -24,6 +24,8 @@ export const sharedConfig: UserConfig = {
     __DEV__: isDev,
     __NAME__: JSON.stringify(packageJson.name),
     global: 'window',
+		'process.env.NODE_DEBUG': 'false',
+		'window.global': 'globalThis'
   },
   plugins: [
     Vue({
@@ -49,6 +51,7 @@ export const sharedConfig: UserConfig = {
       imports: [
         'vue',
         'vue-router',
+        '@vueuse/core',
         {
           'webextension-polyfill': [
             ['*', 'browser'],
@@ -58,20 +61,33 @@ export const sharedConfig: UserConfig = {
             'uniq',
             'random',
             'find',
+            'findIndex',
+            'pick',
             'remove',
             'some',
             'trim',
             'merge',
             'forEach',
+            'kebabCase',
             'get',
             'reverse',
             'filter',
             'sortBy',
             'upperFirst',
             'take',
+            'reverse',
             'shuffle',
           ],
+          'pinia': [
+            'acceptHMRUpdate',
+            'defineStore',
+            'storeToRefs',
+          ],
         },
+      ],
+      dirs: [
+        r('src/stores'),
+        r('src/composables'),
       ],
       dts: r('src/auto-imports.d.ts'),
     }),

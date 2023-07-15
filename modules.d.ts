@@ -1,8 +1,6 @@
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
-    $app: {
-      context: string
-    }
+    tabId: Number
   }
 }
 

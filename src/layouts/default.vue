@@ -1,32 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import {
-  ChartBarSquareIcon,
-  Cog6ToothIcon,
-  FolderIcon,
-  GlobeAltIcon,
-  ServerIcon,
-  SignalIcon,
-  XMarkIcon,
-} from '@heroicons/vue/24/outline'
-import { Bars3Icon, MagnifyingGlassIcon } from '@heroicons/vue/20/solid'
+import { ref } from "vue";
+import { sendMessage } from "webext-bridge/options";
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
+import { XMarkIcon } from "@heroicons/vue/24/outline";
+import IcBaselineMenuBook from "~icons/ic/baseline-menu-book";
+import MdiTwitter from "~icons/mdi/twitter";
 
-const navigation = [
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Deployments', href: '#', icon: ServerIcon, current: false },
-  { name: 'Activity', href: '#', icon: SignalIcon, current: false },
-  { name: 'Domains', href: '#', icon: GlobeAltIcon, current: false },
-  { name: 'Usage', href: '#', icon: ChartBarSquareIcon, current: false },
-  { name: 'Settings', href: '#', icon: Cog6ToothIcon, current: true },
-]
+const route = useRoute();
+
+const path = $computed(() => route.path);
+
+const navigation = $computed(() => {
+  return [
+    // { name: 'Home', href: '#', icon: HomeIcon, current: true },
+    { name: "NFTFi Twitter", href: "/options/twitter/", icon: MdiTwitter, current: path.startsWith("/options/twitter/") },
+    // { name: "Book", href: "/options/book", icon: IcBaselineMenuBook, current: path.startsWith("/options/book") },
+    // { name: 'Domains', href: '#', icon: GlobeAltIcon, current: false },
+    // { name: 'Usage', href: '#', icon: ChartBarSquareIcon, current: false },
+    // { name: 'Settings', href: '#', icon: Cog6ToothIcon, current: false },
+  ];
+});
 const teams = [
-  { id: 1, name: 'Planetaria', href: '#', initial: 'P', current: false },
-  { id: 2, name: 'Protocol', href: '#', initial: 'P', current: false },
-  { id: 3, name: 'Tailwind Labs', href: '#', initial: 'T', current: false },
-]
+  { id: 1, name: "Planetaria", href: "#", initial: "P", current: false },
+  { id: 2, name: "Protocol", href: "#", initial: "P", current: false },
+  { id: 3, name: "Tailwind Labs", href: "#", initial: "T", current: false },
+];
+const sidebarOpen = ref(false);
 
-const sidebarOpen = ref(false)
+const router = useRouter();
+
+const doLogout = async () => {
+  await sendMessage("storeInMemory", { mnemonicStr: "" }, "background");
+  router.push("/options/onboarding/");
+};
 </script>
 
 <template>
@@ -50,7 +56,7 @@ const sidebarOpen = ref(false)
               <!-- Sidebar component, swap this element with another sidebar if you like -->
               <div class="flex flex-col bg-gray-900 px-6 ring-1 ring-white/10 gap-y-5 grow overflow-y-auto">
                 <div class="flex h-16 items-center shrink-0">
-                  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+                  <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
                 </div>
                 <nav class="flex flex-col flex-1">
                   <ul role="list" class="flex flex-col flex-1 gap-y-7">
@@ -65,9 +71,7 @@ const sidebarOpen = ref(false)
                       </ul>
                     </li>
                     <li>
-                      <div class="font-semibold text-xs text-gray-400 leading-6">
-                        Your teams
-                      </div>
+                      <div class="font-semibold text-xs text-gray-400 leading-6">Your teams</div>
                       <ul role="list" class="space-y-1 -mx-2 mt-2">
                         <li v-for="team in teams" :key="team.name">
                           <a :href="team.href" class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group" :class="[team.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']">
@@ -79,7 +83,7 @@ const sidebarOpen = ref(false)
                     </li>
                     <li class="mt-auto -mx-6">
                       <a href="#" class="flex font-semibold text-sm text-white py-3 px-6 leading-6 gap-x-4 items-center hover:bg-gray-800">
-                        <img class="rounded-full bg-gray-800 h-8 w-8" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                        <img class="rounded-full bg-gray-800 h-8 w-8" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                         <span class="sr-only">Your profile</span>
                         <span aria-hidden="true">Tom Cook</span>
                       </a>
@@ -94,52 +98,80 @@ const sidebarOpen = ref(false)
     </TransitionRoot>
 
     <!-- Static sidebar for desktop -->
-    <div class="hidden xl:flex xl:flex-col xl:inset-y-0 xl:w-72 xl:z-50 xl:fixed">
+    <div class="hidden xl:flex xl:flex-col xl:inset-y-0 xl:w-45 xl:z-50 xl:fixed">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex flex-col bg-black/10 px-6 ring-1 ring-white/5 gap-y-5 grow overflow-y-auto">
         <div class="flex h-16 items-center shrink-0">
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+          <router-link to="/options/">
+            <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="RWA Wallet" />
+          </router-link>
         </div>
         <nav class="flex flex-col flex-1">
           <ul role="list" class="flex flex-col flex-1 gap-y-7">
             <li>
               <ul role="list" class="space-y-1 -mx-2">
                 <li v-for="item in navigation" :key="item.name">
-                  <a :href="item.href" class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']">
+                  <router-link :to="item.href" class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']">
                     <component :is="item.icon" class="h-6 w-6 shrink-0" aria-hidden="true" />
                     {{ item.name }}
-                  </a>
+                  </router-link>
                 </li>
               </ul>
             </li>
-            <li>
-              <div class="font-semibold text-xs text-gray-400 leading-6">
-                Your teams
-              </div>
-              <ul role="list" class="space-y-1 -mx-2 mt-2">
-                <li v-for="team in teams" :key="team.name">
-                  <a :href="team.href" class="rounded-md flex font-semibold text-sm p-2 leading-6 gap-x-3 group" :class="[team.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800']">
-                    <span class="border rounded-lg flex font-medium bg-gray-800 border-gray-700 h-6 text-[0.625rem] text-gray-400 w-6 items-center justify-center shrink-0 group-hover:text-white">{{ team.initial }}</span>
-                    <span class="truncate">{{ team.name }}</span>
-                  </a>
-                </li>
-              </ul>
+            <li class="-mx-6 mt-auto">
+              <a @click="doLogout" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800 cursor-pointer">
+                <div i-lucide-log-out class="h-6 w-6 shrink-0" aria-hidden="true" />
+                <span class="sr-only">Logout</span>
+                <span aria-hidden="true">Logout</span>
+              </a>
             </li>
-            <li class="mt-auto -mx-6">
-              <a href="#" class="flex font-semibold text-sm text-white py-3 px-6 leading-6 gap-x-4 items-center hover:bg-gray-800">
-                <img class="rounded-full bg-gray-800 h-8 w-8" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+            <!-- <li class="-mx-6 mt-auto">
+              <a href="#" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800">
+                <img class="h-8 w-8 rounded-full bg-gray-800" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                 <span class="sr-only">Your profile</span>
                 <span aria-hidden="true">Tom Cook</span>
               </a>
-            </li>
+              <Menu as="div" class="relative">
+                <MenuButton class="-m-1.5 flex items-center p-1.5">
+                  <span class="sr-only">Open user menu</span>
+                  <img
+                    class="h-8 w-8 rounded-full bg-gray-50"
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    alt=""
+                  />
+                  <span class="hidden lg:flex lg:items-center">
+                    <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Tom Cook</span>
+                    <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+                  </span>
+                </MenuButton>
+                <transition
+                  enter-active-class="transition ease-out duration-100"
+                  enter-from-class="transform opacity-0 scale-95"
+                  enter-to-class="transform opacity-100 scale-100"
+                  leave-active-class="transition ease-in duration-75"
+                  leave-from-class="transform opacity-100 scale-100"
+                  leave-to-class="transform opacity-0 scale-95"
+                >
+                  <MenuItems
+                    class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
+                  >
+                    <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
+                      <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{
+                        item.name
+                      }}</a>
+                    </MenuItem>
+                  </MenuItems>
+                </transition>
+              </Menu>
+            </li> -->
           </ul>
         </nav>
       </div>
     </div>
 
-    <div class="xl:pl-72">
+    <div class="xl:pl-45">
       <!-- Sticky search header -->
-      <div class="border-b flex bg-gray-900 border-white/5 h-16 shadow-sm px-4 top-0 z-40 gap-x-6 sticky items-center shrink-0 sm:px-6 lg:px-8">
+      <!-- <div class="border-b flex bg-gray-900 border-white/5 h-16 shadow-sm px-4 top-0 z-40 gap-x-6 sticky items-center shrink-0 sm:px-6 lg:px-8">
         <button type="button" class="-m-2.5 text-white p-2.5 xl:hidden" @click="sidebarOpen = true">
           <span class="sr-only">Open sidebar</span>
           <Bars3Icon class="h-5 w-5" aria-hidden="true" />
@@ -154,9 +186,11 @@ const sidebarOpen = ref(false)
             </div>
           </form>
         </div>
-      </div>
+      </div> -->
 
       <RouterView />
     </div>
+    <TxPreview />
+    <BsNotification />
   </div>
 </template>
