@@ -1,5 +1,11 @@
 <script setup lang="ts">
-function openOptionsPage() {
+import { sendMessage } from "webext-bridge/popup";
+
+async function openOptionPage(openOptionToUrl = "") {
+  if (openOptionToUrl) {
+    await sendMessage("storeInMemory", { openOptionToUrl }, "background");
+  }
+
   browser.runtime.openOptionsPage();
 }
 </script>
@@ -8,6 +14,8 @@ function openOptionsPage() {
   <main class="text-center py-5 px-4 text-gray-700 w-[300px]">
     <div>BS RWA Wallet</div>
 
-    <button class="mt-2 btn" @click="openOptionsPage">Open Dashboard</button>
+    <button class="mt-2 btn" @click="openOptionsPage('')">Open Dashboard</button>
+    <br />
+    <button class="mt-2 btn" @click="openOptionPage('/options/test/arweave')">test/arweave</button>
   </main>
 </template>
