@@ -1,4 +1,4 @@
-import { createPublicClient, createWalletClient, http,  } from 'viem'
+import { createPublicClient, createWalletClient, http, toHex  } from 'viem'
 import { polygonMumbai } from 'viem/chains'
 import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP } from '~/constants/CHAIN'
 import { mnemonicToAccount } from 'viem/accounts'
@@ -96,7 +96,16 @@ export const writeContract = async ({ account, contractName, functionName, value
   }
 }
 
-export const getAccount = mnemonicStr => mnemonicToAccount(mnemonicStr)
+export const getAccount = mnemonicStr => {
+  const account = mnemonicToAccount(mnemonicStr)
+  const privateKeyRaw = account.getHdKey().privateKey
+  const privateKey = toHex(privateKeyRaw)
+  return {
+    ...account,
+    privateKey,
+    privateKeyRaw,
+  }
+}
 
 export const initContract = (account, contractName) => {
   return {

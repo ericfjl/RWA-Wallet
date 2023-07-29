@@ -22,6 +22,9 @@ export function setupApp(app: App, opts = { }) {
   const tabId = ref('')
   app.provide('tabId', tabId)
 
+  const account:HDAccount = ref(null)
+  app.provide('account', account)
+
   // route
   const routeModeMap = {
     memory: createMemoryHistory,
@@ -47,6 +50,9 @@ export function setupApp(app: App, opts = { }) {
   }
 
   router.beforeEach(async (to, from) => {
+    if (!tabId.value) {
+      tabId.value = await sendMessage("getTabId", {}, "background");
+    }
     if (litNodeClient.value === '' && !isLitConnecting) {
       isLitConnecting = true
       nextTick(async() => {
@@ -64,8 +70,11 @@ export function setupApp(app: App, opts = { }) {
     // check login status
     if (!hasLogin.value) {
       const rz = await sendMessage('getStoreInMemory', { keys: ['password', 'mnemonicStr'] }, 'background')
-      if (!rz.mnemonicStr)
+      if (!rz.mnemonicStr) {
         return { name: 'options-onboarding-login' }
+      }else {
+        account.value = getAccount(rz.mnemonicStr);
+      }
 
       hasLogin.value = true
     }
