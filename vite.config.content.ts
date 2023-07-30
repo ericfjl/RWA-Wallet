@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import { sharedConfig } from './vite.config'
 import { isDev, r } from './scripts/utils'
 import packageJson from './package.json'
+import rollupNodePolyFill from 'rollup-plugin-node-polyfills'
 
 // bundling the content script using Vite
 export default defineConfig({
@@ -31,6 +32,11 @@ export default defineConfig({
         entryFileNames: 'index.global.js',
         extend: true,
       },
+      plugins: [
+          // Enable rollup polyfills plugin
+          // used during production bundling
+          rollupNodePolyFill({crypto: true})
+        ]
     },
   },
 })

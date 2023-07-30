@@ -1,9 +1,8 @@
 import { createPublicClient, createWalletClient, http, toHex  } from 'viem'
-import { polygonMumbai } from 'viem/chains'
-import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP } from '~/constants/CHAIN'
+import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP, defaultChain } from '~/constants/CHAIN'
 import { mnemonicToAccount } from 'viem/accounts'
 export { parseEther, formatEther } from 'viem'
-export {CHAIN_NAME, CHAIN_ID } from '~/constants/CHAIN'
+export {CHAIN_NAME, CHAIN_ID, CHAIN_RPC_URI_MAP } from '~/constants/CHAIN'
 export const getContractInfo = (contractName, chain = CHAIN_ID) => {
   const address = CONTRACT_ADDRESS_MAP[contractName][chain]
   const abi = CHAIN_CONTRACT_ABI_MAP[contractName]
@@ -14,18 +13,23 @@ export const getContractInfo = (contractName, chain = CHAIN_ID) => {
   }
 }
 
-export const getPublicClient = () => {
+export const getTransport = (networkKey) => {
+  const url = CONTRACT_ADDRESS_MAP[networkKey]
+  return http(url)
+}
+
+export const getPublicClient = (chain = defaultChain) => {
   return createPublicClient({
-    chain: polygonMumbai,
-    transport: http('https://polygon-mumbai.g.alchemy.com/v2/LwtsIVO7HQgliuatrjYmnqs0gVp5uxrl'),
+    chain,
+    transport: getTransport(chain.network),
   })
 }
 
-export const getWalletClient = (account) => {
+export const getWalletClient = (account, chain = defaultChain) => {
   return createWalletClient({
     account,
-    chain: polygonMumbai,
-    transport: http('https://polygon-mumbai.g.alchemy.com/v2/LwtsIVO7HQgliuatrjYmnqs0gVp5uxrl'),
+    chain,
+    transport: getTransport(chain.network),
   })
 }
 

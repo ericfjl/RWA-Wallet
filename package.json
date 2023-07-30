@@ -80,6 +80,7 @@
     "*": "eslint --fix"
   },
   "dependencies": {
+    "@bundlr-network/client": "^0.11.9",
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.18",
     "@kangc/v-md-editor": "^2.3.15",
@@ -92,6 +93,7 @@
     "buffer": "^6.0.3",
     "dayjs": "^1.11.9",
     "events": "^3.3.0",
+    "everpay": "^0.6.8",
     "highlight.js": "^11.8.0",
     "lodash": "^4.17.21",
     "pinia": "^2.1.4",

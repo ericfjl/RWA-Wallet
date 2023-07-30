@@ -13,11 +13,19 @@ import UnoCSS from 'unocss/vite'
 import { isDev, port, r } from './scripts/utils'
 import packageJson from './package.json'
 
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
+import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
+// You don't need to add this to deps, it's included by @esbuild-plugins/node-modules-polyfill
+
 export const sharedConfig: UserConfig = {
   root: r('src'),
   resolve: {
     alias: {
       '~/': `${r('src')}/`,
+      assert: 'rollup-plugin-node-polyfills/polyfills/assert',
+      util: 'rollup-plugin-node-polyfills/polyfills/util',
+      // buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
+      process: 'rollup-plugin-node-polyfills/polyfills/process-es6'
     },
   },
   define: {
@@ -69,10 +77,13 @@ export const sharedConfig: UserConfig = {
             'merge',
             'forEach',
             'kebabCase',
+            'pickBy',
             'get',
             'reverse',
             'filter',
             'sortBy',
+            'keyBy',
+            'groupBy',
             'upperFirst',
             'take',
             'reverse',
@@ -131,6 +142,15 @@ export const sharedConfig: UserConfig = {
     exclude: [
       'vue-demi',
     ],
+    esbuildOptions: {
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          process: true,
+          // buffer: true
+        }),
+        NodeModulesPolyfillPlugin()
+      ]
+    }
   },
 }
 

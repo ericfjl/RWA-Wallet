@@ -3,8 +3,9 @@ import { ref } from "vue";
 import { sendMessage } from "webext-bridge/options";
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { XMarkIcon } from "@heroicons/vue/24/outline";
-import IcBaselineMenuBook from "~icons/ic/baseline-menu-book";
+
 import MdiTwitter from "~icons/mdi/twitter";
+import similarwebLogo from "~icons/simple-icons/similarweb";
 
 const route = useRoute();
 
@@ -13,7 +14,8 @@ const path = $computed(() => route.path);
 const navigation = $computed(() => {
   return [
     // { name: 'Home', href: '#', icon: HomeIcon, current: true },
-    { name: "NFTFi Twitter", href: "/options/twitter/", icon: MdiTwitter, current: path.startsWith("/options/twitter/") },
+    { name: "Twitter", href: "/options/twitter/", icon: MdiTwitter, current: path.startsWith("/options/twitter/") },
+    { name: "EverPay", href: "/options/everPay/", icon: similarwebLogo, current: path.startsWith("/options/everPay/") },
     // { name: "Book", href: "/options/book", icon: IcBaselineMenuBook, current: path.startsWith("/options/book") },
     // { name: 'Domains', href: '#', icon: GlobeAltIcon, current: false },
     // { name: 'Usage', href: '#', icon: ChartBarSquareIcon, current: false },
@@ -118,30 +120,30 @@ const doLogout = async () => {
                 </li>
               </ul>
             </li>
-            <li class="-mx-6 mt-auto">
-              <a @click="doLogout" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800 cursor-pointer">
+            <li class="mt-auto -mx-6">
+              <a @click="doLogout" class="cursor-pointer flex font-semibold text-sm text-white py-3 px-6 leading-6 gap-x-4 items-center hover:bg-gray-800">
                 <div i-lucide-log-out class="h-6 w-6 shrink-0" aria-hidden="true" />
                 <span class="sr-only">Logout</span>
                 <span aria-hidden="true">Logout</span>
               </a>
             </li>
-            <!-- <li class="-mx-6 mt-auto">
-              <a href="#" class="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-gray-800">
-                <img class="h-8 w-8 rounded-full bg-gray-800" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
+            <!-- <li class="mt-auto -mx-6">
+              <a href="#" class="flex font-semibold text-sm text-white py-3 px-6 leading-6 gap-x-4 items-center hover:bg-gray-800">
+                <img class="rounded-full bg-gray-800 h-8 w-8" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
                 <span class="sr-only">Your profile</span>
                 <span aria-hidden="true">Tom Cook</span>
               </a>
               <Menu as="div" class="relative">
-                <MenuButton class="-m-1.5 flex items-center p-1.5">
+                <MenuButton class="flex -m-1.5 p-1.5 items-center">
                   <span class="sr-only">Open user menu</span>
                   <img
-                    class="h-8 w-8 rounded-full bg-gray-50"
+                    class="rounded-full bg-gray-50 h-8 w-8"
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     alt=""
                   />
                   <span class="hidden lg:flex lg:items-center">
-                    <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">Tom Cook</span>
-                    <ChevronDownIcon class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <span class="font-semibold text-sm ml-4 text-gray-900 leading-6" aria-hidden="true">Tom Cook</span>
+                    <ChevronDownIcon class="h-5 ml-2 text-gray-400 w-5" aria-hidden="true" />
                   </span>
                 </MenuButton>
                 <transition
@@ -153,7 +155,7 @@ const doLogout = async () => {
                   leave-to-class="transform opacity-0 scale-95"
                 >
                   <MenuItems
-                    class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
+                    class="bg-white rounded-md shadow-lg mt-2.5 py-2 origin-top-right right-0 ring-1 ring-gray-900/5 w-32 z-10 absolute focus:outline-none"
                   >
                     <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
                       <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-3 py-1 text-sm leading-6 text-gray-900']">{{
