@@ -1,4 +1,4 @@
-import { createPublicClient, createWalletClient, http, toHex  } from 'viem'
+import { createPublicClient, createWalletClient, http, toHex, formatEther  } from 'viem'
 import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP, defaultChain } from '~/constants/CHAIN'
 import { mnemonicToAccount } from 'viem/accounts'
 export { parseEther, formatEther } from 'viem'
@@ -120,4 +120,17 @@ export const initContract = (account, contractName) => {
       return writeContract({ account, contractName, functionName, value }, ...args)
     },
   }
+}
+
+export const shortAddress = address => address ? `${address.substr(0, 6)}...${address.substr(-4)}` : ''
+
+// export const formatEther = val => formatEther(`${val}`)
+
+// 37462 => 37.5K
+export const numberFormat = (num) => {
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 8, notation: 'compact', compactDisplay: 'short' }).format(num)
+}
+
+export const humanFormatEther = (num) => {
+  return numberFormat(formatEther(num))
 }
