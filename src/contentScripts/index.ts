@@ -83,8 +83,9 @@ const addTopRightBtns = () => {
   app.mount(root)
 }
 
-let href = ''
 const addProfileBtn = () => {
+  let href = ''
+
   const container = document.createElement('div')
   container.id = `${__NAME__}-profile-rwa-nft-btn`
   const root = document.createElement('div')
@@ -109,7 +110,7 @@ const addProfileBtn = () => {
     const intervalTimeSpan = 500
     interval = setInterval(() => {
       if (intervalTimes > maxInterverTimes) {
-        console.log('====> abortInject :', intervalTimes)
+        console.log('====> startInjectProfileBtnInterval abortInject :', intervalTimes)
         clearInterval(interval)
         return
       }
@@ -153,51 +154,99 @@ const addProfileBtn = () => {
 }
 
 const addCardInTwitterStatus = () => {
-  // mount component to context window
-  const container = document.createElement('div')
-  container.id = `${__NAME__}-text-rwa-nft-item`
-  const root = document.createElement('div')
-  patchPortalRoot(container, root)
-  const styleEl = document.createElement('link')
-  const shadowDOM = container.attachShadow?.({ mode: __DEV__ ? 'open' : 'closed' }) || container
-  styleEl.setAttribute('rel', 'stylesheet')
-  styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
-  shadowDOM.appendChild(styleEl)
-  shadowDOM.appendChild(root)
+  let href = ''
+  let targetNode = null
+  let interval = 0
+  let observer = null
 
-  const interval = setInterval(() => {
-    const textInTwitter = document.querySelector('[data-testid="tweetText"]')
-    if (!textInTwitter)
-      return
+  const parseItem = item => {
+    if(!item) return
+    const searchText = 'https://rwa-nft.com/'
+    const index = item.innerText.indexOf(searchText)
+    if (index === -1) return
 
-    const text = textInTwitter.innerText
-    const exist = text.indexOf('https://www.rwa-nft.com/')
+    const nftItemPath = ref(item.innerText.substr(index).replace(searchText, '').split('…')[0])
+    // console.log('====> nftItemPath :', nftItemPath, item.innerText)
 
-    if (exist === -1)
-      return
-    
-    clearInterval(interval)
+    const datetimeLink = item.querySelector('[datetime]').parentNode
+    const id = datetimeLink.getAttribute('href')
+    const container = document.createElement('div')
+    container.id = `${__NAME__}-text-rwa-nft-item-${id}`
+    const root = document.createElement('div')
+    patchPortalRoot(container, root)
+    const styleEl = document.createElement('link')
+    const shadowDOM = container.attachShadow?.({ mode: __DEV__ ? 'open' : 'closed' }) || container
+    styleEl.setAttribute('rel', 'stylesheet')
+    styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
+    shadowDOM.appendChild(styleEl)
+    shadowDOM.appendChild(root)
 
-    // const nftId = descText.substr(descText.indexOf('rwa.web3hacker.world')).replace('rwa.web3hacker.world/', '')
-    // console.log('====> textInTwitter :', textInTwitter)
-
-    // let profileUrl = ''
-    // for (const attr of profileLink.attributes) {
-    //   if (attr.name === 'href') {
-    //     profileUrl = attr.baseURI.toLowerCase()
-    //     break
-    //   }
-    // }
-    // const currentUrl = location.href.toLocaleLowerCase()
-    // if (currentUrl !== profileUrl)
-    //   return
-
-    textInTwitter.after(container)
+    const statusRowNode = item.querySelector('[data-testid="reply"]').parentNode.parentNode.parentNode
+    statusRowNode.before(container)
     const app = createApp(TextInTwitterBtn)
     setupApp(app)
+    app.provide('nftItemPath', nftItemPath)
     app.mount(root)
+  }
+
+  const startInjectTweetNFTCardInterval = () => {
+    console.log('====> startInjectTweetNFTCardInterval :')
+    let intervalTimes = 1
+    const maxInterverTimes = 4
+    const intervalTimeSpan = 500
+    interval = setInterval(() => {
+      if (intervalTimes > maxInterverTimes) {
+        console.log('====> startInjectTweetNFTCardInterval abortInject :', intervalTimes)
+        clearInterval(interval)
+        return
+      }
+      intervalTimes++
+
+      targetNode = document.querySelector('[aria-labelledby*="accessible-list-"]')
+      if (!targetNode) return
+
+      const list = document.querySelectorAll('[aria-labelledby*="accessible-list-"] article[data-testid="tweet"]')
+      list.forEach(parseItem)
+      
+      // 观察器的配置（需要观察什么变动）
+      const config = { childList: true };
+
+      // 当观察到变动时执行的回调函数
+      const callback = function (mutationsList, observer) {
+        // Use traditional 'for loops' for IE 11
+        for (let mutation of mutationsList) {
+          console.log('====> mutation :', mutation.type)
+          if (mutation.type === "childList") {
+            for (var i = 0; i < mutation.addedNodes.length; i++){
+              parseItem(mutation.addedNodes[i].querySelector('article[data-testid="tweet"]'))
+            }
+          }
+        }
+      }
+
+      // 创建一个观察器实例并传入回调函数
+      observer = new MutationObserver(callback);
+
+      // 以上述配置开始观察目标节点
+      observer.observe(targetNode.querySelector('[data-testid="cellInnerDiv"]').parentNode, config);
+      clearInterval(interval)
+    }, intervalTimeSpan)
+  }
+
+  setInterval(() => {
+    if (href==='' || href !== location.href) {
+      href = location.href
+      if (interval) {
+        console.log('====> clearInterval in setInterval :', interval)
+        clearInterval(interval)
+      }
+      if (observer) {
+        observer.disconnect();
+      }
+      startInjectTweetNFTCardInterval()
+    }
   }, 500)
 }
 
-
 addProfileBtn()
+addCardInTwitterStatus()

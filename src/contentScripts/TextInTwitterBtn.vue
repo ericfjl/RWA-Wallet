@@ -8,8 +8,10 @@ onMounted(async () => {
   // console.log('====> content-script onMounted get tabId :', tabId)
 });
 
+let nftItemPath = $(inject("nftItemPath"));
+
 const openLink = async () => {
-  const url = `/options/twitter/31/0-the-future-of-web-3-rwa-wallet`
+  const url = `/options/${nftItemPath}`
   await sendMessage('openOption', { url }, 'background')
 }
 </script>
