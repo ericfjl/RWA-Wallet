@@ -15,12 +15,12 @@ export const getContractInfo = (contractName, chain = CHAIN_ID) => {
 
 export const getTransport = (networkKey) => {
   const url = CHAIN_RPC_URI_MAP[networkKey]
-  console.log('====> url :', url, CHAIN_RPC_URI_MAP, networkKey)
+  // console.log('====> url :', url, CHAIN_RPC_URI_MAP, networkKey)
   return http(url)
 }
 
 export const getPublicClient = (chain = defaultChain) => {
-  console.log('====> chain :', chain)
+  // console.log('====> chain :', chain)
   return createPublicClient({
     chain,
     transport: getTransport(chain.network),

@@ -2,6 +2,7 @@
 <template>
   <div>
     <!-- <LandingNav /> -->
+    <FloatHomeBtn />
     <RouterView />
 
     <BsTokenMintModal />
