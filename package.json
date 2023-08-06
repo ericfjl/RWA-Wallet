@@ -1,6 +1,6 @@
 {
-  "name": "bs-rwa-wallet",
-  "displayName": "BS RWA Wallet",
+  "name": "rwa-wallet",
+  "displayName": "RWA Wallet",
   "version": "0.0.1",
   "private": true,
   "packageManager": "pnpm@8.3.1",
@@ -89,7 +89,6 @@
     "@rwa/core": "link:../RWA-JS-SDK/packages/core",
     "@rwa/web3-storage": "link:../RWA-JS-SDK/packages/web3-storage",
     "@wagmi/core": "^1.0.6",
-    "arseeding-js": "^0.0.30",
     "buffer": "^6.0.3",
     "dayjs": "^1.11.9",
     "events": "^3.3.0",

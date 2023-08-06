@@ -1,5 +1,5 @@
 import { createPublicClient, createWalletClient, http, toHex, formatEther  } from 'viem'
-import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP, defaultChain } from '~/constants/CHAIN'
+import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP, defaultChain, CHAIN_RPC_URI_MAP } from '~/constants/CHAIN'
 import { mnemonicToAccount } from 'viem/accounts'
 export { parseEther, formatEther } from 'viem'
 export {CHAIN_NAME, CHAIN_ID, CHAIN_RPC_URI_MAP } from '~/constants/CHAIN'
@@ -14,11 +14,13 @@ export const getContractInfo = (contractName, chain = CHAIN_ID) => {
 }
 
 export const getTransport = (networkKey) => {
-  const url = CONTRACT_ADDRESS_MAP[networkKey]
+  const url = CHAIN_RPC_URI_MAP[networkKey]
+  console.log('====> url :', url, CHAIN_RPC_URI_MAP, networkKey)
   return http(url)
 }
 
 export const getPublicClient = (chain = defaultChain) => {
+  console.log('====> chain :', chain)
   return createPublicClient({
     chain,
     transport: getTransport(chain.network),

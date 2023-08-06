@@ -11,7 +11,7 @@ for (let key in allABIJsons) {
 }
 
 export const CONTRACT_ADDRESS_MAP = contractAddressMap
-export const defaultChain = goerli
+export const defaultChain = polygonMumbai
 
 const chainNameMap = {
   '0x5': 'goerli',

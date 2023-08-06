@@ -16,6 +16,5 @@ async function openOptionPage(openOptionToUrl = "") {
 
     <button class="mt-2 btn" @click="openOptionsPage('')">Open Dashboard</button>
     <br />
-    <button class="mt-2 btn" @click="openOptionPage('/options/test/arweave')">test/arweave</button>
   </main>
 </template>

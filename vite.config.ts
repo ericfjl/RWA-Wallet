@@ -15,7 +15,6 @@ import packageJson from './package.json'
 
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
-// You don't need to add this to deps, it's included by @esbuild-plugins/node-modules-polyfill
 
 export const sharedConfig: UserConfig = {
   root: r('src'),
@@ -178,7 +177,7 @@ export default defineConfig(({ command }) => ({
       input: {
         options: r('src/options/index.html'),
         popup: r('src/popup/index.html'),
-      },
+      }
     },
   },
   test: {

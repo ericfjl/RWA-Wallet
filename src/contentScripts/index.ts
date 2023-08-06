@@ -4,7 +4,6 @@ import App from './App.vue'
 import ProfileRwaNFTBtn from './ProfileRwaNFTBtn.vue'
 import TextInTwitterBtn from './TextInTwitterBtn.vue'
 
-
 /**
  *
  * @param shadowRootContainer - The HTML element that is the shadowRoot's parent
@@ -66,8 +65,7 @@ const setupApp = app => {
   app.provide('tabId', tabId)
 }
 
-// Firefox `browser.tabs.executeScript()` requires scripts return a primitive value
-(() => {
+const addTopRightBtns = () => {
   // mount component to context window
   const container = document.createElement('div')
   container.id = __NAME__
@@ -83,10 +81,10 @@ const setupApp = app => {
   const app = createApp(App)
   setupApp(app)
   app.mount(root)
-})();
+}
 
-(() => {
-  // mount component to context window
+let href = ''
+const addProfileBtn = () => {
   const container = document.createElement('div')
   container.id = `${__NAME__}-profile-rwa-nft-btn`
   const root = document.createElement('div')
@@ -97,37 +95,64 @@ const setupApp = app => {
   styleEl.setAttribute('href', browser.runtime.getURL('dist/contentScripts/style.css'))
   shadowDOM.appendChild(styleEl)
   shadowDOM.appendChild(root)
+  const app = createApp(ProfileRwaNFTBtn)
+  setupApp(app)
+  const profileId = ref('')
+  app.provide('profileId', profileId)
+  app.mount(root)
+      
+  let interval = 0
+  const startInjectProfileBtnInterval = () => {
+    console.log('====> startInjectProfileBtnInterval :')
+    let intervalTimes = 1
+    const maxInterverTimes = 4
+    const intervalTimeSpan = 500
+    interval = setInterval(() => {
+      if (intervalTimes > maxInterverTimes) {
+        console.log('====> abortInject :', intervalTimes)
+        clearInterval(interval)
+        return
+      }
+      intervalTimes++
 
-  const interval = setInterval(() => {
-    const profileLink = document.querySelector('[data-testid="editProfileButton"]')
-    const descInTwitter = document.querySelector('[data-testid="UserDescription"]')
-    if (!profileLink || !descInTwitter)
-      return
+      const descInTwitter = document.querySelector('[data-testid="UserDescription"]')
+      if (!descInTwitter) return
 
-    clearInterval(interval)
+      const descText = descInTwitter.innerText
+      const index = descText.indexOf('rwa-nft.com')
+      if (index === -1) return
+      
+      let nftId = descText.substr(index).replace('rwa-nft.com/', '')
+      nftId = nftId.split(' ')[0]
+      // if (!nftId) return
+      profileId.value = nftId
+      console.log('====> descText, nftId :', descText, nftId)
+      const usernameNode = document.querySelector('[data-testid="UserName"]')
+      const avatarRowNode = usernameNode.previousSibling
 
-    // const descText = descInTwitter.innerText
-    // const nftId = descText.substr(descText.indexOf('rwa.web3hacker.world')).replace('rwa.web3hacker.world/', '')
+      clearInterval(interval)
 
-    // let profileUrl = ''
-    // for (const attr of profileLink.attributes) {
-    //   if (attr.name === 'href') {
-    //     profileUrl = attr.baseURI.toLowerCase()
-    //     break
-    //   }
-    // }
-    // const currentUrl = location.href.toLocaleLowerCase()
-    // if (currentUrl !== profileUrl)
-    //   return
+      const parentNode = avatarRowNode?.lastChild
+      const firstChild = parentNode.firstChild
+      parentNode.insertBefore(container, firstChild)
+    }, intervalTimeSpan)
+  }
 
-    profileLink.before(container)
-    const app = createApp(ProfileRwaNFTBtn)
-    setupApp(app)
-    app.mount(root)
+  // check href change interval
+  setInterval(() => {
+    if (href==='' || href !== location.href) {
+      href = location.href
+      if (interval) {
+        console.log('====> clearInterval in setInterval :', interval)
+        profileId.value = ''
+        clearInterval(interval)
+      }
+      startInjectProfileBtnInterval()
+    }
   }, 500)
-})();
+}
 
-(() => {
+const addCardInTwitterStatus = () => {
   // mount component to context window
   const container = document.createElement('div')
   container.id = `${__NAME__}-text-rwa-nft-item`
@@ -146,7 +171,7 @@ const setupApp = app => {
       return
 
     const text = textInTwitter.innerText
-    const exist = text.indexOf('rwa.web3hacker.world')
+    const exist = text.indexOf('https://www.rwa-nft.com/')
 
     if (exist === -1)
       return
@@ -172,4 +197,7 @@ const setupApp = app => {
     setupApp(app)
     app.mount(root)
   }, 500)
-})()
+}
+
+
+addProfileBtn()

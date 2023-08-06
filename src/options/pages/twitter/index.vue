@@ -51,7 +51,7 @@ onMounted(async () => {
       <div v-if="isLoading" flex justify-center items-center w-full h-100>
         <div i-svg-spinners-blocks-shuffle-3 text-white class="h-14 w-14"></div>
       </div>
-      <table v-else class="mt-6 text-left w-full whitespace-nowrap">
+      <table v-else class="mt-6 text-left  overflow-x-scroll whitespace-nowrap">
         <colgroup>
           <col class="w-full sm:w-4/12" />
           <col class="lg:w-4/12" />
@@ -66,7 +66,7 @@ onMounted(async () => {
             <th scope="col" class="font-semibold text-right py-2 pr-4 pl-0 sm:text-left sm:pr-8 lg:pr-20">Sold / Max</th>
             <th scope="col" class="font-semibold py-2 pr-8 pl-0 hidden md:table-cell lg:pr-20">Tags</th>
             <th scope="col" class="font-semibold py-2 pr-8 pl-0 hidden md:table-cell lg:pr-20">Price <span text-gray-5>($BST)</span></th>
-            <th scope="col" class="font-semibold text-right py-2 pr-4 pl-0 hidden sm:pr-6 sm:table-cell lg:pr-8">Created at</th>
+            <!-- <th scope="col" class="font-semibold text-right py-2 pr-4 pl-0 hidden sm:pr-6 sm:table-cell lg:pr-8">Created at</th> -->
           </tr>
         </thead>
         <tbody class="divide-y divide-white/5">
@@ -96,9 +96,9 @@ onMounted(async () => {
             <td class="text-sm py-4 pr-8 pl-0 text-gray-400 leading-6 hidden md:table-cell lg:pr-20">
               {{ formatEther(item.basicPrice) }}
             </td>
-            <td class="text-right text-sm py-4 pr-4 pl-0 text-gray-400 leading-6 hidden sm:pr-6 sm:table-cell lg:pr-8">
+            <!-- <td class="text-right text-sm py-4 pr-4 pl-0 text-gray-400 leading-6 hidden sm:pr-6 sm:table-cell lg:pr-8">
               <time :datetime="item.token.createdAt">{{ item.token.createdAt }}</time>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
