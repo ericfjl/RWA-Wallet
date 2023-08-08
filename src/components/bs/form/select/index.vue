@@ -52,12 +52,14 @@ const addNewOption = () => {
       <transition leave-active-class="transition ease-in duration-100" leave-from-class="opacity-100" leave-to-class="opacity-0">
         <ListboxOptions class="bg-white rounded-md shadow-lg ring-black mt-1 text-base max-h-60  py-1  ring-1 ring-opacity-5 z-10 absolute overflow-auto sm:text-sm focus:outline-none" :class="hasAddNew ? '' : 'right-0'">
           <ListboxOption v-for="item in list" :key="item" v-slot="{ active, selected }" as="template" :value="item">
+            <slot name="option" v-bind="{active, selected, item}">
             <li class="cursor-pointer w-full py-2 pr-9 pl-3 relative select-none" :class="[active ? 'bg-gray-700 text-white' : 'text-gray-900']">
               <span class="block truncate" :class="[selected ? 'font-semibold' : 'font-normal']">{{ item }}</span>
               <span v-if="selected" class="flex pr-4 inset-y-0 right-0 absolute items-center" :class="[active ? 'text-white' : 'text-gray-700']">
                 <CheckIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </li>
+            </slot>
           </ListboxOption>
         </ListboxOptions>
       </transition>
