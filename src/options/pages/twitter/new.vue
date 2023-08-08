@@ -6,14 +6,17 @@ import MdiTwitter from '~icons/mdi/twitter'
 import MdiGithub from '~icons/mdi/github'
 import BxlYoutube from '~icons/bxl/youtube'
 import MaterialSymbolsAddLink from '~icons/material-symbols/add-link'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import { CheckIcon } from '@heroicons/vue/20/solid'
 
 const image = $ref("");
-const name = $ref("My First RWA NFT");
-const subTitle = $ref(`We’re changing the way people connect to Web3.`);
-const description = $ref(
+let name = $ref("My First RWA NFT");
+name = ''
+let subTitle = $ref(`We’re changing the way people connect to Web3.`);
+subTitle = ''
+let description = $ref(
   `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`
 );
+description = ''
 const tokenType = "NFTFi-Twitter";
 const inviteCommission = $ref(1);
 const distributor = $ref("rwa-wallet");
@@ -35,7 +38,8 @@ const categoryList = $ref([
 ]);
 
 const router = useRouter();
-const tags = $ref(["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"].join(", "));
+let tags = $ref(["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"].join(", "));
+tags = ''
 const basicPrice = $ref(100); // $BSTa
 const maxSupply = $ref(10000);
 const error = $ref("");
@@ -66,8 +70,8 @@ const doSubmit = async () => {
   toggle();
 };
 
-const currentStep = $ref('Valuation')
 const steps = ['NFT Base Information', 'Valuation', 'Tier Setup', 'Meta && Social Links']
+const currentStep = $ref(steps[0])
 const currentStepIndex = $computed(() => steps.indexOf(currentStep))
 
 const defaultTierData = {
@@ -144,19 +148,21 @@ const removeLink = index => {
             <p class="mt-1 text-gray-400 leading-6">This information will be publish in the RWA Protocol</p>
 
             <div class="mt-10 grid gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-6">
-              <div class="sm:col-span-4">
-                <label for="name" class="font-medium leading-6 block">NFT Name</label>
-                <div class="mt-2">
-                  <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                    <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name" />
+              <div flex items-center col-span-full>
+                <div class="mr-2 sm:col-span-4">
+                  <label for="name" class="font-medium leading-6 block">NFT Name</label>
+                  <div class="mt-2">
+                    <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
+                      <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-span-full">
-                <label for="subTitle" class="font-medium leading-6 block">NFT Sub Title</label>
-                <div class="mt-2">
-                  <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                    <input id="subTitle" v-model="subTitle" type="text" name="subTitle" autocomplete="subTitle" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="The NFT Sub Title" />
+                <div flex-1>
+                  <label for="subTitle" class="font-medium leading-6 block">NFT Sub Title</label>
+                  <div class="mt-2">
+                    <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
+                      <input id="subTitle" v-model="subTitle" type="text" name="subTitle" autocomplete="subTitle" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="The NFT Sub Title" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -169,7 +175,7 @@ const removeLink = index => {
               <div class="col-span-full">
                 <label for="about" class="font-medium leading-6 block">NFT Description</label>
                 <div class="mt-2">
-                  <textarea id="about" v-model="description" name="about" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500 " />
+                  <textarea id="about" v-model="description" name="about" rows="5" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500 " />
                 </div>
                 <p class="mt-3 text-gray-400 leading-6">Write a few sentences about this NFT.</p>
               </div>
@@ -189,21 +195,23 @@ const removeLink = index => {
         <div class="space-y-12">
           <div>
             <h2 class="font-semibold text-base leading-7">Valuation</h2>
-            <p class="mt-1 text-gray-400 leading-6">Setup your NFT Valuation.</p>
+            <p class="mt-1 text-gray-400 leading-6">Setup your NFT Invest share.</p>
           </div>
 
-          <div class="col-span-full">
-            <label for="basicPrice" class="font-medium leading-6 block">Invest share basic price</label>
-            <div class="rounded-md flex shadow-sm mt-2">
-              <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500 " />
-              <span class="border rounded-r-md border-l-0 border-gray-300 px-3 text-gray-500 inline-flex items-center">$BST</span>
+          <div class="flex col-span-full items-center">
+            <div mr-4>
+              <label for="basicPrice" class="font-medium leading-6 block">Basic Price</label>
+              <div class="rounded-md flex shadow-sm mt-2">
+                <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500 " />
+                <span class="border rounded-r-md border-l-0 border-gray-300 px-3 text-gray-500 inline-flex items-center">$BST</span>
+              </div>
             </div>
-          </div>
 
-          <div class="col-span-full">
-            <label for="maxSupply" class="font-medium leading-6 block">Invest share max supply</label>
-            <div class="rounded-md flex shadow-sm mt-2">
-              <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset mt-2 w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700 " placeholder="" />
+            <div flex-1>
+              <label for="maxSupply" class="font-medium leading-6 block">Max Supply</label>
+              <div class="rounded-md flex shadow-sm mt-2">
+                <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700 " placeholder="" />
+              </div>
             </div>
           </div>
           <div class="border-b border-white/10 pb-12">
