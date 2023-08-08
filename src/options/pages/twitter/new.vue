@@ -8,20 +8,16 @@ import BxlYoutube from '~icons/bxl/youtube'
 import MaterialSymbolsAddLink from '~icons/material-symbols/add-link'
 import { CheckIcon } from '@heroicons/vue/20/solid'
 
-const image = $ref("");
-let name = $ref("My First RWA NFT");
-name = ''
-let subTitle = $ref(`We’re changing the way people connect to Web3.`);
-subTitle = ''
-let description = $ref(
-  `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`
-);
-description = ''
+let image = $ref("");
+let name = $ref("");
+let subTitle = $ref(``);
+let description = $ref(``);
+
 const tokenType = "NFTFi-Twitter";
 const inviteCommission = $ref(1);
 const distributor = $ref("rwa-wallet");
 let isLoading = $ref(false);
-const category = $ref("Uncategory");
+let category = $ref("Uncategory");
 const categoryList = $ref([
   "Uncategory",
   "Productivity",
@@ -71,15 +67,16 @@ const doSubmit = async () => {
 };
 
 const steps = ['NFT Base Information', 'Valuation', 'Tier Setup', 'Meta && Social Links']
-const currentStep = $ref(steps[0])
+const currentStep = $ref(steps[3])
 const currentStepIndex = $computed(() => steps.indexOf(currentStep))
 
 const defaultTierData = {
   name: '',
+  nftCount: 1,
   desc: '',
   benefit: ['']
 }
-const tierArr = $ref([cloneDeep(defaultTierData)])
+let tierArr = $ref([cloneDeep(defaultTierData)])
 
 const addBenefit = (item, index) => {
   item.benefit.splice(index + 1, 0, '')
@@ -106,9 +103,8 @@ const iconComponentMap = {
 }
 const linkIconList = Object.keys(iconComponentMap)
 
-const links = $ref([
+let links = $ref([
   { icon: 'Twitter', link: 'https://twitter.com/HelloRWA' },
-  { icon: 'Github', link: 'https://github.com/HelloRWA' },
 ])
 const addLink = index => {
   links.splice(index + 1, 0, { icon: 'Custom', link: '' })
@@ -116,6 +112,57 @@ const addLink = index => {
 
 const removeLink = index => {
   links.splice(index, 1)
+}
+
+const fillDemoData = step => {
+  switch (step) {
+    case 'NFT Base Information':
+      name = 'My First RWA NFT'
+      subTitle = 'We’re changing the way people connect to Web3.'
+      image = 'ipfs://bafkreidthhslu7epz5z6kgjycuuazicorahvgupy75pmxfqf74hvw2vfi4'
+      description = 'RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.'
+      break;
+    case 'Valuation':
+      break;
+    case 'Tier Setup':
+      tierArr = [
+        {
+          name: 'VIP',
+          nftCount: 10,
+          desc: `This tier of benefits is to support the time & resources spent to produce the podcast + Exclusive access to my custom branded wallpapers & Discord Role!`,
+          benefit: [
+            'Social Shoutout',
+            'Discord Role',
+            'Desktop Wallpaper',
+            'Early access',
+          ]
+        },
+        {
+          name: 'Super VIP',
+          nftCount: 100,
+          desc: `Know who my guest is once the show has been booked + Early access to podcast episodes before they air and monthly AMA.`,
+          benefit: [
+            'All Standard benefits included',
+            'Social Shoutout',
+            'Early access',
+            'Ask my guest a question'
+          ]
+        },
+      ]
+      break;
+    case 'Meta && Social Links':
+      category = 'Technology'
+      tags = 'Wallet, RWA, NFT, Web3, Twitter, PFP'
+      links = [
+        { icon: 'Twitter', link: 'https://twitter.com/HelloRWA' },
+        { icon: 'Github', link: 'https://github.com/HelloRWA' },
+        { icon: 'Custom', link: 'https://RWA-NFT.com' },
+        { icon: 'Custom', link: 'https://RWA-Wallet.com' },
+      ]
+      break;
+    default:
+      break;
+  }
 }
 </script>
 
@@ -179,15 +226,12 @@ const removeLink = index => {
                 </div>
                 <p class="mt-3 text-gray-400 leading-6">Write a few sentences about this NFT.</p>
               </div>
-
-
             </div>
           </div>
-
-
         </div>
 
-        <div class="flex mt-6 gap-x-6 items-center justify-end">
+        <div class="flex mt-6 gap-x-6 items-center justify-between">
+          <BsBtnPlain @click="fillDemoData('NFT Base Information')">Fill Demo Data</BsBtnPlain>
           <BsBtnIndigo @click="currentStep = 'Valuation'"> Next </BsBtnIndigo>
         </div>
       </template>
@@ -276,12 +320,12 @@ const removeLink = index => {
           </div>
         </div>
 
-        <BsAlertError v-if="error" my-5>
-          {{ error.message }}
-        </BsAlertError>
-        <div class="flex mt-6 gap-x-6 items-center justify-end">
-          <button type="button" class="font-semibold leading-6" @click="currentStep = 'Valuation'">Previous</button>
-          <BsBtnIndigo :is-loading="isLoading" @click="currentStep = 'Meta && Social Links'"> Next </BsBtnIndigo>
+        <div class="flex mt-6 gap-x-6 items-center justify-between">
+          <BsBtnPlain @click="fillDemoData('Tier Setup')">Fill Demo Data</BsBtnPlain>
+          <div flex space-x-4>
+            <button type="button" class="font-semibold leading-6" @click="currentStep = 'Valuation'">Previous</button>
+            <BsBtnIndigo :is-loading="isLoading" @click="currentStep = 'Meta && Social Links'"> Next </BsBtnIndigo>
+          </div>
         </div>
       </template>
       <template v-if="currentStep === 'Meta && Social Links'">
@@ -330,9 +374,12 @@ const removeLink = index => {
           </div>
         </div>
 
-        <div class="flex mt-6 gap-x-6 items-center justify-end">
-          <button type="button" class="font-semibold leading-6" @click="currentStep = 'Tier Setup'">Previous</button>
-          <BsBtnIndigo :is-loading="isLoading" @click="doSubmit"> Save </BsBtnIndigo>
+        <div class="flex mt-6 gap-x-6 items-center justify-between">
+          <BsBtnPlain @click="fillDemoData('Meta && Social Links')">Fill Demo Data</BsBtnPlain>
+          <div flex space-x-4>
+            <button type="button" class="font-semibold leading-6" @click="currentStep = 'Tier Setup'">Previous</button>
+            <BsBtnIndigo :is-loading="isLoading" @click="doSubmit"> Save </BsBtnIndigo>
+          </div>
         </div>
       </template>
     </div>
