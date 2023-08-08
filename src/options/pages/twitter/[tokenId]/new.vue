@@ -80,7 +80,7 @@ const doSubmit = async () => {
   const nextItemId = (await readContract(
     {
       account,
-      contractName: "BuidlerProtocol",
+      contractName: "RWAProtocol",
       functionName: "getItemsCount",
     },
     tokenId,
@@ -110,7 +110,7 @@ const doSubmit = async () => {
     const { result } = await writeContract(
       {
         account,
-        contractName: 'BuidlerProtocol',
+        contractName: 'RWAProtocol',
         functionName: "addOTP",
       },
       parseEther(oneTimePaymentBasicPrice.toString()),
@@ -129,7 +129,7 @@ const doSubmit = async () => {
   if (requireNFTPass || enableOneTimePayment) {
     status = "Start encrypting your content with NFT Gating"
     const { doEncryptedString, generateCondition } = litHelper({ chain: CHAIN_NAME, litNodeClient, account });
-    const contractAddress = getContractInfo("BuidlerProtocol").address;
+    const contractAddress = getContractInfo("RWAProtocol").address;
     const ownerAddress = account.address;
     const nftPassCondition = generateCondition({ contractAddress, ownerAddress, tokenId, unlockAmount: requiredNFTCount });
     let condition = nftPassCondition;
@@ -176,7 +176,7 @@ const doSubmit = async () => {
   await writeContract(
     {
       account,
-      contractName: 'BuidlerProtocol',
+      contractName: 'RWAProtocol',
       functionName: "addItem",
     },
     itemType,

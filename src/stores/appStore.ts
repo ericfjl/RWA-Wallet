@@ -41,7 +41,7 @@ export const appStore = defineStore('appStore', () => {
   }
 
   const queryAllowance = async () => {
-    const appContractAddress = getContractInfo('BuidlerProtocol').address
+    const appContractAddress = getContractInfo('RWAProtocol').address
     const rz = await Promise.all([
       readContract({
         contractName: 'BSTSwap',
@@ -58,7 +58,7 @@ export const appStore = defineStore('appStore', () => {
 
   const getAppConfig = async () => {
     const rz = await readContract({
-      contractName: 'BuidlerProtocol',
+      contractName: 'RWAProtocol',
       functionName: 'getAppConfig'
     })
     addTokenCost = rz[1]

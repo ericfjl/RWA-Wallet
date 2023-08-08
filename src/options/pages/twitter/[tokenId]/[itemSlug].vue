@@ -18,7 +18,7 @@ onMounted(async () => {
   const { mnemonicStr } = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
   account = getAccount(mnemonicStr);
   const itemURIArr = await readContract(
-    { account, contractName: "BuidlerProtocol", functionName: 'getItems' },
+    { account, contractName: "RWAProtocol", functionName: 'getItems' },
     tokenId,
     itemId,
     1,

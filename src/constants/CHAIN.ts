@@ -31,7 +31,7 @@ export const CHAIN_RPC_URI_MAP = {
   [goerli.network]: 'https://eth-goerli.g.alchemy.com/v2/pSIWu2EeWoF3HW5gmMe5xekcw0FrNvi9'
 }
 
-const BuidlerProtocol = [
+const RWAProtocol = [
   ...allABIs.ERC1155,
   ...allABIs.Token,
   ...allABIs.Item,
@@ -44,5 +44,5 @@ const BuidlerProtocol = [
 
 export const CHAIN_CONTRACT_ABI_MAP = {
   ...allABIs,
-  BuidlerProtocol,
+  RWAProtocol,
 }

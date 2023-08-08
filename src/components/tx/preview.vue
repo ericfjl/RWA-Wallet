@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { sendMessage } from "webext-bridge/options";
+// import { sendMessage } from "webext-bridge/options";
 import imgArweave from '~/assets/arweave.svg'
 import imgCess from '~/assets/cess.svg'
+import imgDB3 from '~/assets/db3-logo.png'
+
+const account = $(inject("account"));
 
 const { isShow, toggle, params, opts } = $(txStore());
 const payBy = $ref("$BSTEntropy");
@@ -13,20 +16,19 @@ const payTokenAddress = $computed(() => {
 const { addLoading, addSuccess, alertError } = $(notificationStore());
 
 const storeBy = $ref("NFT.Storage");
-const storeServiceList = ["NFT.Storage", "Arweave", 'CESS'];
-let account = $ref("");
+const storeServiceList = ["NFT.Storage", "Arweave"];
 let isLoading = $ref(false);
 let approveGas = $ref("");
 const paymentContractName = $computed(() => payBy.replace("$", ""));
-const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
+const { address: spenderAddress } = getContractInfo("RWAProtocol");
 const bstPayAmount = parseEther("100");
 
 const addTokenGas = 310796n;
 
-onMounted(async () => {
-  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
-  account = getAccount(rz.mnemonicStr);
-});
+// onMounted(async () => {
+//   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
+//   account = getAccount(rz.mnemonicStr);
+// });
 
 watchEffect(async () => {
   if (!account) return;
@@ -39,7 +41,7 @@ watchEffect(async () => {
 
   // estimate addToken gas
   // addTokenGas = await estimateContractGas(
-  //   { account, contractName: "BuidlerProtocol", functionName: "addToken" },
+  //   { account, contractName: "RWAProtocol", functionName: "addToken" },
   //   params.tokenType,
   //   parseEther(params.basicPrice.toString()),
   //   params.inviteCommission * 100,
@@ -47,7 +49,7 @@ watchEffect(async () => {
   //   "fake-cid",
   //   payTokenAddress
   // );
-  console.log("====> approveGas, addTokenGas :", approveGas, addTokenGas);
+  // console.log("====> approveGas, addTokenGas :", approveGas, addTokenGas);
 });
 
 let status = $ref("");
@@ -68,9 +70,16 @@ const doSubmit = async () => {
     );
     console.log("====> rzApprove :", rzApprove);
 
+    status = "store tieres and links data to db3.js";
+    const collectionName = 'twitter'
+    const db3Rz = await addDb3Item(account, collectionName, params)
+    console.log('====> db3Rz :', db3Rz)
+
     // upload to decentralized storage
     status = "upload to decentralized storage";
-    const properties = pick(params, ["category", "tags", "tokenType", "distributor", "basicPrice", "maxSupply", "inviteCommission"]);
+    const properties = pick(params, ["category", "tags", "tokenType", "distributor", "basicPrice", "maxSupply", "inviteCommission", 'tierArr',
+      'links']);
+    properties['db3DocId'] = db3Rz.id
     const external_url = ""; // This is the URL that will appear below the asset's image on OpenSea and will allow users to leave OpenSea and view the item on your site.
     const metadata = {
       ...pick(params, ["name", "description", "image", 'subTitle']),
@@ -83,7 +92,7 @@ const doSubmit = async () => {
     const tokenList = await readContract(
       {
         account,
-        contractName: "BuidlerProtocol",
+        contractName: "RWAProtocol",
         functionName: "getTokenList",
       },
       0,
@@ -95,7 +104,7 @@ const doSubmit = async () => {
     const rzToken = await writeContract(
       {
         account,
-        contractName: "BuidlerProtocol",
+        contractName: "RWAProtocol",
         functionName: "addToken",
       },
       params.tokenType,
@@ -136,7 +145,7 @@ const doSubmit2 = async () => {
   await new Promise((r) => setTimeout(r, 500));
   status = "upload to decentralized storage";
   await new Promise((r) => setTimeout(r, 500));
-  status = "create new NFT on BuidlerProtocol";
+  status = "create new NFT on RWAProtocol";
   await new Promise((r) => setTimeout(r, 500));
   status = "";
   if (opts.afterSuccess) {
@@ -179,6 +188,23 @@ const doCancel = async () => {
                   <div class="flex flex-col text-gray-500 items-end">
                     <div>0 $BST</div>
                     <div>{{ approveGas }} Wei</div>
+                  </div>
+                </div>
+              </li>
+              <li class="flex py-6">
+                <div class="border rounded-md flex border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden items-center">
+                  <img :src="imgDB3" class="h-auto object-cover object-center w-24" />
+                </div>
+
+                <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
+                  <h3>Store tieres and links data to DB3.js</h3>
+                  <p class="mt-1 text-sm text-gray-500">We can update the tiers and links information via DB3.js without gas</p>
+                </div>
+                <div flex flex-col justify-between items-end min-w-40>
+                  <div />
+                  <div class="flex flex-col text-gray-500 items-end">
+                    <div>0 $BST</div>
+                    <div>0 Wei</div>
                   </div>
                 </div>
               </li>

@@ -3,7 +3,7 @@ export const nftStore = defineStore('nftStore', () => {
 
   const getNftInfo = async (tokenId) => {
     const rz = await readContract({
-        contractName: 'BuidlerProtocol',
+        contractName: 'RWAProtocol',
         functionName: 'getToken'
     }, tokenId, '', '')
     const tokenURI = rz[0]

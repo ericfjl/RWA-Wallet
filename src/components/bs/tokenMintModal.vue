@@ -63,7 +63,7 @@ const doSubmit = async () => {
 
   if (currentAllowance < mintCost) {
     status = "start add allowance for pay token";
-    const spenderAddress = getContractInfo("BuidlerProtocol").address;
+    const spenderAddress = getContractInfo("RWAProtocol").address;
     await writeContract(
       {
         account,
@@ -80,7 +80,7 @@ const doSubmit = async () => {
     await writeContract(
       {
         account,
-        contractName: "BuidlerProtocol",
+        contractName: "RWAProtocol",
         functionName: "buyOTP",
       },
       tokenId,
@@ -95,7 +95,7 @@ const doSubmit = async () => {
     await writeContract(
       {
         account,
-        contractName: "BuidlerProtocol",
+        contractName: "RWAProtocol",
         functionName: "addMeta",
       },
       metaType,

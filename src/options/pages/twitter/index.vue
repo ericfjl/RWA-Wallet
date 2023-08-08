@@ -10,12 +10,12 @@ onMounted(async () => {
   account = getAccount(rz.mnemonicStr);
   const functionName = "getTokenList";
   const [tokenURIArr, basicPriceArr, totalSupplyArr, maxSupplyArr, itemsCountArr, metaCountArr] = await readContract(
-    { account, contractName: "BuidlerProtocol", functionName },
+    { account, contractName: "RWAProtocol", functionName },
     0,
     100
   );
   // const functionName = 'getTokenListByType'
-  // readContract({ account, contractName: 'BuidlerProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
+  // readContract({ account, contractName: 'RWAProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
   const tokenInfoArr = await Promise.all(tokenURIArr.map(parseURIData));
   items = reverse(
     tokenInfoArr.map((token, index) => {

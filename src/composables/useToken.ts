@@ -20,7 +20,7 @@ export function useToken(_tokenId) {
     }
     isLoading = true
     const rz = await readContract({
-        contractName: 'BuidlerProtocol',
+        contractName: 'RWAProtocol',
         functionName: 'getToken'
     }, tokenId, '', '')
 

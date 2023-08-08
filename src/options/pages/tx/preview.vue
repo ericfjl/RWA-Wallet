@@ -37,7 +37,7 @@ const doSubmit = async () => {
   try {
     // call allowance
     status = "approve allowance";
-    const { address: spenderAddress } = getContractInfo("BuidlerProtocol");
+    const { address: spenderAddress } = getContractInfo("RWAProtocol");
     const bstPayAmount = parseEther("100");
     const rzApprove = await writeContract(
       {
@@ -65,7 +65,7 @@ const doSubmit = async () => {
     const tokenList = await readContract(
       {
         account,
-        contractName: "BuidlerProtocol",
+        contractName: "RWAProtocol",
         functionName: "getTokenList",
       },
       0,
@@ -73,11 +73,11 @@ const doSubmit = async () => {
     );
     const tokenId = tokenList[0].length;
     // create token
-    status = "create new NFT on BuidlerProtocol";
+    status = "create new NFT on RWAProtocol";
     const rzToken = await writeContract(
       {
         account,
-        contractName: "BuidlerProtocol",
+        contractName: "RWAProtocol",
         functionName: "addToken",
       },
       params.tokenType,
@@ -106,7 +106,7 @@ const doSubmit2 = async () => {
   await new Promise((r) => setTimeout(r, 2000));
   status = "upload to decentralized storage";
   await new Promise((r) => setTimeout(r, 2000));
-  status = "create new NFT on BuidlerProtocol";
+  status = "create new NFT on RWAProtocol";
   await new Promise((r) => setTimeout(r, 2000));
   await sendMessage(`actionResolve@${tabId}`, { tokenId: 13 }, `${context}@${tabId}`);
   isLoading = false;

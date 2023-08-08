@@ -40,32 +40,6 @@ const basicPrice = $ref(100); // $BSTa
 const maxSupply = $ref(10000);
 const error = $ref("");
 
-const afterSuccess = async () => {
-  router.push("/options/twitter/");
-};
-
-const doSubmit = async () => {
-  update(
-    {
-      image,
-      name,
-      subTitle,
-      description,
-      category,
-      tags,
-      tokenType,
-      distributor,
-      basicPrice,
-      maxSupply,
-      inviteCommission,
-    },
-    {
-      afterSuccess,
-    }
-  );
-  toggle();
-};
-
 const steps = ['NFT Base Information', 'Valuation', 'Tier Setup', 'Meta && Social Links']
 const currentStep = $ref(steps[3])
 const currentStepIndex = $computed(() => steps.indexOf(currentStep))
@@ -160,10 +134,43 @@ const fillDemoData = step => {
         { icon: 'Custom', link: 'https://RWA-Wallet.com' },
       ]
       break;
+    case 'all':
+      fillDemoData('NFT Base Information')
+      fillDemoData('Tier Setup')
+      fillDemoData('Meta && Social Links')
+      break;
     default:
       break;
   }
 }
+
+const afterSuccess = async () => {
+  router.push("/options/twitter/");
+};
+
+const doSubmit = async () => {
+  update(
+    {
+      image,
+      name,
+      subTitle,
+      description,
+      category,
+      tags,
+      tierArr,
+      links,
+      tokenType,
+      distributor,
+      basicPrice,
+      maxSupply,
+      inviteCommission,
+    },
+    {
+      afterSuccess,
+    }
+  );
+  toggle();
+};
 </script>
 
 <template>
@@ -377,6 +384,7 @@ const fillDemoData = step => {
         <div class="flex mt-6 gap-x-6 items-center justify-between">
           <BsBtnPlain @click="fillDemoData('Meta && Social Links')">Fill Demo Data</BsBtnPlain>
           <div flex space-x-4>
+            <BsBtnPlain @click="fillDemoData('all')">Fill All Demo Data</BsBtnPlain>
             <button type="button" class="font-semibold leading-6" @click="currentStep = 'Tier Setup'">Previous</button>
             <BsBtnIndigo :is-loading="isLoading" @click="doSubmit"> Save </BsBtnIndigo>
           </div>
