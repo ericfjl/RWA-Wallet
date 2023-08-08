@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { sendMessage } from "webext-bridge/popup";
 
-async function openOptionPage(openOptionToUrl = "") {
+async function openOptionsPage(openOptionToUrl = "") {
   if (openOptionToUrl) {
     await sendMessage("storeInMemory", { openOptionToUrl }, "background");
   }
