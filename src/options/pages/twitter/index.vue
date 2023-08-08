@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { sendMessage } from "webext-bridge/options";
 import { formatEther } from "viem";
-import { get, truncate } from 'lodash'
+import { truncate, get } from 'lodash';
+
 let account = $ref("");
 let items = $ref([]);
 let isLoading = $ref(true);

@@ -1,97 +1,19 @@
 <script setup lang="ts">
-import { get, kebabCase } from "lodash";
-import { sendMessage } from "webext-bridge/options";
 import { getDateString } from '~/composables/misc'
-
-const posts = [
-  {
-    id: 6,
-    tokenId: 6,
-    title: "The future Of Web3: RWA Wallet",
-    href: "#",
-    description: `RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.`,
-    imageUrl: "ipfs://bafkreif64ufq5qc67th2pzto2aprficdwg4f7hqz73vqop22hhqed2v2ze",
-    date: "Jun 28, 2023",
-    datetime: "2020-06-28",
-    category: { title: "RWA Wallet", href: "#" },
-  },
-  {
-    id: 5,
-    tokenId: 5,
-    title: "Value Flow: How NFT Artists Are Getting Paid via our RWA Protocol",
-    href: "#",
-    description: `We will be releasing an NFT project - a collection of 21,000 NFTs. Revenue from this release will flow to the vault of this NFT - an automatic 10% distribution of project earnings to holders of these NFTs.`,
-    imageUrl: "ipfs://bafkreiexwiotllck3evtdkure2dmdmfjzcu247ojkdpilinafbpowdgmli",
-    date: "Jun 24, 2023",
-    datetime: "2020-06-24",
-    category: { title: "Membership", href: "#" },
-  },
-  {
-    id: 4,
-    tokenId: 4,
-    title: "How to build your own NFT membership card reading platform via RWA Wallet?",
-    href: "#",
-    description: `In fact, I have thought about developing this function a few months ago, but as a senior procrastination enthusiast, I have never implemented it.
-
-After seeing the competition held by ETH-Global’s FEVM hackathon, there are only a few days left to develop at this time, so the nerves are tense, and the 2 days of full-body concentration have begun!`,
-    imageUrl: "ipfs://bafkreib2di3auwwykb5v4rdtrcjyvbpt6eeqqyrovihj5le2pqekrgbxru",
-    date: "Jun 17, 2023",
-    datetime: "2020-06-17",
-    category: { title: "Membership", href: "#" },
-  },
-  {
-    id: 1,
-    tokenId: 1,
-    title: "Tens of thousands of chains into one",
-    href: "#",
-    description: `Because we believe that the value of web3 does not lie in any chain, but in the true value of the product. The world will have only one chain or some logic to form a chain.
-
-You can think about our real world: a product in different countries has almost the same price (except taxes and transaction fees), but in different currencies.`,
-    imageUrl: "https://miro.medium.com/v2/resize:fit:720/format:webp/1*CaggAi8cFuMRXd883vGkfw.jpeg",
-    date: "Jun 16, 2023",
-    datetime: "2023-06-16",
-    category: { title: "Marketing", href: "#" },
-  },
-  {
-    id: 2,
-    tokenId: 2,
-    title: "The latest technology stack updates related to Web3 development",
-    href: "#",
-    description: `This week, I started to sign up for the Polkadot Hackathon. This time I plan to make an NFT-Fi-Twitter browser plug-in, which allows Twitter users to post NFT-Gating twitter or comments, and users who want to view encrypted content need to Pay $BST to unlock (the corresponding NFT will be obtained as a payment certificate when you pay to unlock), and a series of technical expansions need to be studied in the process of doing it.`,
-    imageUrl: "https://miro.medium.com/v2/resize:fit:720/format:webp/1*rsnO7n7bFBbrQnhCzu4CgQ.jpeg",
-    date: "Jun 13, 2023",
-    datetime: "2023-06-13",
-    category: { title: "Tech", href: "#" },
-  },
-  {
-    id: 1,
-    tokenId: 1,
-    title: "Sign up for Polkadot 2023 Summer Hackathon",
-    href: "#",
-    description: `Earlier CZ replied to Elon Musk on Twitter about how Web3 can help Twitter reduce bots etc.
-In fact, I started thinking about this idea last year, but at that time Web3 technology was not yet mature, and I hadn’t figured out how to implement it.
-In fact, the current Mask plug-in can also solve this problem. I’m not sure about the market share of Mask products though.`,
-    imageUrl: "https://miro.medium.com/v2/resize:fit:4800/format:webp/0*KyBjIidSQmDEWrfm.png",
-    date: "Jun 02, 2023",
-    datetime: "2023-06-02",
-    category: { title: "Hackathon", href: "#" },
-    source: "https://medium.com/@Web3HackerWorld/web3-tea-party-bs-craft-web3hacker-news-4f969f861cba",
-  },
-  // More posts...
-];
+import { isSameAddress } from '~/composables/web3'
 
 const route = useRoute();
 const tokenId = $computed(() => route.params.tokenId);
 let isLoading = $ref(true)
-let account = $ref('')
+let account = $(inject('account'))
 let items = $ref([])
 
 const categoryLink = (post) => `/options/category/${kebabCase(post.category)}`;
 const postLink = (post, index) => `/options/twitter/${tokenId}/${index}-${kebabCase(post.title)}`;
+const { nft } = $(nftStore())
 
-onMounted(async () => {
-  const { mnemonicStr } = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
-  account = getAccount(mnemonicStr);
+watchEffect(async () => {
+  if (!account) return
   const itemURIArr = await readContract(
     { account, contractName: "RWAProtocol", functionName: 'getItems' },
     tokenId,
@@ -109,8 +31,8 @@ onMounted(async () => {
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="mx-auto text-center max-w-2xl">
         <h2 class="font-bold tracking-tight text-3xl text-gray-900 sm:text-4xl">NFT Holder Only Content</h2>
-        <p class="mt-2 text-lg text-gray-600 leading-8">Get fully access by NFT Holder or One-Time-Payment NFT buyer.</p>
-        <BsBtnIndigo mt-10 @click="$router.push(`/options/twitter/${tokenId}/new`)">Create new RWA Content</BsBtnIndigo>
+        <p class="mt-2 text-base text-gray-600 leading-8">Get fully access by NFT Holder or One-Time-Payment NFT buyer.</p>
+        <BsBtnIndigo mt-10 @click="$router.push(`/options/twitter/${tokenId}/new`)" v-if="isSameAddress(account.address, nft.tokenOwner)">Create new RWA Content</BsBtnIndigo>
       </div>
       <div v-if="isLoading" flex justify-center items-center w-full h-100>
         <div i-svg-spinners-blocks-shuffle-3 text-black class="h-14 w-14"></div>

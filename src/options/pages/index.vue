@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { sendMessage } from "webext-bridge/options";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { SignalIcon } from "@heroicons/vue/24/outline";

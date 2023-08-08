@@ -1,3 +1,4 @@
+import { sendMessage } from 'webext-bridge/content-script';
 import { isInternalEndpoint } from 'webext-bridge'
 import { onMessage } from 'webext-bridge/background'
 
@@ -31,7 +32,6 @@ let memoryStoreMap = {
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   memoryStoreMap.tabId = tabId
-  console.log('====> background tabs.onActivated tabId :', tabId)
 })
 
 onMessage('getTabId', () => {

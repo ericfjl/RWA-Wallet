@@ -53,6 +53,7 @@ export function setupApp(app: App, opts = { }) {
     if (!tabId.value) {
       tabId.value = await sendMessage("getTabId", {}, "background");
     }
+
     if (litNodeClient.value === '' && !isLitConnecting) {
       isLitConnecting = true
       nextTick(async() => {

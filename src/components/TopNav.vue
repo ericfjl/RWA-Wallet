@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Vue3Autocounter from 'vue3-autocounter';
 const route = useRoute();
 const path = $computed(() => route.path);
 const categoryKey = $computed(() => path.split("/")[2]);
@@ -21,11 +22,11 @@ const items = $computed(() => {
       desc: "Create new NFT that connect with your twitter",
     },
     { name: "Overview", href: `/options/${categoryKey}/`, current: path === `/options/${categoryKey}/`, desc: "Financialize your twitter via Web3" },
-    { name: "Topics", href: "#", current: false },
-    { name: "Trending", href: "#", current: false },
-    { name: "Top", href: "#", current: false },
-    { name: "Events", href: "#", current: false },
-    { name: "Settings", href: "#", current: false },
+    // { name: "Topics", href: "#", current: false },
+    // { name: "Trending", href: "#", current: false },
+    // { name: "Top", href: "#", current: false },
+    // { name: "Events", href: "#", current: false },
+    // { name: "Settings", href: "#", current: false },
   ];
 });
 
@@ -35,10 +36,10 @@ const overviewItem = $computed(() => find(items, (item) => item.name === "Overvi
 const isOverview = $computed(() => currentItem.name === overviewItem.name);
 
 const stats = [
-  { name: "Number of Twitter RWA NFT", value: "5032" },
-  { name: "Average RWA NFT Sale Price", value: "345", unit: "$BST" },
-  { name: "Total OTP-SBT Sale", value: "50B", unit: "$BST" },
-  { name: "Total Market Cap", value: "123B", unit: "$BST" },
+  { name: "Number of Twitter RWA NFT", value: 5032 },
+  { name: "Average RWA NFT Sale Price", value: 345, unit: "$BST" },
+  { name: "Total OTP-SBT Sale", value: 504244, unit: "$BST" },
+  { name: "Total Market Cap", value: 1234556, unit: "$BST" },
 ];
 </script>
 
@@ -83,7 +84,9 @@ const stats = [
           {{ stat.name }}
         </p>
         <p class="flex mt-2 gap-x-2 items-baseline">
-          <span class="font-semibold text-white tracking-tight text-4xl">{{ stat.value }}</span>
+          <span class="font-semibold text-white tracking-tight text-4xl">
+            <vue3-autocounter :startAmount="0" :endAmount="stat.value" :duration="2" prefix="" suffix="" separator="" decimalSeparator="" :decimals="0" :autoinit="true" />
+          </span>
           <span v-if="stat.unit" class="text-sm text-gray-400">{{ stat.unit }}</span>
         </p>
       </div>

@@ -27,7 +27,7 @@ export const nftStore = defineStore('nftStore', () => {
       token,
       db3DocId,
     }
-    console.log('====> tokenId, nft :', tokenId, nft)
+    // console.log('====> tokenId, nft :', tokenId, nft)
   }
   watchEffect(async() => {
     // do some init stuff

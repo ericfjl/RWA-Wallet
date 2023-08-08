@@ -1,4 +1,4 @@
-import { createPublicClient, createWalletClient, http, toHex, formatEther  } from 'viem'
+import { createPublicClient, createWalletClient, http, toHex, formatEther, getAddress  } from 'viem'
 import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP, defaultChain, CHAIN_RPC_URI_MAP } from '~/constants/CHAIN'
 import { mnemonicToAccount } from 'viem/accounts'
 export { parseEther, formatEther } from 'viem'
@@ -135,4 +135,16 @@ export const numberFormat = (num) => {
 
 export const humanFormatEther = (num) => {
   return numberFormat(formatEther(num))
+}
+
+
+export const isSameAddress = (a, b) => {
+  a = unref(a)
+  b = unref(b)
+  if (!a || !b)
+    return false
+
+  a = getAddress(a)
+  b = getAddress(b)
+  return a === b
 }

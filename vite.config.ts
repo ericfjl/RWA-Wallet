@@ -82,6 +82,7 @@ export const sharedConfig: UserConfig = {
             'cloneDeep',
             'filter',
             'sortBy',
+            'truncate',
             'keyBy',
             'groupBy',
             'upperFirst',
