@@ -80,6 +80,9 @@ dependencies:
   vue-router:
     specifier: '4'
     version: 4.2.1(vue@3.3.4)
+  vue3-autocounter:
+    specifier: ^1.0.6
+    version: 1.0.6(vue@3.3.4)
 
 devDependencies:
   '@antfu/eslint-config':
@@ -13111,6 +13114,15 @@ packages:
       vue: ^3.2.0
     dependencies:
       '@vue/devtools-api': 6.5.0
+      vue: 3.3.4
+    dev: false
+
+  /vue3-autocounter@1.0.6(vue@3.3.4):
+    resolution: {integrity: sha512-jOgCD2WaOjt/tOAAGKDm2DTyQRdKyfqJv5ElUz/vR0ZJgUd4yDd6UX6+2YU3LQpY4qoFNZkzLloAfALAqK041g==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      vue: ^3.0.5
+    dependencies:
       vue: 3.3.4
     dev: false
 

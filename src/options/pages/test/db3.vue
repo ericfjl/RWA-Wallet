@@ -20,7 +20,7 @@ onMounted(async () => {
   const collectionName = 'twitter'
   collection = await getCollection(dbAddress, collectionName, client)
 
-  rz = await queryDoc<Book>(collection, "/[author=Cixin-Liu]")
+  rz = await queryDoc<Book>(collection, `/[_id="4"]`)
 
 })
 const doSubmit = async () => {

@@ -1,12 +1,7 @@
 <script setup lang="ts">
-let { update, toggle } = $(txStore());
-import IcBaselineFacebook from '~icons/ic/baseline-facebook'
-import MdiInstagram from '~icons/mdi/instagram'
-import MdiTwitter from '~icons/mdi/twitter'
-import MdiGithub from '~icons/mdi/github'
-import BxlYoutube from '~icons/bxl/youtube'
-import MaterialSymbolsAddLink from '~icons/material-symbols/add-link'
 import { CheckIcon } from '@heroicons/vue/20/solid'
+import { iconComponentMap } from '~/constants/icons'
+let { update, toggle } = $(txStore());
 
 let image = $ref("");
 let name = $ref("");
@@ -67,14 +62,6 @@ const removeTier = index => {
   tierArr.splice(index, 1)
 }
 
-const iconComponentMap = {
-  Custom: MaterialSymbolsAddLink,
-  Facebook: IcBaselineFacebook,
-  Instagram: MdiInstagram,
-  Twitter: MdiTwitter,
-  Github: MdiGithub,
-  Youtube: BxlYoutube,
-}
 const linkIconList = Object.keys(iconComponentMap)
 
 let links = $ref([

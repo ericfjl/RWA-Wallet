@@ -1,3 +1,4 @@
+
 export const nftStore = defineStore('nftStore', () => {
   let nft = $ref({tokenURI: '', token: {}})
 
@@ -14,7 +15,7 @@ export const nftStore = defineStore('nftStore', () => {
     const items  = rz[5]
     const metas = rz[6]
     const token = await parseURIData(tokenURI)
-
+    const db3DocId = get(token, 'properties.db3DocId')
     nft = {
       tokenURI,
       tokenOwner,
@@ -24,6 +25,7 @@ export const nftStore = defineStore('nftStore', () => {
       items,
       metas,
       token,
+      db3DocId,
     }
     console.log('====> tokenId, nft :', tokenId, nft)
   }
