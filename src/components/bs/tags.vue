@@ -8,11 +8,13 @@ const theTags = $computed(() => {
   if (typeof tags === 'string') return tags.split(',')
   return tags
 })
-const tagsWithCharCodeNumberSum = theTags.map((tag) => {
-  const sum = tag.trim('').split("").reduce((acc, val) => acc + val.charCodeAt(0), 0) % 10;
-  const lens = tag.length;
-  return { tag, sum, lens };
-});
+const tagsWithCharCodeNumberSum = $computed(() => {
+  return theTags.map((tag) => {
+    const sum = tag.trim('').split("").reduce((acc, val) => acc + val.charCodeAt(0), 0) % 10;
+    const lens = tag.length;
+    return { tag, sum, lens };
+  });
+})
 </script>
 <template>
   <div gap-x-2 flex>

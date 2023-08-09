@@ -163,6 +163,7 @@ const doSubmit = async () => {
     image,
     excerpt,
     category,
+    tags,
     itemType,
     content,
   };

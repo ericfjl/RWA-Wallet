@@ -8,8 +8,9 @@ const author = {
   bio: "A Full Stack Web3 Hacker",
 };
 
-const tags = ["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"];
 const { item } = $(itemStore())
+const tags = $computed(() => item.tags || [])
+
 </script>
 
 <template>
@@ -22,11 +23,11 @@ const { item } = $(itemStore())
       </div>
       <div class="pt-6 lg:contents">
         <div class="mx-auto px-12 xl:w-1/2" lg="flex-none mr-0 w-full h-[calc(100vh-184px)] overflow-y-scroll">
-          <BsAuthorBox :author="author" sticky top-0 bg-white />
-          <BsTags pt-lg :tags="tags" />
+          <!-- <BsAuthorBox :author="author" sticky top-0 bg-white /> -->
+          <BsTags :tags="tags" />
 
           <LandingItemContent />
-          <LandingItemTimeline mb-10 />
+          <!-- <LandingItemTimeline mb-10 /> -->
 
           <!-- <LandingItemCommentbox sticky bottom-0 bg-white /> -->
         </div>
