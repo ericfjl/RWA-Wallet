@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useNFTStorage } from "@rwa/web3-storage";
 import { sendMessage } from "webext-bridge/options";
 
 const payBy = $ref("$BSTEntropy");

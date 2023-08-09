@@ -48,7 +48,7 @@ export const estimateContractGas = async ({ account, contractName, functionName,
   if (value)
     params.value = value
 
-    console.log('====> params :', params)
+    // console.log('====> params :', params)
   return publicClient.estimateContractGas(params)
 }
 

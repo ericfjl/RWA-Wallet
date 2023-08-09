@@ -13,8 +13,8 @@ watchEffect(async () => {
   if (!db3DocId) return
 
   const collectionName = 'twitter'
-  // const rz = await getDb3ItemById(account, collectionName, db3DocId)
-  const rz = await getDb3ItemByQuery(account, collectionName, '/[name="My First RWA NFT"]')
+  const rz = await getDb3ItemById(account, collectionName, db3DocId)
+  // const rz = await getDb3ItemByQuery(account, collectionName, '/[name="My First RWA NFT"]')
   tiers = rz.tierArr
 })
 

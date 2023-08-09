@@ -42,8 +42,8 @@ dependencies:
     specifier: ^1.11.9
     version: 1.11.9
   db3.js:
-    specifier: ^0.4.1
-    version: 0.4.1(typescript@4.9.5)
+    specifier: ^0.4.6
+    version: 0.4.6(typescript@4.9.5)
   events:
     specifier: ^3.3.0
     version: 3.3.0
@@ -5898,8 +5898,8 @@ packages:
     engines: {node: '>=14.20.1'}
     dev: false
 
-  /db3.js@0.4.1(typescript@4.9.5):
-    resolution: {integrity: sha512-Fr52nCqynS8KzILZAATc06x6b+gZOjnJ3qVSSs/it0UZFg3xDv2Qalq0B81lTW+7EOaC85x1i4Sf3OmbkdD7VQ==}
+  /db3.js@0.4.6(typescript@4.9.5):
+    resolution: {integrity: sha512-e5cniqnxddg0PsO37ANBUqkcLMzFla+Q5P90vk02QnVMxtk7AyeaWREqA7wEOUNwCZH7o1BBtD+hDUCqfG5FHA==}
     dependencies:
       '@noble/secp256k1': 1.7.1
       '@protobuf-ts/grpcweb-transport': 2.9.1

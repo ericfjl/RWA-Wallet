@@ -3,7 +3,9 @@ const distributor = '0xC6E58fb4aFFB6aB8A392b7CC23CD3feF74517F6C'
 export const appStore = defineStore('appStore', () => {
   const payBy = $ref('$BSTSwap')
   const payTokenList = ['$BSTSwap', '$BSTEntropy']
-  const walletAddress=  '0xFd191B88C97e092222475E7163353d9e83036CD4'
+  const account = $(inject('account'))
+  const walletAddress = $computed(() => account.address)
+  
   const tokenDataMap = $ref({
     $BSTSwap: {
       address: getContractInfo('BSTSwap').address,
@@ -20,8 +22,9 @@ export const appStore = defineStore('appStore', () => {
   let addTokenCost = $ref(parseEther('0'))
   let platformCommission = $ref('')
   
-
   const bstBalance = $computed(() => tokenDataMap[payBy].balance)
+  const bstSwapBalance = $computed(()=> tokenDataMap['$BSTSwap'].balance)
+  const bstEntropyBalance = $computed(()=> tokenDataMap['$BSTEntropy'].balance)
   const payTokenAddress = $computed(() => tokenDataMap[payBy].address)
   const currentAllowance = $computed(() => tokenDataMap[payBy].allowance)
 
@@ -78,12 +81,17 @@ export const appStore = defineStore('appStore', () => {
   return $$({
     payBy,
     payTokenAddress,
+    tokenDataMap,
     payTokenList,
     addTokenCost,
     currentAllowance,
     platformCommission,
     bstBalance,
     distributor,
+    walletAddress,
+    bstEntropyBalance,
+    bstSwapBalance,
+    queryBstBalance,
   })
 })
 

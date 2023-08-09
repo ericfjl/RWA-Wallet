@@ -1,4 +1,4 @@
-import { createFromPrivateKey, createClient, Collection, syncAccountNonce, getCollection, addDoc, queryDoc } from 'db3.js'
+import { createFromPrivateKey, createClient, Collection, syncAccountNonce, getCollection, addDoc, queryDoc, getDoc } from 'db3.js'
 
 const dbAddress = '0x2345e27b939e110de48faca7e72ad2a65415614b'
 
@@ -28,9 +28,9 @@ export const getDb3Item = async (account, collectionName, query) => {
 }
 
 export const getDb3ItemById = async (account, collectionName, id) => {
-  const query = `/[id=${id}]`
-  const docs = await getDb3Item(account, collectionName, query)
-  return docs[0] || {}
+  const collection = await getCollection2(account, collectionName)
+  const doc = await getDoc(collection, id)
+  return doc.doc || {}
 }
 
 export const getDb3ItemByQuery = async (account, collectionName, query) => {
