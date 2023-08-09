@@ -12,7 +12,7 @@ const faqs = [
   {
     question: 'What is a $BST token?',
     answer:
-      '$BST tokens are a test currency that allows you to get by free and use in the testnet version of our `Buidler Protocol` Smart Contract. Some actions on our builder space require you to pay with $BST such as `create new token`, `mint NFT`, `invest NFT`, `bid/ask NFT`.',
+      '$BST tokens are a test currency that allows you to get by free and use in the testnet version of our `RWA Protocol` Smart Contract. Some actions on our builder space require you to pay with $BST such as `create new token`, `mint NFT`, `invest NFT`, `bid/ask NFT`.',
   },
   {
     question: 'It worked! How can I say thank you?',

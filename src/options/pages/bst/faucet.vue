@@ -81,7 +81,7 @@ watchEffect(async () => {
         </div>
       </div>
     </div>
-    <BstFaq />
+    <BstFaq bg-white rounded-2xl mt-10 />
   </div>
 </template>
 
