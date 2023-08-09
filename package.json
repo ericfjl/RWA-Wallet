@@ -88,6 +88,7 @@
     "@metamask/browser-passworder": "^4.1.0",
     "@rwa/core": "link:../RWA-JS-SDK/packages/core",
     "@rwa/web3-storage": "link:../RWA-JS-SDK/packages/web3-storage",
+    "@vueuse/components": "^10.3.0",
     "@wagmi/core": "^1.0.6",
     "buffer": "^6.0.3",
     "dayjs": "^1.11.9",

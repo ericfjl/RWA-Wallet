@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { sendMessage } from "webext-bridge/options";
-import { useEventListener } from '@vueuse/core'
 
 const router = useRouter();
 
