@@ -1,7 +1,8 @@
 
 export const nftStore = defineStore('nftStore', () => {
   let nft = $ref({tokenURI: '', token: {}})
-
+  const nftName = $computed(() => get(nft, 'token.name', 'Loading...'))
+  
   const getNftInfo = async (tokenId) => {
     const rz = await readContract({
         contractName: 'RWAProtocol',
@@ -35,6 +36,7 @@ export const nftStore = defineStore('nftStore', () => {
 
   return $$({
     nft,
+    nftName,
     getNftInfo,
   })
 })

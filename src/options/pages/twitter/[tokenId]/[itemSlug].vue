@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { sendMessage } from "webext-bridge/options";
-
 const route = useRoute()
 const tokenId = $computed(() => route.params.tokenId)
 const slug = $computed(() => route.params.itemSlug)
@@ -9,14 +7,14 @@ const itemId = $computed(() => {
 })
 
 
-let account = $ref('')
+const account = $(inject('account'))
 let isLoading = $ref(true)
 
 let { item, update } = $(itemStore())
+const { getNftInfo } = $(nftStore());
 
 onMounted(async () => {
-  const { mnemonicStr } = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
-  account = getAccount(mnemonicStr);
+  isLoading = true
   const itemURIArr = await readContract(
     { account, contractName: "RWAProtocol", functionName: 'getItems' },
     tokenId,
@@ -27,6 +25,8 @@ onMounted(async () => {
   item = await parseURIData(itemURIArr[0])
   isLoading = false;
   update({ tokenId })
+  await getNftInfo(tokenId);
+
 });
 </script>
 <template>
