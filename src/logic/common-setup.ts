@@ -42,7 +42,11 @@ export function setupApp(app: App, opts = { }) {
   app.provide('litNodeClient', litNodeClient)
 
   const initLit = async () => {
-    const client = new LitJsSdk.LitNodeClient({debug: false, litNetwork: "jalapeno"});
+    const client = new LitJsSdk.LitNodeClient({
+      debug: false,
+      litNetwork: "jalapeno",
+      alertWhenUnauthorized: false,
+    });
     await client.connect();
     litNodeClient.value = client
     isLitConnecting = false

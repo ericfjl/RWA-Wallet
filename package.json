@@ -84,7 +84,7 @@
     "@headlessui/vue": "^1.7.13",
     "@heroicons/vue": "^2.0.18",
     "@kangc/v-md-editor": "^2.3.15",
-    "@lit-protocol/lit-node-client": "^2.2.41",
+    "@lit-protocol/lit-node-client": "^2.2.47",
     "@metamask/browser-passworder": "^4.1.0",
     "@rwa/core": "link:../RWA-JS-SDK/packages/core",
     "@rwa/web3-storage": "link:../RWA-JS-SDK/packages/web3-storage",

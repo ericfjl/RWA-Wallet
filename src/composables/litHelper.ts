@@ -7,7 +7,7 @@
 import * as LitJsSdk from "@lit-protocol/lit-node-client";
 import {SiweMessage} from 'siwe'
 
-const getAuthSig = async (account) => {
+export const getAuthSig = async (account) => {
   const address = account.address
   const walletClient = getWalletClient(account)
   // Craft the SIWE message
@@ -23,13 +23,13 @@ const getAuthSig = async (account) => {
     version: '1',
     chainId: CHAIN_ID,
   });
-  const message = siweMessage.prepareMessage();
-  const signature = await walletClient.signMessage({ message })
+  const signedMessage = siweMessage.prepareMessage();
+  const sig = await walletClient.signMessage({ message: signedMessage })
 
   const authSig = {
-    sig: signature,
+    sig,
     derivedVia: 'web3.eth.personal.sign',
-    signedMessage: message,
+    signedMessage,
     address,
   };
 

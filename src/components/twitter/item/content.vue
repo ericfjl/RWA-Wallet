@@ -14,7 +14,7 @@ let tokenBalance = $ref(0)
 const requiredNFTCount = $computed(() => item.content?.requiredNFTCount || 0)
 const otpTokenId = $computed(() => item.content?.otpTokenId || '')
 let otpTokenBalance = $ref(0)
-const isOwner = $computed(() => account.address !== '' && item.createdBy === account.address)
+const isOwner = $computed(() => account.address !== '' && isSameAddress(item.createdBy, account.address))
 
 watchEffect(async () => {
   if (tokenId === undefined) return
