@@ -45,7 +45,6 @@ export function setupApp(app: App, opts = { }) {
     const client = new LitJsSdk.LitNodeClient({debug: false, litNetwork: "jalapeno"});
     await client.connect();
     litNodeClient.value = client
-    // litNodeClient.value = 'test'
     isLitConnecting = false
   }
 
