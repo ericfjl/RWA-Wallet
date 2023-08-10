@@ -12,7 +12,7 @@ async function openOptionsPage(openOptionToUrl = "") {
 
 <template>
   <main class="text-center py-5 px-4 text-gray-700 w-[300px]">
-    <div>BS RWA Wallet</div>
+    <div>RWA-Wallet.com</div>
 
     <button class="mt-2 btn" @click="openOptionsPage('')">Open Dashboard</button>
     <br />

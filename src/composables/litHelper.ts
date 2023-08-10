@@ -11,10 +11,10 @@ const getAuthSig = async (account) => {
   const address = account.address
   const walletClient = getWalletClient(account)
   // Craft the SIWE message
-  const domain = 'rwa.web3hacker.world';
-  const uri = 'https://rwa.web3hacker.world/login';
+  const domain = 'rwa-wallet.com';
+  const uri = 'https://rwa-wallet.com/login';
   const statement =
-    'Auth with BS RWA Wallet.';
+    'Auth with RWA-Wallet.com';
   const siweMessage = new SiweMessage({
     domain,
     address,
@@ -24,7 +24,6 @@ const getAuthSig = async (account) => {
     chainId: CHAIN_ID,
   });
   const message = siweMessage.prepareMessage();
-  console.log('====> message :', message)
   const signature = await walletClient.signMessage({ message })
 
   const authSig = {
@@ -36,24 +35,29 @@ const getAuthSig = async (account) => {
 
   return authSig
 }
+
 export const litHelper = ({ chain, litNodeClient, account }) => {
   const doEncryptedString = async (content, accessControlConditions) => {
     const authSig = await getAuthSig(account)
-    const { encryptedString, symmetricKey } = await LitJsSdk.encryptString(
+    const rz = await LitJsSdk.encryptString(
       content,
     )
 
-    const encryptedSymmetricKey = await litNodeClient.saveEncryptionKey({
+    const encryptedSymmetricKeyUint8array = await litNodeClient.saveEncryptionKey({
       accessControlConditions,
-      symmetricKey, // Uint8Array
+      symmetricKey: rz.symmetricKey, // Uint8Array
       authSig,
       chain,
       permanent: false,
     })
 
+    const encryptedString = await LitJsSdk.blobToBase64String(rz.encryptedString)
+    const encryptedSymmetricKey = LitJsSdk.uint8arrayToString(encryptedSymmetricKeyUint8array, 'base16')
+    console.log('====>   encryptedString :', encryptedSymmetricKey)
+
     return {
-      encryptedString: await LitJsSdk.blobToBase64String(encryptedString),
-      encryptedSymmetricKey: LitJsSdk.uint8arrayToString(encryptedSymmetricKey, 'base16'),
+      encryptedString,
+      encryptedSymmetricKey,
     }
   }
 

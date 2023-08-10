@@ -132,10 +132,10 @@ const doSubmit = async () => {
     const contractAddress = getContractInfo("RWAProtocol").address;
     const ownerAddress = account.address;
     const nftPassCondition = generateCondition({ contractAddress, ownerAddress, tokenId, unlockAmount: requiredNFTCount });
-    let condition = nftPassCondition;
+    let accessControlConditions = nftPassCondition;
     if (otpTokenId) {
       const otpCondition = generateCondition({ contractAddress, ownerAddress, tokenId: otpTokenId, unlockAmount: "1" });
-      condition = [
+      accessControlConditions = [
         ...nftPassCondition,
         {
           operator: "or",
@@ -144,10 +144,10 @@ const doSubmit = async () => {
       ];
     }
 
-    litRz = await doEncryptedString(content, condition);
+    litRz = await doEncryptedString(content, accessControlConditions);
     litRz = {
       ...litRz,
-      condition,
+      accessControlConditions,
       requireNFTPass,
       requiredNFTCount,
       enableOneTimePayment,
@@ -164,6 +164,7 @@ const doSubmit = async () => {
     excerpt,
     category,
     tags,
+    createdBy: account.address,
     itemType,
     content,
   };

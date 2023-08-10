@@ -148,3 +148,15 @@ export const isSameAddress = (a, b) => {
   b = getAddress(b)
   return a === b
 }
+
+export const queryTokenBalance = async (account, tokenId) => {
+  return readContract(
+    {
+      account,
+      contractName: "RWAProtocol",
+      functionName: 'balanceOf'
+    },
+    account.address,
+    tokenId,
+  )
+}

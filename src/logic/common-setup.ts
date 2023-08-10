@@ -8,12 +8,12 @@ import { createPinia } from 'pinia'
 import * as LitJsSdk from "@lit-protocol/lit-node-client";
 
 // import VMdEditor from '@kangc/v-md-editor'
-// import '@kangc/v-md-editor/lib/style/base-editor.css'
-// import VMdPreview from '@kangc/v-md-editor/lib/preview'
-// import '@kangc/v-md-editor/lib/style/preview.css'
-// import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
-// import '@kangc/v-md-editor/lib/theme/style/github.css'
-// import Hljs from 'highlight.js'
+import '@kangc/v-md-editor/lib/style/base-editor.css'
+import VMdPreview from '@kangc/v-md-editor/lib/preview'
+import '@kangc/v-md-editor/lib/style/preview.css'
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
+import '@kangc/v-md-editor/lib/theme/style/github.css'
+import Hljs from 'highlight.js'
 
 
 export function setupApp(app: App, opts = { }) {
@@ -42,7 +42,7 @@ export function setupApp(app: App, opts = { }) {
   app.provide('litNodeClient', litNodeClient)
 
   const initLit = async () => {
-    const client = new LitJsSdk.LitNodeClient({debug: false, litNetwork: "serrano"});
+    const client = new LitJsSdk.LitNodeClient({debug: false, litNetwork: "jalapeno"});
     await client.connect();
     litNodeClient.value = client
     // litNodeClient.value = 'test'
@@ -92,10 +92,10 @@ export function setupApp(app: App, opts = { }) {
   // })
   // app.use(VMdEditor)
 
-  // VMdPreview.use(githubTheme, {
-  //   Hljs,
-  // })
-  // app.use(VMdPreview)
+  VMdPreview.use(githubTheme, {
+    Hljs,
+  })
+  app.use(VMdPreview)
 
   // pinia
   const pinia = createPinia()

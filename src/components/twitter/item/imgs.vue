@@ -18,7 +18,7 @@ const tags = $computed(() => item.tags || [])
     <div class="mx-auto max-w-7xl lg:flex lg:justify-between xl:justify-end">
       <div class="lg:flex lg:w-1/2 lg:shrink lg:grow-0 xl:inset-y-0 xl:right-1/2 xl:w-1/2 xl:absolute">
         <div class="h-80 relative xl:ml-0" lg="-ml-8 w-full grow h-[calc(100vh-184px)]">
-          <BsBoxImg class="h-full object-cover bg-gray-50 w-full inset-0 absolute" :src="item.image" alt="" />
+          <BsBoxImg class="h-full object-cover bg-gray-50 w-full inset-0 absolute" :src="item.image" alt="" :hasModal="true" />
         </div>
       </div>
       <div class="pt-6 lg:contents">
@@ -26,7 +26,7 @@ const tags = $computed(() => item.tags || [])
           <!-- <BsAuthorBox :author="author" sticky top-0 bg-white /> -->
           <BsTags :tags="tags" />
 
-          <LandingItemContent />
+          <TwitterItemContent />
           <!-- <LandingItemTimeline mb-10 /> -->
 
           <!-- <LandingItemCommentbox sticky bottom-0 bg-white /> -->

@@ -6,7 +6,6 @@ const itemId = $computed(() => {
   return slug.split('-')[0]
 })
 
-
 const account = $(inject('account'))
 let isLoading = $ref(true)
 
