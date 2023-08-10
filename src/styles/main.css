@@ -31,3 +31,7 @@ body,
   font-size: 1rem;
   line-height: 1.5rem;
 }
+
+.github-markdown-body{
+  padding: 0!important;
+}

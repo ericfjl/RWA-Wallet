@@ -53,7 +53,6 @@ export const litHelper = ({ chain, litNodeClient, account }) => {
 
     const encryptedString = await LitJsSdk.blobToBase64String(rz.encryptedString)
     const encryptedSymmetricKey = LitJsSdk.uint8arrayToString(encryptedSymmetricKeyUint8array, 'base16')
-    console.log('====>   encryptedString :', encryptedSymmetricKey)
 
     return {
       encryptedString,
@@ -76,8 +75,7 @@ export const litHelper = ({ chain, litNodeClient, account }) => {
         authSig,
       })
       const blob = LitJsSdk.base64StringToBlob(encryptedString)
-      const decryptedString = await litNodeClient.decryptString(blob, symmetricKey)
-      console.log('====> decryptedString :', decryptedString)
+      const decryptedString = await LitJsSdk.decryptString(blob, symmetricKey)
 
       return { decryptedString }
     }

@@ -48,6 +48,7 @@ const doSubmit = async () => {
 
   isLoading = true;
 
+  const doSuccess = opts.doSuccess
   const amount = params.amount;
   const metaType = params.metaType;
   const metadata = {
@@ -90,6 +91,9 @@ const doSubmit = async () => {
       distributor
     );
     addSuccess(`Buy ${params.amount} One Time Payment SBT Successed!`);
+    if (doSuccess) {
+      await doSuccess()
+    }
   } else {
     status = "start buy RWA NFT";
     await writeContract(
@@ -106,6 +110,9 @@ const doSubmit = async () => {
       distributor
     );
     addSuccess(`Buy ${params.amount} RWA NFT Successed!`);
+    if (doSuccess) {
+      await doSuccess()
+    }
   }
   await doClose();
 };

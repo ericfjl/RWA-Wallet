@@ -9,7 +9,7 @@ import {
   useStorageAsync,
 } from '@vueuse/core'
 
-const storageLocal: StorageLikeAsync = {
+export const extStorageLocal: StorageLikeAsync = {
   removeItem(key: string) {
     return storage.local.remove(key)
   },
@@ -27,4 +27,4 @@ export const useStorageLocal = <T>(
   key: string,
   initialValue: MaybeRef<T>,
   options?: UseStorageAsyncOptions<T>,
-): RemovableRef<T> => useStorageAsync(key, initialValue, storageLocal, options)
+): RemovableRef<T> => useStorageAsync(key, initialValue, extStorageLocal, options)

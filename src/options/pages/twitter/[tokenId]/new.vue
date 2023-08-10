@@ -128,7 +128,7 @@ const doSubmit = async () => {
   let litRz = "";
   if (requireNFTPass || enableOneTimePayment) {
     status = "Start encrypting your content with NFT Gating"
-    const { doEncryptedString, generateCondition } = litHelper({ chain: CHAIN_NAME, litNodeClient, account });
+    const { doEncryptedString, generateCondition } = litHelper({ chain: CHAIN_NAME_FOR_LIT, litNodeClient, account });
     const contractAddress = getContractInfo("RWAProtocol").address;
     const ownerAddress = account.address;
     const nftPassCondition = generateCondition({ contractAddress, ownerAddress, tokenId, unlockAmount: requiredNFTCount });

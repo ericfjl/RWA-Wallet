@@ -23,9 +23,14 @@ const chainNameMap = {
   '0x1389': 'mantleTestnet',
 }
 
+const chainNameMapForLit = {
+  '0x13881': "mumbai",
+}
+
 export const CHAIN_ID = import.meta.env.VITE_CHAIN_ID || '0x13881'
 export const CHAIN_MAP = chainMap
 export const CHAIN_NAME = chainNameMap[CHAIN_ID]
+export const CHAIN_NAME_FOR_LIT = chainNameMapForLit[CHAIN_ID]
 export const CHAIN_RPC_URI_MAP = {
   [polygonMumbai.network]:'https://polygon-mumbai.g.alchemy.com/v2/LwtsIVO7HQgliuatrjYmnqs0gVp5uxrl',
   [goerli.network]: 'https://eth-goerli.g.alchemy.com/v2/pSIWu2EeWoF3HW5gmMe5xekcw0FrNvi9'

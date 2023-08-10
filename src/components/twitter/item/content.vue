@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { extStorageLocal } from '~/composables/useStorageLocal'
 const { toggle, update } = $(tokenMintStore());
-let textContent = $ref("");
+const { item, params } = $(itemStore())
+
+let textContent = $ref('')
+let status = $ref('Loading...')
+
 const account = $(inject('account'))
 const litNodeClient = $(inject('litNodeClient'))
 
-const { item, params } = $(itemStore())
 const excerpt = $computed(() => {
   return item.excerpt || `The author do not provide excerpt for this RWA.`
 })
@@ -16,31 +20,43 @@ const otpTokenId = $computed(() => item.content?.otpTokenId || '')
 let otpTokenBalance = $ref(0)
 const isOwner = $computed(() => account.address !== '' && isSameAddress(item.createdBy, account.address))
 
-watchEffect(async () => {
-  if (tokenId === undefined) return
+const unlockTheContent = async () => {
+  const contentCacheKey = `decrypted-${params.tokenId}-${params.itemId}-${params.cid}`
+  textContent = await extStorageLocal.getItem(contentCacheKey)
+  if (textContent) {
+    status = ''
+    return
+  }
 
   if (requiredNFTCount > 0) {
+    status = 'Checking your NFT Pass'
     tokenBalance = await queryTokenBalance(account, tokenId)
   }
+  console.log('====>  tokenBalance:', tokenBalance)
 
   if (otpTokenId !== '') {
+    status = 'Checking your OTP-SBT'
     otpTokenBalance = await queryTokenBalance(account, otpTokenId)
   }
-  if (tokenBalance > 0 || otpTokenBalance > 0 || isOwner) {
-    // try unlock content automaticly
-    const { doDecryptString } = litHelper({ chain: CHAIN_NAME, litNodeClient, account })
-    const rz = await doDecryptString(item.content)
-    console.log('====> rz :', rz)
-  }
-})
+  console.log('====> otpTokenBalance :', otpTokenBalance)
 
-let status = $ref('')
-const doClose = async () => {
-  status = 'Unlocking the RWA'
-  setTimeout(() => {
-    textContent = 'successed!'
-  }, 2000);
+  if (tokenBalance > 0 || otpTokenBalance > 0 || isOwner) {
+    status = 'Try to descripting...'
+    const { doDecryptString } = litHelper({ chain: CHAIN_NAME_FOR_LIT, litNodeClient, account })
+    const rz = await doDecryptString(item.content)
+    textContent = rz.decryptedString
+    await extStorageLocal.setItem(contentCacheKey, rz.decryptedString)
+  }
+  status = ''
 }
+
+watchEffect(async () => {
+  if (textContent !== '') return
+  if (tokenId === undefined) return
+  if (!params.cid) return
+
+  await unlockTheContent()
+})
 
 const showMintModal = (metaType = 'mint') => {
   let amount = item.content.requiredNFTCount
@@ -54,7 +70,10 @@ const showMintModal = (metaType = 'mint') => {
     amount,
     metaType,
   }, {
-    doClose
+    doSuccess: async () => {
+      status = 'Unlocking the RWA'
+      await unlockTheContent()
+    }
   });
   toggle();
 };
@@ -64,9 +83,9 @@ const showMintModal = (metaType = 'mint') => {
   <div>
     <h1 class="font-bold mt-2 tracking-tight text-4xl text-gray-900 sm:text-5xl">{{ item.title }}</h1>
     <p class="mt-6 text-xl text-gray-700 leading-8">
-      {{ excerpt }}
+      <v-md-preview :text="excerpt" />
     </p>
-    <div class="mt-10 text-base text-gray-700 leading-7 lg:max-w-none">
+    <div class="text-base text-gray-700 leading-7 lg:max-w-none">
       <div v-if="textContent">
         <v-md-preview :text="textContent" />
       </div>

@@ -9,7 +9,7 @@ const itemId = $computed(() => {
 const account = $(inject('account'))
 let isLoading = $ref(true)
 
-let { item, update } = $(itemStore())
+let { update, item } = $(itemStore())
 const { getNftInfo } = $(nftStore());
 
 onMounted(async () => {
@@ -21,9 +21,10 @@ onMounted(async () => {
     1,
     ''
   );
-  item = await parseURIData(itemURIArr[0])
+  const cid = itemURIArr[0]
+  item = await parseURIData(cid)
   isLoading = false;
-  update({ tokenId })
+  update({ tokenId, itemId, cid, })
   await getNftInfo(tokenId);
 
 });

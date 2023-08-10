@@ -2,7 +2,7 @@ import { createPublicClient, createWalletClient, http, toHex, formatEther, getAd
 import { CHAIN_CONTRACT_ABI_MAP, CHAIN_ID, CONTRACT_ADDRESS_MAP, defaultChain, CHAIN_RPC_URI_MAP } from '~/constants/CHAIN'
 import { mnemonicToAccount } from 'viem/accounts'
 export { parseEther, formatEther } from 'viem'
-export {CHAIN_NAME, CHAIN_ID, CHAIN_RPC_URI_MAP } from '~/constants/CHAIN'
+export {CHAIN_NAME, CHAIN_NAME_FOR_LIT, CHAIN_ID, CHAIN_RPC_URI_MAP } from '~/constants/CHAIN'
 export const getContractInfo = (contractName, chain = CHAIN_ID) => {
   const address = CONTRACT_ADDRESS_MAP[contractName][chain]
   const abi = CHAIN_CONTRACT_ABI_MAP[contractName]
