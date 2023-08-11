@@ -71,6 +71,7 @@ export const sharedConfig: UserConfig = {
       // https://github.com/ensdomains/address-encoder/issues/323#issuecomment-1024844601
       stream: 'stream-browserify',
       crypto: 'crypto-browserify',
+      assert: 'rollup-plugin-node-polyfills/polyfills/assert',
     },
   },
   define: {
