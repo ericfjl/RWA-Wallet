@@ -3,7 +3,9 @@ import { execSync } from 'node:child_process'
 import fs from 'fs-extra'
 import chokidar from 'chokidar'
 import { isDev, log, port, r } from './utils'
+import nodePath from 'node:path'
 
+fs.ensureDir(r('extension'))
 /**
  * Stub index.html to use Vite in development
  */
@@ -28,8 +30,11 @@ async function stubIndexHtml() {
 function writeManifest() {
   execSync('npx esno ./scripts/manifest.ts', { stdio: 'inherit' })
 }
-
 writeManifest()
+
+fs.copySync(r('src/assets'), r('extension/assets/'))
+
+const copyToAssetFolder = path => fs.copySync(path, r(`extension/assets/${nodePath.basename(path)}`))
 
 if (isDev) {
   stubIndexHtml()
@@ -40,5 +45,11 @@ if (isDev) {
   chokidar.watch([r('src/manifest.ts'), r('package.json')])
     .on('change', () => {
       writeManifest()
+    })
+  chokidar.watch([r('src/assets/*')], { ignored: /(^|[\/\\])\../,})
+    .on('add', copyToAssetFolder)
+    .on('change', copyToAssetFolder)
+    .on('unlink', path => {
+      fs.removeSync(r(`extension/assets/${nodePath.basename(path)}`))
     })
 }

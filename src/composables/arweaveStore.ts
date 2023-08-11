@@ -1,5 +1,5 @@
 const arseedUrl = 'https://arseed.web3infra.dev'
-import { EthereumSigner } from '~/libs/arseeding-js/'
+import { EthereumSigner } from 'arseeding-js'
 
 export const storeJsonToArweave = async () => {
 

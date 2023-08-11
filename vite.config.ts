@@ -13,48 +13,7 @@ import UnoCSS from 'unocss/vite'
 import { isDev, port, r } from './scripts/utils'
 import packageJson from './package.json'
 
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
-import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill'
-
-export const sharedConfig: UserConfig = {
-  root: r('src'),
-  resolve: {
-    alias: {
-      '~/': `${r('src')}/`,
-      assert: 'rollup-plugin-node-polyfills/polyfills/assert',
-      util: 'rollup-plugin-node-polyfills/polyfills/util',
-      // buffer: 'rollup-plugin-node-polyfills/polyfills/buffer-es6',
-      process: 'rollup-plugin-node-polyfills/polyfills/process-es6'
-    },
-  },
-  define: {
-    __DEV__: isDev,
-    __NAME__: JSON.stringify(packageJson.name),
-    global: 'window',
-		'process.env.NODE_DEBUG': 'false',
-		'window.global': 'globalThis'
-  },
-  plugins: [
-    Vue({
-      reactivityTransform: true,
-    }),
-    // https://github.com/hannoeru/vite-plugin-pages
-    Pages({
-      extensions: ['vue', 'md'],
-      dirs: [
-        { dir: r('src/pages'), baseRoute: '' },
-        { dir: r('src/options/pages'), baseRoute: 'options' },
-        { dir: r('src/popup/pages'), baseRoute: 'popup' },
-        { dir: r('src/contentScripts/pages'), baseRoute: 'contentScripts' },
-      ],
-    }),
-
-    // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
-    Layouts({
-      layoutsDirs: r('src/layouts'),
-    }),
-
-    AutoImport({
+const theAutoImport =  AutoImport({
       imports: [
         'vue',
         'vue-router',
@@ -102,7 +61,44 @@ export const sharedConfig: UserConfig = {
         r('src/composables'),
       ],
       dts: r('src/auto-imports.d.ts'),
+})
+
+export const sharedConfig: UserConfig = {
+  root: r('src'),
+  resolve: {
+    alias: {
+      '~/': `${r('src')}/`,
+      stream: 'stream-browserify',
+      crypto: 'crypto-browserify',
+    },
+  },
+  define: {
+    __DEV__: isDev,
+    __NAME__: JSON.stringify(packageJson.name),
+    global: 'window',
+		'process.env.NODE_DEBUG': 'false',
+		'window.global': 'globalThis'
+  },
+  plugins: [
+    theAutoImport,
+    Vue({
+      reactivityTransform: true,
     }),
+    // https://github.com/hannoeru/vite-plugin-pages
+    Pages({
+      extensions: ['vue', 'md'],
+      dirs: [
+        { dir: r('src/pages'), baseRoute: '' },
+        { dir: r('src/options/pages'), baseRoute: 'options' },
+        { dir: r('src/popup/pages'), baseRoute: 'popup' },
+        { dir: r('src/contentScripts/pages'), baseRoute: 'contentScripts' },
+      ],
+    }),
+
+    // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
+    Layouts({
+      layoutsDirs: r('src/layouts'),
+    }),    
 
     // https://github.com/antfu/unplugin-vue-components
     Components({
@@ -145,11 +141,7 @@ export const sharedConfig: UserConfig = {
     ],
     esbuildOptions: {
       plugins: [
-        NodeGlobalsPolyfillPlugin({
-          process: true,
-          // buffer: true
-        }),
-        NodeModulesPolyfillPlugin()
+        
       ]
     }
   },
@@ -165,9 +157,7 @@ export default defineConfig(({ command }) => ({
     },
   },
   build: {
-    watch: isDev
-      ? {}
-      : undefined,
+    watch: isDev ? {} : undefined,
     outDir: r('extension/dist'),
     emptyOutDir: false,
     sourcemap: isDev ? 'inline' : false,
@@ -179,7 +169,9 @@ export default defineConfig(({ command }) => ({
       input: {
         options: r('src/options/index.html'),
         popup: r('src/popup/index.html'),
-      }
+      },
+      plugins: [
+      ]
     },
   },
   test: {
