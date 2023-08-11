@@ -62,7 +62,7 @@ export async function getManifest() {
       extension_pages: isDev
         // this is required on dev for Vite script to load
         ? `script-src \'self\' http://localhost:${port} \'wasm-unsafe-eval\'; object-src \'self\'`
-        : 'script-src \'self\'; object-src \'self\'',
+        : 'script-src \'self\' \'wasm-unsafe-eval\'; object-src \'self\'',
     },
   }
 

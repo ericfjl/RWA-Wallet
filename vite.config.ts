@@ -68,6 +68,7 @@ export const sharedConfig: UserConfig = {
   resolve: {
     alias: {
       '~/': `${r('src')}/`,
+      // https://github.com/ensdomains/address-encoder/issues/323#issuecomment-1024844601
       stream: 'stream-browserify',
       crypto: 'crypto-browserify',
     },
