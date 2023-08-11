@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { genNodeAPI, getTokenTagByEver } from "arseeding-js/esm/index";
+import { genNodeAPI, getTokenTagByEver, getItemMeta, getBundleFee } from "arseeding-js/esm/index";
 const tabId = $(inject("tabId"));
 const account = $(inject("account"));
 
@@ -18,6 +18,15 @@ onMounted(async () => {
   try {
     // const resp = await instance.sendAndPay(arseedUrl, data, tokenTags[0], options);
     // console.log("====> resp :", resp);
+
+    const itemId = "UVCohHv0wDkmE7V2CgxHkiHwtRHJONb1MCIuS0jvTfg";
+    const itemMeta = await getItemMeta(arseedUrl, itemId);
+    console.log("====> itemMeta :", itemMeta);
+
+    const size = 1024;
+    const currency = "bnb";
+    const res = await getBundleFee(arseedUrl, size, currency);
+    console.log(res);
   } catch (error) {
     console.log("====> error :", error);
   }

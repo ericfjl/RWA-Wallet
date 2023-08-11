@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CheckIcon } from '@heroicons/vue/20/solid'
-import { iconComponentMap } from '~/constants/icons'
+import { CheckIcon } from "@heroicons/vue/20/solid";
+import { iconComponentMap } from "~/constants/icons";
 let { update, toggle } = $(txStore());
 
 let image = $ref("");
@@ -30,106 +30,94 @@ const categoryList = $ref([
 
 const router = useRouter();
 let tags = $ref(["Wallet", "RWA", "NFT", "Web3", "Twitter", "PFP"].join(", "));
-tags = ''
+tags = "";
 const basicPrice = $ref(100); // $BSTa
 const maxSupply = $ref(10000);
-const error = $ref("");
 
-const steps = ['NFT Base Information', 'Valuation', 'Tier Setup', 'Meta && Social Links']
-const currentStep = $ref(steps[3])
-const currentStepIndex = $computed(() => steps.indexOf(currentStep))
+const steps = ["NFT Base Information", "Valuation", "Tier Setup", "Meta && Social Links"];
+const currentStep = $ref(steps[3]);
+const currentStepIndex = $computed(() => steps.indexOf(currentStep));
 
 const defaultTierData = {
-  name: '',
+  name: "",
   nftCount: 1,
-  desc: '',
-  benefit: ['']
-}
-let tierArr = $ref([cloneDeep(defaultTierData)])
+  desc: "",
+  benefit: [""],
+};
+let tierArr = $ref([cloneDeep(defaultTierData)]);
 
 const addBenefit = (item, index) => {
-  item.benefit.splice(index + 1, 0, '')
-}
+  item.benefit.splice(index + 1, 0, "");
+};
 const removeBenefit = (item, index) => {
-  item.benefit.splice(index, 1)
-}
+  item.benefit.splice(index, 1);
+};
 
 const addTier = () => {
-  tierArr.push(cloneDeep(defaultTierData))
-}
+  tierArr.push(cloneDeep(defaultTierData));
+};
 
-const removeTier = index => {
-  tierArr.splice(index, 1)
-}
+const removeTier = (index) => {
+  tierArr.splice(index, 1);
+};
 
-const linkIconList = Object.keys(iconComponentMap)
+const linkIconList = Object.keys(iconComponentMap);
 
-let links = $ref([
-  { icon: 'Twitter', link: 'https://twitter.com/HelloRWA' },
-])
-const addLink = index => {
-  links.splice(index + 1, 0, { icon: 'Custom', link: '' })
-}
+let links = $ref([{ icon: "Twitter", link: "https://twitter.com/HelloRWA" }]);
+const addLink = (index) => {
+  links.splice(index + 1, 0, { icon: "Custom", link: "" });
+};
 
-const removeLink = index => {
-  links.splice(index, 1)
-}
+const removeLink = (index) => {
+  links.splice(index, 1);
+};
 
-const fillDemoData = step => {
+const fillDemoData = (step) => {
   switch (step) {
-    case 'NFT Base Information':
-      name = 'My First RWA NFT'
-      subTitle = 'We’re changing the way people connect to Web3.'
-      image = 'ipfs://bafkreidthhslu7epz5z6kgjycuuazicorahvgupy75pmxfqf74hvw2vfi4'
-      description = 'RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.'
+    case "NFT Base Information":
+      name = "My First RWA NFT";
+      subTitle = "We’re changing the way people connect to Web3.";
+      image = "ipfs://bafkreidthhslu7epz5z6kgjycuuazicorahvgupy75pmxfqf74hvw2vfi4";
+      description =
+        "RWA Wallet, which stands for Real World Asset Wallet, is a game-changing innovation in the world of blockchain-based finance. It introduces a new dimension by bridging the gap between traditional financial assets and the emerging decentralized economy. By combining the best features of both worlds, RWA Wallet offers users a unique and powerful financial tool.";
       break;
-    case 'Valuation':
+    case "Valuation":
       break;
-    case 'Tier Setup':
+    case "Tier Setup":
       tierArr = [
         {
-          name: 'VIP',
+          name: "VIP",
           nftCount: 10,
           desc: `This tier of benefits is to support the time & resources spent to produce the podcast + Exclusive access to my custom branded wallpapers & Discord Role!`,
-          benefit: [
-            'Social Shoutout',
-            'Discord Role',
-            'Desktop Wallpaper',
-            'Early access',
-          ]
+          benefit: ["Social Shoutout", "Discord Role", "Desktop Wallpaper", "Early access"],
         },
         {
-          name: 'Super VIP',
+          name: "Super VIP",
           nftCount: 100,
           desc: `Know who my guest is once the show has been booked + Early access to podcast episodes before they air and monthly AMA.`,
-          benefit: [
-            'All Standard benefits included',
-            'Social Shoutout',
-            'Early access',
-            'Ask my guest a question'
-          ]
+          benefit: ["All Standard benefits included", "Social Shoutout", "Early access", "Ask my guest a question"],
         },
-      ]
+      ];
       break;
-    case 'Meta && Social Links':
-      category = 'Technology'
-      tags = 'Wallet, RWA, NFT, Web3, Twitter, PFP'
+    case "Meta && Social Links":
+      category = "Technology";
+      tags = "Wallet, RWA, NFT, Web3, Twitter, PFP";
       links = [
-        { icon: 'Twitter', link: 'https://twitter.com/HelloRWA' },
-        { icon: 'Github', link: 'https://github.com/HelloRWA' },
-        { icon: 'Custom', link: 'https://RWA-NFT.com' },
-        { icon: 'Custom', link: 'https://RWA-Wallet.com' },
-      ]
+        { icon: "Twitter", link: "https://twitter.com/HelloRWA" },
+        { icon: "Github", link: "https://github.com/HelloRWA" },
+        { icon: "Custom", link: "https://RWA-NFT.com" },
+        { icon: "Custom", link: "https://RWA-Wallet.com" },
+      ];
       break;
-    case 'all':
-      fillDemoData('NFT Base Information')
-      fillDemoData('Tier Setup')
-      fillDemoData('Meta && Social Links')
+    case "all":
+      fillDemoData("NFT Base Information");
+      fillDemoData("Tier Setup");
+      fillDemoData("Meta && Social Links");
       break;
     default:
       break;
   }
-}
+};
 
 const afterSuccess = async () => {
   router.push("/options/twitter/");
@@ -194,7 +182,7 @@ const doSubmit = async () => {
                   <label for="name" class="font-medium leading-6 block">NFT Name</label>
                   <div class="mt-2">
                     <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                      <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Cool NFT Name" />
+                      <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="Your Cool NFT Name" />
                     </div>
                   </div>
                 </div>
@@ -202,7 +190,7 @@ const doSubmit = async () => {
                   <label for="subTitle" class="font-medium leading-6 block">NFT Sub Title</label>
                   <div class="mt-2">
                     <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                      <input id="subTitle" v-model="subTitle" type="text" name="subTitle" autocomplete="subTitle" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="The NFT Sub Title" />
+                      <input id="subTitle" v-model="subTitle" type="text" name="subTitle" autocomplete="subTitle" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="The NFT Sub Title" />
                     </div>
                   </div>
                 </div>
@@ -216,7 +204,7 @@ const doSubmit = async () => {
               <div class="col-span-full">
                 <label for="about" class="font-medium leading-6 block">NFT Description</label>
                 <div class="mt-2">
-                  <textarea id="about" v-model="description" name="about" rows="5" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500 " />
+                  <textarea id="about" v-model="description" name="about" rows="5" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <p class="mt-3 text-gray-400 leading-6">Write a few sentences about this NFT.</p>
               </div>
@@ -240,7 +228,7 @@ const doSubmit = async () => {
             <div mr-4>
               <label for="basicPrice" class="font-medium leading-6 block">Basic Price</label>
               <div class="rounded-md flex shadow-sm mt-2">
-                <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500 " />
+                <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500" />
                 <span class="border rounded-r-md border-l-0 border-gray-300 px-3 text-gray-500 inline-flex items-center">$BST</span>
               </div>
             </div>
@@ -248,7 +236,7 @@ const doSubmit = async () => {
             <div flex-1>
               <label for="maxSupply" class="font-medium leading-6 block">Max Supply</label>
               <div class="rounded-md flex shadow-sm mt-2">
-                <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700 " placeholder="" />
+                <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700" placeholder="" />
               </div>
             </div>
           </div>
@@ -263,7 +251,6 @@ const doSubmit = async () => {
             </div>
           </div>
           <div class="flex mt-6 gap-x-6 items-center justify-end">
-
             <button type="button" class="font-semibold leading-6" @click="currentStep = 'NFT Base Information'">Previous</button>
             <BsBtnIndigo :is-loading="isLoading" @click="currentStep = 'Tier Setup'"> Next </BsBtnIndigo>
           </div>
@@ -280,7 +267,7 @@ const doSubmit = async () => {
                 <label :for="`tier${index}-name`" class="font-medium leading-6 w-30">Tier {{ index + 1 }} Name</label>
                 <div class="flex-1">
                   <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                    <input :id="`tier${index}-name`" v-model="item.name" type="text" :name="`tier${index}-name`" autocomplete="tierName" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Your Tier Name" />
+                    <input :id="`tier${index}-name`" v-model="item.name" type="text" :name="`tier${index}-name`" autocomplete="tierName" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="Your Tier Name" />
                   </div>
                 </div>
                 <BsBtnDefault bg-red ml-4 @click="removeTier(index)" v-if="tierArr.length !== 1">Remove this Tier</BsBtnDefault>
@@ -289,7 +276,7 @@ const doSubmit = async () => {
               <div class="col-span-full">
                 <label :for="`tier${index}-desc`" class="font-medium leading-6 block">Tier {{ index + 1 }} Description</label>
                 <div class="mt-2">
-                  <textarea :id="`tier${index}-desc`" v-model="item.desc" :name="`tier${index}-desc`" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500 " />
+                  <textarea :id="`tier${index}-desc`" v-model="item.desc" :name="`tier${index}-desc`" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <p class="mt-3 text-gray-400 leading-6">Write a few sentences about this Tier.</p>
               </div>
@@ -298,12 +285,14 @@ const doSubmit = async () => {
                   <label :for="`tier${index}-benefit-${_index}`" class="font-medium leading-6 w-30 block">Benefit {{ _index + 1 }} </label>
                   <div class="flex-1">
                     <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                      <input :id="`tier${index}-benefit-${_index}`" v-model="item.benefit[_index]" type="text" :name="`tier${index}-benefit-${_index}`" autocomplete="benefitName" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="Benefit Name" />
+                      <input :id="`tier${index}-benefit-${_index}`" v-model="item.benefit[_index]" type="text" :name="`tier${index}-benefit-${_index}`" autocomplete="benefitName" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="Benefit Name" />
                     </div>
                   </div>
                   <div flex pl-2 space-x-2>
                     <button text-xl i-material-symbols-add-circle-outline-rounded @click="addBenefit(item, _index)">Add Benefit</button>
-                    <button text-red text-xl i-ic-round-remove-circle-outline @click="removeBenefit(item, _index)" v-if="item.benefit.length > 1">Remove Benefit</button>
+                    <button text-red text-xl i-ic-round-remove-circle-outline @click="removeBenefit(item, _index)" v-if="item.benefit.length > 1">
+                      Remove Benefit
+                    </button>
                   </div>
                 </div>
               </div>
@@ -357,7 +346,7 @@ const doSubmit = async () => {
                   <component :is="iconComponentMap[item.icon]" class="h-5 w-auto" />
                 </div>
                 <div class="rounded-md flex bg-white/5 flex-1 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                  <input :id="`link-${index}`" v-model="item.link" type="text" :name="`link-${index}`" autocomplete="link" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0 " placeholder="https://" />
+                  <input :id="`link-${index}`" v-model="item.link" type="text" :name="`link-${index}`" autocomplete="link" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="https://" />
                 </div>
                 <div flex pl-2 space-x-2>
                   <button text-xl i-material-symbols-add-circle-outline-rounded @click="addLink(index)">Add Link</button>
