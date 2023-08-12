@@ -4,7 +4,6 @@ import { EthereumSigner, genNodeAPI, getTokenTagByEver, getItemMeta, getBundleFe
 import * as bufferEs6 from 'rollup-plugin-node-polyfills/polyfills/buffer-es6'
 const { Buffer } = bufferEs6
 
-console.log('====> Buffer :', Buffer)
 export const storeJsonToArweave = async (account, data, tagsMap,) => {
   data = Buffer.from(JSON.stringify(data))
   tagsMap['Content-Type'] = 'application/json'
@@ -17,7 +16,7 @@ export const storeJsonToArweave = async (account, data, tagsMap,) => {
   try {
     const rz = await instance.sendAndPay(arseedUrl, data, tokenTags[0], options);
     const link = `https://scan.everpay.io/tx/${rz.everHash}`
-    console.log('====> storeJsonToArweave success rz :', rz)
+    // console.log('====> storeJsonToArweave success rz :', rz)
     return {
       ...rz,
       link,

@@ -92,8 +92,15 @@ const doSubmit = async () => {
     };
     const cid = await storeJson(metadata);
     // per
-    const arseedingRz = await storeJsonToArweave(metadata);
     console.log("====> cid :", cid);
+
+    const arseedingRz = await storeJsonToArweave(account, metadata, { tokenType: params.tokenType });
+    console.log("====> arseedingRz :", arseedingRz);
+    if (arseedingRz.err) {
+      throw arseedingRz.err;
+    }
+
+    status = `Store NFT metadata onto arseeding successed! ${arseedingRz.link}`;
 
     const tokenList = await readContract(
       {
@@ -182,10 +189,7 @@ const doCancel = async () => {
             <ul role="list" class="divide-y divide-gray-200 -my-6">
               <li class="flex py-6">
                 <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
-                  <div
-                    i-streamline-money-currency-bitcoin-crypto-circle-payment-blokchain-finance-bitcoin-currency-money
-                    class="h-full object-cover object-center w-full"
-                  />
+                  <div i-streamline-money-currency-bitcoin-crypto-circle-payment-blokchain-finance-bitcoin-currency-money class="h-full object-cover object-center w-full" />
                 </div>
 
                 <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
