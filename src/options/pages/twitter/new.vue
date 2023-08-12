@@ -35,7 +35,7 @@ const basicPrice = $ref(100); // $BSTa
 const maxSupply = $ref(10000);
 
 const steps = ["NFT Base Information", "Valuation", "Tier Setup", "Meta && Social Links"];
-const currentStep = $ref(steps[3]);
+const currentStep = $ref(steps[0]);
 const currentStepIndex = $computed(() => steps.indexOf(currentStep));
 
 const defaultTierData = {
@@ -154,16 +154,26 @@ const doSubmit = async () => {
     <div main max-w-4xl text-white text-sm>
       <nav aria-label="Progress" mb-20>
         <ol role="list" class="space-y-4 md:flex md:space-x-8 md:space-y-0">
-          <li v-for="(step, index) in steps" :key="step" class="md:flex-1">
-            <div v-if="currentStepIndex > index" class="flex flex-col border-l-4 border-indigo-600 py-2 pl-4 group md:border-l-0 md:border-t-4 md:pt-4 md:pb-0 md:pl-0 hover:border-indigo-800">
+          <li v-for="(step, index) in steps" :key="step" class="md:flex-1 cursor-pointer" @click="currentStep = step">
+            <div
+              v-if="currentStepIndex > index"
+              class="flex flex-col border-l-4 border-indigo-600 py-2 pl-4 group md:border-l-0 md:border-t-4 md:pt-4 md:pb-0 md:pl-0 hover:border-indigo-800"
+            >
               <span class="font-medium text-sm text-indigo-600 group-hover:text-indigo-800">Step {{ index + 1 }}</span>
               <span class="font-medium text-sm">{{ step }}</span>
             </div>
-            <div v-else-if="currentStepIndex === index" class="flex flex-col border-l-4 border-indigo-600 py-2 pl-4 md:border-l-0 md:border-t-4 md:pt-4 md:pb-0 md:pl-0" aria-current="step">
+            <div
+              v-else-if="currentStepIndex === index"
+              class="flex flex-col border-l-4 border-indigo-600 py-2 pl-4 md:border-l-0 md:border-t-4 md:pt-4 md:pb-0 md:pl-0"
+              aria-current="step"
+            >
               <span class="font-medium text-sm text-indigo-600">Step {{ index + 1 }}</span>
               <span class="font-medium text-sm">{{ step }}</span>
             </div>
-            <div v-else class="flex flex-col border-l-4 border-gray-200 py-2 pl-4 group md:border-l-0 md:border-t-4 md:pt-4 md:pb-0 md:pl-0 hover:border-gray-300">
+            <div
+              v-else
+              class="flex flex-col border-l-4 border-gray-200 py-2 pl-4 group md:border-l-0 md:border-t-4 md:pt-4 md:pb-0 md:pl-0 hover:border-gray-300"
+            >
               <span class="font-medium text-sm text-gray-500 group-hover:text-gray-700">Step {{ index + 1 }}</span>
               <span class="font-medium text-sm">{{ step }}</span>
             </div>
@@ -181,16 +191,36 @@ const doSubmit = async () => {
                 <div class="mr-2 sm:col-span-4">
                   <label for="name" class="font-medium leading-6 block">NFT Name</label>
                   <div class="mt-2">
-                    <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                      <input id="name" v-model="name" type="text" name="name" autocomplete="name" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="Your Cool NFT Name" />
+                    <div
+                      class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500"
+                    >
+                      <input
+                        id="name"
+                        v-model="name"
+                        type="text"
+                        name="name"
+                        autocomplete="name"
+                        class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0"
+                        placeholder="Your Cool NFT Name"
+                      />
                     </div>
                   </div>
                 </div>
                 <div flex-1>
                   <label for="subTitle" class="font-medium leading-6 block">NFT Sub Title</label>
                   <div class="mt-2">
-                    <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                      <input id="subTitle" v-model="subTitle" type="text" name="subTitle" autocomplete="subTitle" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="The NFT Sub Title" />
+                    <div
+                      class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500"
+                    >
+                      <input
+                        id="subTitle"
+                        v-model="subTitle"
+                        type="text"
+                        name="subTitle"
+                        autocomplete="subTitle"
+                        class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0"
+                        placeholder="The NFT Sub Title"
+                      />
                     </div>
                   </div>
                 </div>
@@ -204,7 +234,13 @@ const doSubmit = async () => {
               <div class="col-span-full">
                 <label for="about" class="font-medium leading-6 block">NFT Description</label>
                 <div class="mt-2">
-                  <textarea id="about" v-model="description" name="about" rows="5" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500" />
+                  <textarea
+                    id="about"
+                    v-model="description"
+                    name="about"
+                    rows="5"
+                    class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500"
+                  />
                 </div>
                 <p class="mt-3 text-gray-400 leading-6">Write a few sentences about this NFT.</p>
               </div>
@@ -228,7 +264,14 @@ const doSubmit = async () => {
             <div mr-4>
               <label for="basicPrice" class="font-medium leading-6 block">Basic Price</label>
               <div class="rounded-md flex shadow-sm mt-2">
-                <input id="basicPrice" v-model="basicPrice" type="text" name="basicPrice" autocomplete="basicPrice" class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500" />
+                <input
+                  id="basicPrice"
+                  v-model="basicPrice"
+                  type="text"
+                  name="basicPrice"
+                  autocomplete="basicPrice"
+                  class="rounded-none rounded-l-md flex-grow bg-white/5 border-0 ring-inset w-full min-w-0 py-1.5 px-2 ring-1 ring-gray-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-sky-500"
+                />
                 <span class="border rounded-r-md border-l-0 border-gray-300 px-3 text-gray-500 inline-flex items-center">$BST</span>
               </div>
             </div>
@@ -236,7 +279,15 @@ const doSubmit = async () => {
             <div flex-1>
               <label for="maxSupply" class="font-medium leading-6 block">Max Supply</label>
               <div class="rounded-md flex shadow-sm mt-2">
-                <input id="maxSupply" v-model="maxSupply" type="text" name="maxSupply" autocomplete="maxSupply" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700" placeholder="" />
+                <input
+                  id="maxSupply"
+                  v-model="maxSupply"
+                  type="text"
+                  name="maxSupply"
+                  autocomplete="maxSupply"
+                  class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 px-2 ring-1 ring-slate-300 block placeholder:text-slate-600 sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-gray-700"
+                  placeholder=""
+                />
               </div>
             </div>
           </div>
@@ -262,12 +313,26 @@ const doSubmit = async () => {
             <h2 class="font-semibold text-base leading-7">Tier Step</h2>
             <p class="mt-1 text-gray-400 leading-6">Setup the tier your NFT passcard provide, you can update later.</p>
 
-            <div class="rounded-lg border-gray-3 border-1 mt-6 mt-2 grid p-6 gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-6" v-for="(item, index) in tierArr" :key="index">
+            <div
+              class="rounded-lg border-gray-3 border-1 mt-6 mt-2 grid p-6 gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-6"
+              v-for="(item, index) in tierArr"
+              :key="index"
+            >
               <div class="flex col-span-full items-center">
                 <label :for="`tier${index}-name`" class="font-medium leading-6 w-30">Tier {{ index + 1 }} Name</label>
                 <div class="flex-1">
-                  <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                    <input :id="`tier${index}-name`" v-model="item.name" type="text" :name="`tier${index}-name`" autocomplete="tierName" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="Your Tier Name" />
+                  <div
+                    class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500"
+                  >
+                    <input
+                      :id="`tier${index}-name`"
+                      v-model="item.name"
+                      type="text"
+                      :name="`tier${index}-name`"
+                      autocomplete="tierName"
+                      class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0"
+                      placeholder="Your Tier Name"
+                    />
                   </div>
                 </div>
                 <BsBtnDefault bg-red ml-4 @click="removeTier(index)" v-if="tierArr.length !== 1">Remove this Tier</BsBtnDefault>
@@ -276,7 +341,13 @@ const doSubmit = async () => {
               <div class="col-span-full">
                 <label :for="`tier${index}-desc`" class="font-medium leading-6 block">Tier {{ index + 1 }} Description</label>
                 <div class="mt-2">
-                  <textarea :id="`tier${index}-desc`" v-model="item.desc" :name="`tier${index}-desc`" rows="3" class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500" />
+                  <textarea
+                    :id="`tier${index}-desc`"
+                    v-model="item.desc"
+                    :name="`tier${index}-desc`"
+                    rows="3"
+                    class="rounded-md bg-white/5 border-0 shadow-sm ring-inset w-full py-1.5 ring-1 ring-white/10 block sm: sm:leading-6 focus:ring-inset focus:ring-2 focus:ring-indigo-500"
+                  />
                 </div>
                 <p class="mt-3 text-gray-400 leading-6">Write a few sentences about this Tier.</p>
               </div>
@@ -284,8 +355,18 @@ const doSubmit = async () => {
                 <div class="flex col-span-full items-center" v-for="(_item, _index) in item.benefit" :key="`benefit-${index}-${_index}`">
                   <label :for="`tier${index}-benefit-${_index}`" class="font-medium leading-6 w-30 block">Benefit {{ _index + 1 }} </label>
                   <div class="flex-1">
-                    <div class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                      <input :id="`tier${index}-benefit-${_index}`" v-model="item.benefit[_index]" type="text" :name="`tier${index}-benefit-${_index}`" autocomplete="benefitName" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="Benefit Name" />
+                    <div
+                      class="rounded-md flex bg-white/5 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500"
+                    >
+                      <input
+                        :id="`tier${index}-benefit-${_index}`"
+                        v-model="item.benefit[_index]"
+                        type="text"
+                        :name="`tier${index}-benefit-${_index}`"
+                        autocomplete="benefitName"
+                        class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0"
+                        placeholder="Benefit Name"
+                      />
                     </div>
                   </div>
                   <div flex pl-2 space-x-2>
@@ -327,7 +408,15 @@ const doSubmit = async () => {
               <div col-span-full>
                 <label for="tags" class="font-medium leading-6 block">Tags</label>
                 <div mt-2>
-                  <input id="tags" v-model="tags" type="text" name="tags" autocomplete="tags" class="rounded-md flex bg-white/5 ring-inset w-full ring-1 ring-white/10 placeholder:text-slate-600 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500" placeholder="Seperated by comma" />
+                  <input
+                    id="tags"
+                    v-model="tags"
+                    type="text"
+                    name="tags"
+                    autocomplete="tags"
+                    class="rounded-md flex bg-white/5 ring-inset w-full ring-1 ring-white/10 placeholder:text-slate-600 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500"
+                    placeholder="Seperated by comma"
+                  />
                 </div>
               </div>
 
@@ -335,9 +424,16 @@ const doSubmit = async () => {
                 <div flex min-w-40 items-center justify-between pr-2>
                   <BsFormSelect :id="`link-${index}-icon`" v-model="item.icon" is-dark :list="linkIconList" :has-add-new="false" mr-2>
                     <template #option="slotProps">
-                      <li class="cursor-pointer w-full py-2 pr-9 pl-3 relative select-none" :class="[slotProps.active ? 'bg-gray-700 text-white' : 'text-gray-900']">
+                      <li
+                        class="cursor-pointer w-full py-2 pr-9 pl-3 relative select-none"
+                        :class="[slotProps.active ? 'bg-gray-700 text-white' : 'text-gray-900']"
+                      >
                         <span class="block truncate" :class="[slotProps.selected ? 'font-semibold' : 'font-normal']">{{ slotProps.item }}</span>
-                        <span v-if="slotProps.selected" class="flex pr-4 inset-y-0 right-0 absolute items-center" :class="[slotProps.active ? 'text-white' : 'text-gray-700']">
+                        <span
+                          v-if="slotProps.selected"
+                          class="flex pr-4 inset-y-0 right-0 absolute items-center"
+                          :class="[slotProps.active ? 'text-white' : 'text-gray-700']"
+                        >
                           <CheckIcon class="h-5 w-5" aria-hidden="true" />
                         </span>
                       </li>
@@ -345,8 +441,18 @@ const doSubmit = async () => {
                   </BsFormSelect>
                   <component :is="iconComponentMap[item.icon]" class="h-5 w-auto" />
                 </div>
-                <div class="rounded-md flex bg-white/5 flex-1 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500">
-                  <input :id="`link-${index}`" v-model="item.link" type="text" :name="`link-${index}`" autocomplete="link" class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0" placeholder="https://" />
+                <div
+                  class="rounded-md flex bg-white/5 flex-1 ring-inset ring-1 ring-white/10 focus-within:ring-inset focus-within:ring-2 focus-within:ring-indigo-500"
+                >
+                  <input
+                    :id="`link-${index}`"
+                    v-model="item.link"
+                    type="text"
+                    :name="`link-${index}`"
+                    autocomplete="link"
+                    class="bg-transparent border-0 flex-1 py-1.5 px-3 placeholder:text-slate-600 sm: sm:leading-6 focus:ring-0"
+                    placeholder="https://"
+                  />
                 </div>
                 <div flex pl-2 space-x-2>
                   <button text-xl i-material-symbols-add-circle-outline-rounded @click="addLink(index)">Add Link</button>

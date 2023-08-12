@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { sendMessage } from "webext-bridge/options";
 import { formatEther } from "viem";
-import { truncate, get } from 'lodash';
+import { truncate, get } from "lodash";
 
-let account = $ref("");
+const account = $(inject("account"));
 let items = $ref([]);
 let isLoading = $ref(true);
 onMounted(async () => {
-  const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr"] }, "background");
-  account = getAccount(rz.mnemonicStr);
   const functionName = "getTokenList";
   const [tokenURIArr, basicPriceArr, totalSupplyArr, maxSupplyArr, itemsCountArr, metaCountArr] = await readContract(
     { account, contractName: "RWAProtocol", functionName },
@@ -19,25 +16,19 @@ onMounted(async () => {
   // readContract({ account, contractName: 'RWAProtocol', functionName }, 'NFTFi-Twitter', 0, 100)
   const tokenInfoArr = await Promise.all(tokenURIArr.map(parseURIData));
   items = reverse(
-    tokenInfoArr.map((token, index) => {
-      // console.log({
-      //   token,
-      //   basicPrice: basicPriceArr[index].toString(),
-      //   totalSupply: totalSupplyArr[index],
-      //   maxSupply: maxSupplyArr[index],
-      //   itemsCount: itemsCountArr[index],
-      //   metaCount: metaCountArr[index],
-      // })
-      return {
-        tokenId: index,
-        token,
-        basicPrice: basicPriceArr[index].toString(),
-        totalSupply: totalSupplyArr[index].toString(),
-        maxSupply: maxSupplyArr[index].toString(),
-        itemsCount: itemsCountArr[index].toString(),
-        metaCount: metaCountArr[index].toString(),
-      };
-    }).filter(item => 'OTP' !== get(item, 'token.properties.tokenType'))
+    tokenInfoArr
+      .map((token, index) => {
+        return {
+          tokenId: index,
+          token,
+          basicPrice: basicPriceArr[index].toString(),
+          totalSupply: totalSupplyArr[index].toString(),
+          maxSupply: maxSupplyArr[index].toString(),
+          itemsCount: itemsCountArr[index].toString(),
+          metaCount: metaCountArr[index].toString(),
+        };
+      })
+      .filter((item) => "OTP" !== get(item, "token.properties.tokenType"))
   );
   isLoading = false;
 });
@@ -52,7 +43,7 @@ onMounted(async () => {
       <div v-if="isLoading" flex justify-center items-center w-full h-100>
         <div i-svg-spinners-blocks-shuffle-3 text-white class="h-14 w-14"></div>
       </div>
-      <table v-else class="mt-6 text-left  overflow-x-scroll whitespace-nowrap">
+      <table v-else class="mt-6 text-left overflow-x-scroll whitespace-nowrap">
         <colgroup>
           <col class="w-full sm:w-4/12" />
           <col class="lg:w-4/12" />
@@ -83,7 +74,10 @@ onMounted(async () => {
                 <div class="font-mono text-sm text-gray-400 leading-6">
                   {{ truncate(item.token.description) }}
                 </div>
-                <span class="rounded-md font-medium bg-gray-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-gray-400/20 text-gray-400 inline-flex items-center">{{ item.token.properties.category }}</span>
+                <span
+                  class="rounded-md font-medium bg-gray-400/10 ring-inset text-xs py-1 px-2 ring-1 ring-gray-400/20 text-gray-400 inline-flex items-center"
+                  >{{ item.token.properties.category }}</span
+                >
               </div>
             </td>
             <td class="text-sm py-4 pr-4 pl-0 leading-6 sm:pr-8 lg:pr-20">

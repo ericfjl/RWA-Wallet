@@ -8,80 +8,32 @@ import Vue from '@vitejs/plugin-vue'
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
 import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 import { isDev, port, r } from './scripts/utils'
 import packageJson from './package.json'
-
-const theAutoImport =  AutoImport({
-      imports: [
-        'vue',
-        'vue-router',
-        '@vueuse/core',
-        {
-          'webextension-polyfill': [
-            ['*', 'browser'],
-          ],
-          'lodash': [
-            'isEqual',
-            'uniq',
-            'random',
-            'find',
-            'findIndex',
-            'pick',
-            'remove',
-            'some',
-            'trim',
-            'merge',
-            'forEach',
-            'kebabCase',
-            'pickBy',
-            'get',
-            'reverse',
-            'cloneDeep',
-            'filter',
-            'sortBy',
-            'truncate',
-            'keyBy',
-            'groupBy',
-            'upperFirst',
-            'take',
-            'reverse',
-            'shuffle',
-          ],
-          'pinia': [
-            'acceptHMRUpdate',
-            'defineStore',
-            'storeToRefs',
-          ],
-        },
-      ],
-      dirs: [
-        r('src/stores'),
-        r('src/composables'),
-      ],
-      dts: r('src/auto-imports.d.ts'),
-})
+import { theAutoImport, optimizeDeps } from './vite.config.lib'
+import nodePolyfills from 'vite-plugin-node-stdlib-browser'
 
 export const sharedConfig: UserConfig = {
   root: r('src'),
   resolve: {
     alias: {
       '~/': `${r('src')}/`,
-      // https://github.com/ensdomains/address-encoder/issues/323#issuecomment-1024844601
       stream: 'stream-browserify',
       crypto: 'crypto-browserify',
       assert: 'rollup-plugin-node-polyfills/polyfills/assert',
+      util: 'rollup-plugin-node-polyfills/polyfills/util',
+      process: 'rollup-plugin-node-polyfills/polyfills/process-es6',
     },
   },
   define: {
     __DEV__: isDev,
     __NAME__: JSON.stringify(packageJson.name),
-    global: 'window',
+    global: 'globalThis',
 		'process.env.NODE_DEBUG': 'false',
-		'window.global': 'globalThis'
   },
   plugins: [
+    nodePolyfills(),
     theAutoImport,
     Vue({
       reactivityTransform: true,
@@ -96,12 +48,10 @@ export const sharedConfig: UserConfig = {
         { dir: r('src/contentScripts/pages'), baseRoute: 'contentScripts' },
       ],
     }),
-
     // https://github.com/JohnCampionJr/vite-plugin-vue-layouts
     Layouts({
       layoutsDirs: r('src/layouts'),
     }),    
-
     // https://github.com/antfu/unplugin-vue-components
     Components({
       dirs: [r('src/components')],
@@ -115,13 +65,8 @@ export const sharedConfig: UserConfig = {
         }),
       ],
     }),
-
-    // https://github.com/antfu/unplugin-icons
-    Icons(),
-
-    // https://github.com/unocss/unocss
-    UnoCSS(),
-
+    Icons(), // https://github.com/antfu/unplugin-icons
+    UnoCSS(),  // https://github.com/unocss/unocss
     // rewrite assets to use relative path
     {
       name: 'assets-rewrite',
@@ -132,21 +77,7 @@ export const sharedConfig: UserConfig = {
       },
     },
   ],
-  optimizeDeps: {
-    include: [
-      'vue',
-      '@vueuse/core',
-      'webextension-polyfill',
-    ],
-    exclude: [
-      'vue-demi',
-    ],
-    esbuildOptions: {
-      plugins: [
-        
-      ]
-    }
-  },
+  optimizeDeps,
 }
 
 export default defineConfig(({ command }) => ({
@@ -172,8 +103,6 @@ export default defineConfig(({ command }) => ({
         options: r('src/options/index.html'),
         popup: r('src/popup/index.html'),
       },
-      plugins: [
-      ]
     },
   },
   test: {

@@ -1,7 +1,6 @@
 /* eslint-disable unicorn/prefer-node-protocol */
 import '../styles'
 import { onMessage, sendMessage } from 'webext-bridge/options'
-
 import { createApp } from 'vue'
 
 import App from './App.vue'

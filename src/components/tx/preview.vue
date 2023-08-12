@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // import { sendMessage } from "webext-bridge/options";
-import imgArweave from '~/assets/arweave.svg'
-import imgCess from '~/assets/cess.svg'
-import imgDB3 from '~/assets/db3-logo.png'
+import imgArweave from "~/assets/arweave.svg";
+import imgCess from "~/assets/cess.svg";
+import imgDB3 from "~/assets/db3-logo.png";
 
 const account = $(inject("account"));
 
@@ -15,8 +15,8 @@ const payTokenAddress = $computed(() => {
 });
 const { addLoading, addSuccess, alertError } = $(notificationStore());
 
-const storeBy = $ref("NFT.Storage");
-const storeServiceList = ["NFT.Storage", "Arweave"];
+const storeBy = $ref("Arseeding");
+const storeServiceList = ["NFT.Storage", "Arseeding"];
 let isLoading = $ref(false);
 let approveGas = $ref("");
 const paymentContractName = $computed(() => payBy.replace("$", ""));
@@ -25,18 +25,13 @@ const bstPayAmount = parseEther("100");
 
 const addTokenGas = 310796n;
 
-// onMounted(async () => {
-//   const rz = await sendMessage("getStoreInMemory", { keys: ["mnemonicStr", "previewData"] }, "background");
-//   account = getAccount(rz.mnemonicStr);
-// });
-
 watchEffect(async () => {
   if (!account) return;
   // estimate approve BST allowance gas
   try {
     approveGas = await estimateContractGas({ account, contractName: paymentContractName, functionName: "approve" }, spenderAddress, bstPayAmount);
   } catch (e) {
-    console.log('====> e :', e)
+    console.log("====> e :", e);
   }
 
   // estimate addToken gas
@@ -71,22 +66,33 @@ const doSubmit = async () => {
     console.log("====> rzApprove :", rzApprove);
 
     status = "store tieres and links data to db3.js";
-    const collectionName = 'twitter'
-    const db3Rz = await addDb3Item(account, collectionName, params)
-    console.log('====> db3Rz :', db3Rz)
+    const collectionName = "twitter";
+    const db3Rz = await addDb3Item(account, collectionName, params);
+    console.log("====> db3Rz :", db3Rz);
 
     // upload to decentralized storage
     status = "upload to decentralized storage";
-    const properties = pick(params, ["category", "tags", "tokenType", "distributor", "basicPrice", "maxSupply", "inviteCommission", 'tierArr',
-      'links']);
-    properties['db3DocId'] = db3Rz.id
+    const properties = pick(params, [
+      "category",
+      "tags",
+      "tokenType",
+      "distributor",
+      "basicPrice",
+      "maxSupply",
+      "inviteCommission",
+      "tierArr",
+      "links",
+    ]);
+    properties["db3DocId"] = db3Rz.id;
     const external_url = ""; // This is the URL that will appear below the asset's image on OpenSea and will allow users to leave OpenSea and view the item on your site.
     const metadata = {
-      ...pick(params, ["name", "description", "image", 'subTitle']),
+      ...pick(params, ["name", "description", "image", "subTitle"]),
       properties,
       external_url,
     };
     const cid = await storeJson(metadata);
+    // per
+    const arseedingRz = await storeJsonToArweave(metadata);
     console.log("====> cid :", cid);
 
     const tokenList = await readContract(
@@ -116,7 +122,7 @@ const doSubmit = async () => {
     );
     console.log("====> rzApprove2, cid, rzToken, tokenId :", rzApprove, cid, rzToken, tokenId);
     if (opts.afterSuccess) {
-      await opts.afterSuccess()
+      await opts.afterSuccess();
     }
 
     // showNotice()?
@@ -135,28 +141,28 @@ const doSubmit = async () => {
     status = "";
     isLoading = false;
     toggle();
-  })
+  });
 };
 
-const doSubmit2 = async () => {
-  isLoading = true;
+// const doSubmit2 = async () => {
+//   isLoading = true;
 
-  status = "approve allowance";
-  await new Promise((r) => setTimeout(r, 500));
-  status = "upload to decentralized storage";
-  await new Promise((r) => setTimeout(r, 500));
-  status = "create new NFT on RWAProtocol";
-  await new Promise((r) => setTimeout(r, 500));
-  status = "";
-  if (opts.afterSuccess) {
-    await opts.afterSuccess()
-  }
-  nextTick(() => {
-    addSuccess("Create New NFT Successed!");
-    isLoading = false;
-    toggle();
-  })
-};
+//   status = "approve allowance";
+//   await new Promise((r) => setTimeout(r, 500));
+//   status = "upload to decentralized storage";
+//   await new Promise((r) => setTimeout(r, 500));
+//   status = "create new NFT on RWAProtocol";
+//   await new Promise((r) => setTimeout(r, 500));
+//   status = "";
+//   if (opts.afterSuccess) {
+//     await opts.afterSuccess();
+//   }
+//   nextTick(() => {
+//     addSuccess("Create New NFT Successed!");
+//     isLoading = false;
+//     toggle();
+//   });
+// };
 
 const doCancel = async () => {
   toggle();
@@ -168,7 +174,7 @@ const doCancel = async () => {
     <div class="bg-white flex flex-col min-w-sm w-full">
       <div class="flex-1 py-6 px-4 overflow-y-auto sm:px-6">
         <div class="flex items-start justify-between">
-          <h2 class="font-medium text-lg text-gray-900">RWA Action Preview</h2>
+          <h2 class="font-medium text-lg text-gray-900">RWA Intent Preview: Create NFTFi Twitter</h2>
         </div>
 
         <div class="mt-8">
@@ -176,7 +182,10 @@ const doCancel = async () => {
             <ul role="list" class="divide-y divide-gray-200 -my-6">
               <li class="flex py-6">
                 <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
-                  <div i-streamline-money-currency-bitcoin-crypto-circle-payment-blokchain-finance-bitcoin-currency-money class="h-full object-cover object-center w-full" />
+                  <div
+                    i-streamline-money-currency-bitcoin-crypto-circle-payment-blokchain-finance-bitcoin-currency-money
+                    class="h-full object-cover object-center w-full"
+                  />
                 </div>
 
                 <div class="flex flex-col font-medium flex-1 text-base px-4 text-gray-900 justify-between">
@@ -211,7 +220,7 @@ const doCancel = async () => {
               <li class="flex py-6">
                 <div class="border rounded-md border-gray-200 flex-shrink-0 h-24 p-5 w-24 overflow-hidden">
                   <div i-simple-icons-ipfs class="h-full object-cover object-center w-full" v-if="storeBy === 'NFT.Storage'" />
-                  <img :src="imgArweave" class="h-full object-cover object-center w-full" v-if="storeBy === 'Arweave'" />
+                  <img :src="imgArweave" class="h-full object-cover object-center w-full" v-if="storeBy === 'Arseeding'" />
                   <img :src="imgCess" class="h-full object-cover object-center w-full" v-if="storeBy === 'CESS'" />
                 </div>
 

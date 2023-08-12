@@ -22,8 +22,8 @@ browser.runtime.onInstalled.addListener(({ reason }): void => {
 
 let memoryStoreMap = {
   password: '',
-  mnemonicStr: 'truth similar disagree slot lecture quiz hundred season energy fix alarm spring',
-  // mnemonicStr: '',
+  // mnemonicStr: 'truth similar disagree slot lecture quiz hundred season energy fix alarm spring',
+  mnemonicStr: '',
   tabId: '',
   popupId: '',
   previewData: {},

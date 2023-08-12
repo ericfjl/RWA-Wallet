@@ -15,7 +15,6 @@ import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
 import '@kangc/v-md-editor/lib/theme/style/github.css'
 import Hljs from 'highlight.js'
 
-
 export function setupApp(app: App, opts = { }) {
   const { routeMode = 'webHash', sendMessage } = opts
 
