@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Vue3Autocounter from 'vue3-autocounter';
+import Vue3Autocounter from "vue3-autocounter";
 const route = useRoute();
 const path = $computed(() => route.path);
 const categoryKey = $computed(() => path.split("/")[2]);
 
 const categoryMap = {
   twitter: {
-    name: "NFTFi Twitter",
+    name: "TwitterFi",
   },
 };
 const category = $computed(() => categoryMap[categoryKey] || {});

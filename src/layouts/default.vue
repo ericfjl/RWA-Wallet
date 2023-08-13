@@ -6,7 +6,7 @@ import { XMarkIcon } from "@heroicons/vue/24/outline";
 
 import MdiTwitter from "~icons/mdi/twitter";
 import similarwebLogo from "~icons/simple-icons/similarweb";
-import Fa6SolidFaucetDrip from '~icons/fa6-solid/faucet-drip'
+import Fa6SolidFaucetDrip from "~icons/fa6-solid/faucet-drip";
 
 const route = useRoute();
 
@@ -15,7 +15,7 @@ const path = $computed(() => route.path);
 const navigation = $computed(() => {
   return [
     // { name: 'Home', href: '#', icon: HomeIcon, current: true },
-    { name: "Twitter", href: "/options/twitter/", icon: MdiTwitter, current: path.startsWith("/options/twitter/") },
+    { name: "TwitterFi", href: "/options/twitter/", icon: MdiTwitter, current: path.startsWith("/options/twitter/") },
     { name: "EverPay", href: "/options/everPay/", icon: similarwebLogo, current: path.startsWith("/options/everPay/") },
     { name: "BST Faucet", href: "/options/bst/faucet/", icon: Fa6SolidFaucetDrip, current: path.startsWith("/options/bst/faucet/") },
     // { name: "Book", href: "/options/book", icon: IcBaselineMenuBook, current: path.startsWith("/options/book") },

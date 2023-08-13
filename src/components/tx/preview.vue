@@ -4,6 +4,7 @@ import imgArweave from "~/assets/arweave.svg";
 import imgCess from "~/assets/cess.svg";
 import imgDB3 from "~/assets/db3-logo.png";
 
+const storeToArseeding = false;
 const account = $(inject("account"));
 
 const { isShow, toggle, params, opts } = $(txStore());
@@ -94,13 +95,15 @@ const doSubmit = async () => {
     // per
     console.log("====> cid :", cid);
 
-    const arseedingRz = await storeJsonToArweave(account, metadata, { tokenType: params.tokenType });
-    console.log("====> arseedingRz :", arseedingRz);
-    if (arseedingRz.err) {
-      throw arseedingRz.err;
-    }
+    if (storeToArseeding) {
+      const arseedingRz = await storeJsonToArweave(account, metadata, { tokenType: params.tokenType });
+      console.log("====> arseedingRz :", arseedingRz);
+      if (arseedingRz.err) {
+        throw arseedingRz.err;
+      }
 
-    status = `Store NFT metadata onto arseeding successed! ${arseedingRz.link}`;
+      status = `Store NFT metadata onto arseeding successed! ${arseedingRz.link}`;
+    }
 
     const tokenList = await readContract(
       {
@@ -181,7 +184,7 @@ const doCancel = async () => {
     <div class="bg-white flex flex-col min-w-sm w-full">
       <div class="flex-1 py-6 px-4 overflow-y-auto sm:px-6">
         <div class="flex items-start justify-between">
-          <h2 class="font-medium text-lg text-gray-900">RWA Intent Preview: Create NFTFi Twitter</h2>
+          <h2 class="font-medium text-lg text-gray-900">RWA Intent Preview: Create TwitterFi RWA NFT</h2>
         </div>
 
         <div class="mt-8">
