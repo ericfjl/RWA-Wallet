@@ -1,6 +1,6 @@
 import chainMap from './chainMap.json'
 import contractAddressMap from './contractAddressMap.json'
-import { polygonMumbai, goerli } from 'viem/chains'
+import { polygonMumbai, goerli, optimismGoerli, } from 'viem/chains'
 
 const allABIJsons = import.meta.glob('./abis/*.json', {eager: true})
 const allABIs = {}
@@ -33,7 +33,8 @@ export const CHAIN_NAME = chainNameMap[CHAIN_ID]
 export const CHAIN_NAME_FOR_LIT = chainNameMapForLit[CHAIN_ID]
 export const CHAIN_RPC_URI_MAP = {
   [polygonMumbai.network]:'https://polygon-mumbai.g.alchemy.com/v2/LwtsIVO7HQgliuatrjYmnqs0gVp5uxrl',
-  [goerli.network]: 'https://eth-goerli.g.alchemy.com/v2/pSIWu2EeWoF3HW5gmMe5xekcw0FrNvi9'
+  [goerli.network]: 'https://eth-goerli.g.alchemy.com/v2/pSIWu2EeWoF3HW5gmMe5xekcw0FrNvi9',
+  [optimismGoerli.network]: 'https://goerli.optimism.io'
 }
 
 const RWAProtocol = [
